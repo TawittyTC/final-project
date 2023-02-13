@@ -26,9 +26,21 @@
           <a class="nav-link" a routerLink="/profile-component"><i class="bi bi-person-fill"></i> Profile</a>
         </li>
         <li class="nav-item ">
-          <a class="nav-link" a routerLink="/profile-component"><i class="bi bi-forward-fill"></i> Log Out</a>
+          <a class="nav-link" ><i class="bi bi-forward-fill"></i> Log Out</a>
+        </li>
+        <li class="nav-item ">
+          <a class="nav-link" a routerLink="/profile-component"><i class="bi bi-forward-fill"></i> Log In</a>
         </li>
 
+        <header>
+          <div *ngIf="auth.isAuthenticated$ | async; else loggedOut">
+              <button (click)="auth.logout()">Log out</button>
+          </div>
+      
+          <ng-template #loggedOut>
+              <button (click)="auth.loginWithRedirect()">Log in</button>
+          </ng-template>
+      </header>
 
       </ul>
 

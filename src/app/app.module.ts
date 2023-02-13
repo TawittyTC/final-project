@@ -12,6 +12,11 @@ import { AboutComponent } from './about/about.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 
+// Import the module from the SDK
+import { AuthModule } from '@auth0/auth0-angular';
+import { environment } from '../environments/environment';
+import { AuthButtonComponent } from './auth-button/auth-button.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -21,12 +26,23 @@ import { HomeComponent } from './home/home.component';
     FooterComponent,
     AboutComponent,
     ProfileComponent,
-    HomeComponent
+    HomeComponent,
+    AuthButtonComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NgbModule
+    NgbModule,
+
+    // Import the module into the application, with configuration
+    AuthModule.forRoot({
+      domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
+      clientId: 'bJYCf8w408d6Fdq1wDQEvxGGcEJsmcxd',
+      authorizationParams: {
+        redirect_uri: window.location.origin
+      }
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
