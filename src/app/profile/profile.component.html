@@ -1,1 +1,62 @@
-<p>profile works!</p>
+<div class="container">
+<p class="h1">Your Profile</p>
+<!--
+<ul class="list-group " *ngIf="auth.user$ | async as user">
+  <li class="list-group-item">
+  <img src="{{user.picture}}" class="img-thumbnail" alt="user-picture">
+  </li>
+  <li class="list-group-item">{{ user.name }}</li>
+  <li class="list-group-item">{{ user.email }}</li>
+  <li class="list-group-item">{{ user.locale }}</li>
+  <li class="list-group-item">{{ user.nickname }}</li>
+</ul> -->
+
+
+<div class="list-group" *ngIf="auth.user$ | async as user">
+  <a class="list-group-item ">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1"><img src="{{user.picture}}" class="img-thumbnail" alt="user-picture"></h5>
+
+    </div>
+  </a>
+
+
+  <a class="list-group-item ">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Name</h5>
+
+    </div>
+    <p class="mb-1">{{user.name}}</p>
+
+  </a>
+
+  <a class="list-group-item ">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Email</h5>
+
+    </div>
+    <p class="mb-1">{{user.email}}</p>
+
+  </a>
+
+
+  <a class="list-group-item ">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Phone No.</h5>
+
+    </div>
+    <p class="mb-1">{{user.phone_number}}</p>
+
+  </a>
+
+  <a class="list-group-item ">
+    <div class="d-flex w-100 justify-content-between">
+      <h5 class="mb-1">Locale</h5>
+
+    </div>
+    <p class="mb-1">{{user.locale}}</p>
+
+  </a>
+</div>
+
+</div>
