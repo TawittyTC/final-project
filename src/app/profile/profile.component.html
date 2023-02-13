@@ -1,1 +1,12 @@
-<p>profile works!</p>
+<div class="container">
+<p class="h1">Your Profile</p>
+<ul class="list-group list-group-flush" *ngIf="auth.user$ | async as user">
+  <li class="">
+  <img src="{{user.picture}}" class="img-thumbnail" alt="user-picture">
+  </li>
+  <li class="">{{ user.name }}</li>
+  <li class="">{{ user.email }}</li>
+  <li class="">{{ user.locale }}</li>
+  <li class="">{{ user.nickname }}</li>
+</ul>
+</div>
