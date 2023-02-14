@@ -9,13 +9,14 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
   { path: 'device-component',component: DeviceComponent },
   { path: 'navbar-component',component: NavbarComponent },
   { path: 'footer-component',component: FooterComponent },
   { path: 'about-component',component: AboutComponent },
   { path: 'profile-component',component: ProfileComponent },
-  { path: 'home-component',component: HomeComponent },
+  { path: '**',component: HomeComponent },
 ];
 
 @NgModule({
