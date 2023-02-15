@@ -1,18 +1,11 @@
-<div class="container">
-<p class="display-5 fw-bold h1">Your Profile</p>
-<!--
-<ul class="list-group " *ngIf="auth.user$ | async as user">
-  <li class="list-group-item">
-  <img src="{{user.picture}}" class="img-thumbnail" alt="user-picture">
-  </li>
-  <li class="list-group-item">{{ user.name }}</li>
-  <li class="list-group-item">{{ user.email }}</li>
-  <li class="list-group-item">{{ user.locale }}</li>
-  <li class="list-group-item">{{ user.nickname }}</li>
-</ul> -->
+<div class="container py-4">
+  <header class="pb-3 mb-4 border-bottom">
+    <p class="display-5 fw-bold h1">Your Profile</p>
+  </header>
+  <div class="row p-3 mb-3 bg-light rounded-4" >
 
 
-<div class="list-group" *ngIf="auth.user$ | async as user">
+<div class="list-group rounded-4" *ngIf="auth.user$ | async as user">
   <a class="list-group-item ">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"><img src="{{user.picture}}" class="img-thumbnail" alt="user-picture"></h5>
@@ -58,5 +51,5 @@
 
   </a>
 </div>
-
+</div>
 </div>
