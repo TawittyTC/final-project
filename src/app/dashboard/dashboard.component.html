@@ -1,36 +1,33 @@
 <div class="container py-4">
-  <header class="pb-3 mb-4 border-bottom">
+  <header class="pb-3 mb-4 ">
     <p class="display-5 fw-bold h1">Dashboard</p>
   </header>
-  <div class="row p-3 mb-3 bg-light rounded-4" >
-  <table class="table bg-warning">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
-      </tr>
-    </thead>
-    <tbody class="bg-light">
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
-    </tbody>
-  </table>
-  <!-- </div> -->
+  <div class="row">
+    <div class="col-sm p-3 mb-3 bg-white rounded-4 me-3" >
+      <h4 class="fw-bold">Current Usage</h4>
+      <p class="fs-5 text-muted">Electricity</p>
+    </div>
+  <div class="col-sm p-3 mb-3 bg-white rounded-4" >
+    <h4 class="fw-bold">Summary</h4>
+    <p class="fs-5 text-muted">Month, Week , Day</p>
+    <p>Month</p>
+    <div class="progress mb-3">
+      <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="" aria-valuemax="100"></div>
+    </div>
+    <p>Week</p>
+    <div class="progress mb-3">
+      <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="0" aria-valuemin="" aria-valuemax="100"></div>
+    </div>
+    <p>Day</p>
+    <div class="progress mb-3">
+      <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="0" aria-valuemin="" aria-valuemax="100"></div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col p-3 mb-3 bg-white rounded-4" >
+      <app-chart></app-chart>
+    </div>
+  </div>
+  </div>
+</div>
 
