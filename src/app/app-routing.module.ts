@@ -7,6 +7,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
+import { ChartComponent } from 'ng-apexcharts';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'about-component',component: AboutComponent },
   { path: 'profile-component',component: ProfileComponent },
   { path: '**',component: HomeComponent },
+  { path: 'chart-component',component: ChartComponent },
 ];
 
 @NgModule({
