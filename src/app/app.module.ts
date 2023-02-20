@@ -16,7 +16,8 @@ import { HomeComponent } from './home/home.component';
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
-
+import { ChartComponent } from './chart/chart.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,13 +29,15 @@ import { AuthButtonComponent } from './auth-button/auth-button.component';
     ProfileComponent,
     HomeComponent,
     AuthButtonComponent,
+    //MapComponent,
+    ChartComponent,
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-
+    NgApexchartsModule,
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
