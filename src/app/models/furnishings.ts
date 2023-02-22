@@ -1,4 +1,4 @@
-import { RL_ROOM_INNER_SPACING as WT } from '../helpers'; // WT = Wall Thickness
+import { RL_ROOM_INNER_SPACING as WT } from 'src/app/helpers'; // WT = Wall Thickness
 
 const FURNISHINGS = {
   'title': 'Faithlife Room Layout Furniture Library',

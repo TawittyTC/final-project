@@ -22,6 +22,12 @@ import { ChartComponent } from './chart/chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MapComponent } from './map/map.component';
 import { fabric } from 'fabric';
+import { SharedModule } from './shared/shared.module';
+import { ViewComponent } from './view/view.component';
+import { PreviewFurnitureComponent } from './preview-furniture/preview-furniture.component';
+import { ChairsLayoutComponent } from './chairs-layout/chairs-layout.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { FURNISHINGS } from './models/furnishings'
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +42,9 @@ import { fabric } from 'fabric';
     //MapComponent,
     ChartComponent,
     MapComponent,
-    
+    ViewComponent,
+    PreviewFurnitureComponent,
+    ChairsLayoutComponent
     
   ],
   imports: [
@@ -45,6 +53,9 @@ import { fabric } from 'fabric';
     NgbModule,
     NgApexchartsModule,
     FormsModule,
+    SharedModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
