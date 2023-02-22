@@ -97,10 +97,18 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css",
+              "https://cdn.rawgit.com/leongersen/noUiSlider/master/distribute/nouislider.min.css"
             ],
             "scripts": [
-              "node_modules/apexcharts/dist/apexcharts.min.js"
+              "node_modules/apexcharts/dist/apexcharts.min.js",
+              "src/app/map/Fabric.js",
+
+              "https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.7.11/fabric.min.js",
+              "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js",
+              "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js",
+              "https://cdn.rawgit.com/leongersen/noUiSlider/master/distribute/nouislider.min.js"
             ]
           }
         }

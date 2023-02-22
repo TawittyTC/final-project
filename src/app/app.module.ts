@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule , ReactiveFormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -18,6 +20,8 @@ import { environment } from '../environments/environment';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { ChartComponent } from './chart/chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { MapComponent } from './map/map.component';
+import { fabric } from 'fabric';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +35,8 @@ import { NgApexchartsModule } from "ng-apexcharts";
     AuthButtonComponent,
     //MapComponent,
     ChartComponent,
+    MapComponent,
+    
     
   ],
   imports: [
@@ -38,6 +44,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
     AppRoutingModule,
     NgbModule,
     NgApexchartsModule,
+    FormsModule,
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
