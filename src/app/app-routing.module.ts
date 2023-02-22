@@ -9,7 +9,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { ChartComponent } from 'ng-apexcharts';
 import { MapComponent } from './map/map.component';
-
+import { PreviewFurnitureComponent } from './preview-furniture/preview-furniture.component';
+import { ChairsLayoutComponent } from './chairs-layout/chairs-layout.component';
+import { ViewComponent } from './view/view.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -21,6 +23,9 @@ const routes: Routes = [
   { path: '**',component: HomeComponent },
   { path: 'chart-component',component: ChartComponent },
   { path: 'map-component',component: MapComponent },
+  { path: 'previewFurniture-component',component: PreviewFurnitureComponent },
+  { path: 'chairsLayout-component',component: ChairsLayoutComponent },
+  { path: 'view-component',component: ViewComponent },
 ];
 
 @NgModule({
