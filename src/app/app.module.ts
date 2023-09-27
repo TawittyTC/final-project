@@ -18,6 +18,7 @@ import { environment } from '../environments/environment';
 import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { ChartComponent } from './chart/chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { CircleChartComponent } from './circle-chart/circle-chart.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { NgApexchartsModule } from "ng-apexcharts";
     AuthButtonComponent,
     //MapComponent,
     ChartComponent,
+    CircleChartComponent,
     
   ],
   imports: [
