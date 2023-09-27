@@ -1,13 +1,140 @@
 <div class="container py-4">
-  <header class="pb-3  ">
+  <header class="pb-3">
     <p class="display-5 fw-bold h1">Device</p>
   </header>
 
-  <div class="row">
+  <div class="row p-4">
+    <div class="col-md-4">
+      <div class="col-12 bg-white mx-2 my-2 p-4 rounded-5 shadow-sm">
+        <div>
+          <img
+            src="/assets/img/img1.jpg"
+            class="card-img-top rounded-4"
+            alt="..."
+          />
+        </div>
+        <div class="h1">test01</div>
+        <div>
+          test123 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quos
+          reprehenderit consectetur totam perspiciatis, id eius maiores at,
+          explicabo earum eaque, corporis sequi quibusdam laborum alias eligendi
+          veritatis ex! Sapiente, labore?
 
-    <div class="col-sm p-3 mb-3 bg-white rounded-4 me-3" >
+          <!-- Button trigger modal -->
+          <div class = "me-2 my-2">
+            <button
+              type="button"
+              class="btn btn-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModal"
+            >
+              Details
+            </button>
+
+            <!-- Modal -->
+
+            <div
+              class="modal fade"
+              id="exampleModal"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                      Modal title
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="col-sm p-3 mb-3 bg-white rounded-4" >
+                      <h4 class="fw-bold">Summary</h4>
+                      <p class="fs-5 text-muted">Month, Week , Day</p>
+                      <p>Month</p>
+                      <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="0" aria-valuemin="" aria-valuemax="100"></div>
+                      </div>
+                      <p>Week</p>
+                      <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 70%" aria-valuenow="0" aria-valuemin="" aria-valuemax="100"></div>
+                      </div>
+                      <p>Day</p>
+                      <div class="progress mb-3">
+                        <div class="progress-bar" role="progressbar" style="width: 10%" aria-valuenow="0" aria-valuemin="" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                    >
+                      Close
+                    </button>
+                    <button type="button" class="btn btn-primary">
+                      Save changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-12 bg-white mx-2 my-2 p-4 rounded-5 shadow-sm">
+        <img
+          src="/assets/img/img2.jpeg"
+          class="card-img-top rounded-4"
+          alt="..."
+        />
+        <div class="h1">test01</div>
+        <div>
+          test123 Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Dolorem beatae doloremque aperiam consectetur necessitatibus
+          repellendus facere expedita, quia nobis veniam non blanditiis quae,
+          ratione excepturi rerum iste perspiciatis delectus odit?
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="col-12 bg-white mx-2 my-2 p-4 rounded-5 shadow-sm">
+        <img
+          src="/assets/img/img03.png"
+          class="card-img-top rounded-4"
+          alt="..."
+        />
+        <div class="h1">test01</div>
+        s
+        <div>
+          test123 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nam
+          libero necessitatibus sed cum minima perferendis corporis maiores
+          obcaecati ipsam. Tenetur ipsum vitae laboriosam culpa. Pariatur nemo
+          tempore consequatur beatae dignissimos!
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm p-3 mb-3 bg-white rounded-4">
       <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+        <button
+          class="btn btn-secondary dropdown-toggle"
+          type="button"
+          id="dropdownMenuButton1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
           Filter
         </button>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -15,67 +142,83 @@
           <li><a class="dropdown-item" href="#">University</a></li>
           <li><a class="dropdown-item" href="#">Building</a></li>
         </ul>
-      <div class="table-responsive">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-          </div>
-          <div id="no-table">
-            <table class="col-sm-12 table">
-              <thead class="cf">
-                <tr>
-                  <th>No.</th>
-                  <th>Name</th>
-                  <th>Address</th>
-                  <th>Status</th>
-                  <th>Bill</th>
-                  <th>Usage</th>
-                  <th>Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td data-title="No.">Winter</td>
-                  <td data-title="Name">Winter</td>
-                  <td data-title="Address">Winter</td>
-                  <td data-title="Status">Summer</td>
-                  <td data-title="Bill">Summer</td>
-                  <td data-title="Usage">Rainy</td>
-                  <td data-title="Edit" class=""><i class="bi bi-pencil-square pe-3"></i><i class="bi bi-trash pe-3"></i><i class="bi bi-plus-circle-fill pe-3"></i></td>
-                </tr>
-                <tr>
-                  <td data-title="No.">Winter</td>
-                  <td data-title="Name">Winter</td>
-                  <td data-title="Address">Winter</td>
-                  <td data-title="Status">Summer</td>
-                  <td data-title="Bill">Summer</td>
-                  <td data-title="Usage">Rainy</td>
-                  <td data-title="Edit" class=""><i class="bi bi-pencil-square pe-3"></i><i class="bi bi-trash pe-3"></i><i class="bi bi-plus-circle-fill pe-3"></i></td>
-                </tr>
-                <tr>
-                  <td data-title="No.">Winter</td>
-                  <td data-title="Name">Winter</td>
-                  <td data-title="Address">Winter</td>
-                  <td data-title="Status">Summer</td>
-                  <td data-title="Bill">Summer</td>
-                  <td data-title="Usage">Rainy</td>
-                  <td data-title="Edit" class=""><i class="bi bi-pencil-square pe-3"></i><i class="bi bi-trash pe-3"></i><i class="bi bi-plus-circle-fill pe-3"></i></td>
-                </tr>
-                <tr>
-                  <td data-title="No.">Winter</td>
-                  <td data-title="Name">Winter</td>
-                  <td data-title="Address">Winter</td>
-                  <td data-title="Status">Summer</td>
-                  <td data-title="Bill">Summer</td>
-                  <td data-title="Usage">Rainy</td>
-                  <td data-title="Edit" class=""><i class="bi bi-pencil-square pe-3"></i><i class="bi bi-trash pe-3"></i><i class="bi bi-plus-circle-fill pe-3"></i></td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="table-responsive">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12"></div>
+              <div id="no-table">
+                <table class="col-sm-12 table">
+                  <thead class="cf">
+                    <tr>
+                      <th>No.</th>
+                      <th>Name</th>
+                      <th>Address</th>
+                      <th>Status</th>
+                      <th>Bill</th>
+                      <th>Usage</th>
+                      <th>Edit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td data-title="No.">Winter</td>
+                      <td data-title="Name">Winter</td>
+                      <td data-title="Address">Winter</td>
+                      <td data-title="Status">Summer</td>
+                      <td data-title="Bill">Summer</td>
+                      <td data-title="Usage">Rainy</td>
+                      <td data-title="Edit" class="">
+                        <i class="bi bi-pencil-square pe-3"></i
+                        ><i class="bi bi-trash pe-3"></i
+                        ><i class="bi bi-plus-circle-fill pe-3"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td data-title="No.">Winter</td>
+                      <td data-title="Name">Winter</td>
+                      <td data-title="Address">Winter</td>
+                      <td data-title="Status">Summer</td>
+                      <td data-title="Bill">Summer</td>
+                      <td data-title="Usage">Rainy</td>
+                      <td data-title="Edit" class="">
+                        <i class="bi bi-pencil-square pe-3"></i
+                        ><i class="bi bi-trash pe-3"></i
+                        ><i class="bi bi-plus-circle-fill pe-3"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td data-title="No.">Winter</td>
+                      <td data-title="Name">Winter</td>
+                      <td data-title="Address">Winter</td>
+                      <td data-title="Status">Summer</td>
+                      <td data-title="Bill">Summer</td>
+                      <td data-title="Usage">Rainy</td>
+                      <td data-title="Edit" class="">
+                        <i class="bi bi-pencil-square pe-3"></i
+                        ><i class="bi bi-trash pe-3"></i
+                        ><i class="bi bi-plus-circle-fill pe-3"></i>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td data-title="No.">Winter</td>
+                      <td data-title="Name">Winter</td>
+                      <td data-title="Address">Winter</td>
+                      <td data-title="Status">Summer</td>
+                      <td data-title="Bill">Summer</td>
+                      <td data-title="Usage">Rainy</td>
+                      <td data-title="Edit" class="">
+                        <i class="bi bi-pencil-square pe-3"></i
+                        ><i class="bi bi-trash pe-3"></i
+                        ><i class="bi bi-plus-circle-fill pe-3"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-</div>
-</div>
+  </div>
 </div>
