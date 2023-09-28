@@ -19,6 +19,7 @@ import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { ChartComponent } from './chart/chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { CircleChartComponent } from './circle-chart/circle-chart.component';
+import { DeviceCardComponent } from './device-card/device-card.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,6 +34,7 @@ import { CircleChartComponent } from './circle-chart/circle-chart.component';
     //MapComponent,
     ChartComponent,
     CircleChartComponent,
+    DeviceCardComponent,
     
   ],
   imports: [

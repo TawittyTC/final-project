@@ -9,6 +9,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { ChartComponent } from 'ng-apexcharts';
 import { CircleChartComponent } from "./circle-chart/circle-chart.component";
+import { DeviceCardComponent } from './device-card/device-card.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -20,6 +22,7 @@ const routes: Routes = [
   { path: '**',component: HomeComponent },
   { path: 'chart-component',component: ChartComponent },
   { path: 'circle-component',component:CircleChartComponent},
+  { path: 'dashboard-component/:id', component: DeviceCardComponent },
 ];
 
 @NgModule({
