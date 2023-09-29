@@ -1,12 +1,14 @@
 <div class="container">
   <div class="row">
-    <div class="col-mb-4" *ngFor="let deviceId of deviceIds">
-      <a class="nav-link" [routerLink]="'/dashboard-component/' + deviceId">
-        <div class="col-12 bg-white mb-5 p-4 rounded-5 shadow-sm">
+    <div class="col-md-4" *ngFor="let device_id of device_id">
+      <!-- link -->
+      <a class="nav-link" [routerLink]="['/dashboard-component']" [state]="{ device_id: device_id }">
+        <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
           <div>
             <img src="/assets/img/img1.jpg" class="card-img-top rounded-4" alt="..." />
           </div>
-          <div class="h1">test{{ deviceId }}</div>
+          <div class="h1">test{{ device_id }}</div>
+          <!-- details -->
           <div>
             test123 Lorem ipsum dolor sit, amet consectetur adipisicing elit.
             Quos reprehenderit consectetur totam perspiciatis, id eius maiores
