@@ -20,6 +20,7 @@ import { ChartComponent } from './chart/chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { CircleChartComponent } from './circle-chart/circle-chart.component';
 import { DeviceCardComponent } from './device-card/device-card.component';
+import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,9 +36,10 @@ import { DeviceCardComponent } from './device-card/device-card.component';
     ChartComponent,
     CircleChartComponent,
     DeviceCardComponent,
-    
+
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     NgbModule,

@@ -1,19 +1,20 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-4" *ngFor="let device_id of device_id">
+    <div class="col-md-4" *ngFor="let deviceId of device_id">
       <!-- link -->
-      <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }" class="text-decoration-none">
+      <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: deviceId }" class="text-decoration-none">
         <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
           <div>
             <img src="/assets/img/img1.jpg" class="card-img-top rounded-4" alt="..." />
           </div>
-          <div class="h1 text-dark">test{{ device_id }}</div> <!-- เพิ่มคลาส "text-dark" ที่นี่ -->
+          <div>Device ID: {{ deviceId }}</div>
+
           <!-- details -->
-          <div class="text-dark"> <!-- เพิ่มคลาส "text-dark" ที่นี่ -->
-            test123 Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-            Quos reprehenderit consectetur totam perspiciatis, id eius maiores
-            at, explicabo earum eaque, corporis sequi quibusdam laborum alias
-            eligendi veritatis ex! Sapiente, labore?
+          <div class="text-dark">
+            <p>Voltage: {{ latestDeviceData[deviceId]?.voltage }}</p>
+            <p>Current: {{ latestDeviceData[deviceId]?.current }}</p>
+            <p>Power: {{ latestDeviceData[deviceId]?.power }}</p>
+            <!-- แสดงข้อมูลอื่นๆ ตามที่คุณต้องการ -->
           </div>
         </div>
       </a>
