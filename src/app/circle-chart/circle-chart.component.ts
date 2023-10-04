@@ -77,28 +77,8 @@ export class CircleChartComponent implements OnInit, OnDestroy { // เพิ่
   fetchData() {
     const apiUrl = `http://localhost:3000/latestData?device_id=${this.device_id}`;
 
-    console.log(this.device_id);
-    console.log(apiUrl);
-
     this.http.get<any[]>(apiUrl).subscribe(data => {
       console.log(data);
-
-      if (data && data.length > 0) {
-        const maxId = Math.max(...data.map(item => item.id));
-        const maxIdData = data.find(item => item.id === maxId);
-
-        if (maxIdData && maxIdData.energy) {
-          this.energy = maxIdData.energy;
-          this.updateChart();
-        }
-      }
     });
-  }
-
-  updateChart() {
-    if (this.chart && this.chart.updateOptions) {
-      this.chartOptions.series = [this.energy];
-      this.chart.updateOptions(this.chartOptions);
-    }
   }
 }
