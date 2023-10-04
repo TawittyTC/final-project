@@ -1,4 +1,7 @@
-import { Component, ViewChild } from "@angular/core";
+import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { interval, Subscription } from 'rxjs'; // เพิ่ม Subscription
+import { ActivatedRoute } from '@angular/router';
 
 import {
   ApexNonAxisChartSeries,
@@ -14,87 +17,88 @@ import {
   templateUrl: './circle-chart.component.html',
   styleUrls: ['./circle-chart.component.scss']
 })
-export class CircleChartComponent {
-chartOptions: any;
-constructor() {
-  this.chartOptions = {
-    series: [75],
-    chart: {
-      height: 350,
-      type: "radialBar",
-      toolbar: {
-        show: true
-      }
-    },
-    plotOptions: {
-      radialBar: {
-        startAngle: -135,
-        endAngle: 225,
-        hollow: {
-          margin: 0,
-          size: "70%",
-          background: "#fff",
-          image: undefined,
-          position: "front",
-          dropShadow: {
-            enabled: true,
-            top: 3,
-            left: 0,
-            blur: 4,
-            opacity: 0.24
-          }
-        },
-        track: {
-          background: "#fff",
-          strokeWidth: "67%",
-          margin: 0, // margin is in pixels
-          dropShadow: {
-            enabled: true,
-            top: -3,
-            left: 0,
-            blur: 4,
-            opacity: 0.35
-          }
-        },
+export class CircleChartComponent implements OnInit, OnDestroy { // เพิ่ม OnDestroy
+  @ViewChild("chart") chart!: ChartComponent;
 
-        dataLabels: {
-          show: true,
-          name: {
-            offsetY: -10,
-            show: true,
-            color: "#888",
-            fontSize: "17px"
+  device_id: string = '';
+  chartOptions: any;
+  energy: number = 0;
+  dataSubscription: Subscription | undefined; // เพิ่ม Subscription
+
+  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
+
+    this.chartOptions = {
+      series: [this.energy],
+      chart: {
+        height: 350,
+        type: "radialBar",
+        toolbar: {
+          show: true
+        }
+      },
+      plotOptions: {
+        radialBar: {
+          hollow: {
+            size: "70%",
           },
-          value: {
-            formatter: function(val: { toString: () => string; }) {
-              return parseInt(val.toString(), 10).toString();
+          dataLabels: {
+            name: {
+              show: false,
             },
-            color: "#111",
-            fontSize: "36px",
-            show: true
-          }
+            value: {
+              show: true,
+              fontSize: "36px",
+              formatter: function (val: number) {
+                return val.toFixed(2) + "%";
+              },
+            },
+          },
+        },
+      },
+      labels: ['Energy'],
+    };
+
+    this.fetchData();
+
+    this.dataSubscription = interval(1000).subscribe(() => {
+      this.fetchData();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.dataSubscription) {
+      this.dataSubscription.unsubscribe(); // เลิกรับข้อมูลเมื่อออกจากหน้า
+    }
+  }
+
+  fetchData() {
+    const apiUrl = `http://localhost:3000/latestData?device_id=${this.device_id}`;
+
+    console.log(this.device_id);
+    console.log(apiUrl);
+
+    this.http.get<any[]>(apiUrl).subscribe(data => {
+      console.log(data);
+
+      if (data && data.length > 0) {
+        const maxId = Math.max(...data.map(item => item.id));
+        const maxIdData = data.find(item => item.id === maxId);
+
+        if (maxIdData && maxIdData.energy) {
+          this.energy = maxIdData.energy;
+          this.updateChart();
         }
       }
-    },
-    fill: {
-      type: "gradient",
-      gradient: {
-        shade: "dark",
-        type: "horizontal",
-        shadeIntensity: 0.5,
-        gradientToColors: ["#ABE5A1"],
-        inverseColors: true,
-        opacityFrom: 1,
-        opacityTo: 1,
-        stops: [0, 100]
-      }
-    },
-    stroke: {
-      lineCap: "round"
-    },
-    labels: ["Percent"]
-  };
-}
-}
+    });
+  }
 
-
+  updateChart() {
+    if (this.chart && this.chart.updateOptions) {
+      this.chartOptions.series = [this.energy];
+      this.chart.updateOptions(this.chartOptions);
+    }
+  }
+}

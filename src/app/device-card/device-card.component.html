@@ -1,4 +1,3 @@
-<!-- ปกติแต่ยังไม่ได้ update ตัวเลข auto -->
 <div class="container">
   <div class="row">
     <div class="col-md-4" *ngFor="let device_id of device_id">
@@ -15,6 +14,7 @@
             <p>Voltage: {{ latestDeviceData[device_id]?.voltage }}</p>
             <p>Current: {{ latestDeviceData[device_id]?.current }}</p>
             <p>Power: {{ latestDeviceData[device_id]?.power }}</p>
+            <p>Energy: {{ latestDeviceData[device_id]?.energy }}</p>
             <!-- แสดงข้อมูลอื่นๆ ตามที่คุณต้องการ -->
           </div>
         </div>
