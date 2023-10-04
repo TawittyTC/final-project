@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import {interval } from 'rxjs'
 
 @Component({
   selector: 'app-device-card',
@@ -14,6 +15,10 @@ export class DeviceCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchData();
+
+    interval(1000).subscribe(()=>{
+      this.fetchData();
+    });
   }
 
   fetchData() {
