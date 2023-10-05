@@ -1,4 +1,4 @@
-<div id="card">
+<!-- <div id="card">
   <div id="chart">
     <apx-chart
       [series]="chartOptions.series"
@@ -11,4 +11,13 @@
   </div>
   <p class="fs-5 text-muted">Device ID: {{ device_id }}</p>
 
-</div>
+</div> -->
+
+<apx-chart
+  #chart
+  [series]="chartOptions.series"
+  [chart]="chartOptions.chart"
+  [plotOptions]="chartOptions.plotOptions"
+  [labels]="chartOptions.labels"
+>
+</apx-chart>

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { interval, Subscription } from 'rxjs'; // เพิ่ม Subscription
+import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 
 import {
@@ -17,13 +17,13 @@ import {
   templateUrl: './circle-chart.component.html',
   styleUrls: ['./circle-chart.component.scss']
 })
-export class CircleChartComponent implements OnInit, OnDestroy { // เพิ่ม OnDestroy
+export class CircleChartComponent implements OnInit, OnDestroy {
   @ViewChild("chart") chart!: ChartComponent;
 
   device_id: string = '';
   chartOptions: any;
   energy: number = 0;
-  dataSubscription: Subscription | undefined; // เพิ่ม Subscription
+  dataSubscription: Subscription | undefined;
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
@@ -31,7 +31,7 @@ export class CircleChartComponent implements OnInit, OnDestroy { // เพิ่
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
 
     this.chartOptions = {
-      series: [this.energy],
+      series: [this.energy], // ใช้ this.energy ใน series เพื่อแสดงข้อมูลได้
       chart: {
         height: 350,
         type: "radialBar",
@@ -70,15 +70,32 @@ export class CircleChartComponent implements OnInit, OnDestroy { // เพิ่
 
   ngOnDestroy(): void {
     if (this.dataSubscription) {
-      this.dataSubscription.unsubscribe(); // เลิกรับข้อมูลเมื่อออกจากหน้า
+      this.dataSubscription.unsubscribe();
     }
   }
 
   fetchData() {
     const apiUrl = `http://localhost:3000/latestData?device_id=${this.device_id}`;
 
-    this.http.get<any[]>(apiUrl).subscribe(data => {
+    this.http.get(apiUrl).subscribe((data: any) => {
+      console.log(apiUrl);
       console.log(data);
+
+      if (data) {
+        this.energy = data.energy; // รับข้อมูล energy จาก API
+        console.log(this.energy);
+
+        // อัพเดตข้อมูลในกราฟ
+        this.chart.updateOptions({
+          series: [this.energy],
+        });
+
+        console.log("Updated energy:", this.energy);
+      }
     });
   }
+
+
+
+
 }
