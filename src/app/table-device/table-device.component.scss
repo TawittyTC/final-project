@@ -1,0 +1,39 @@
+@media only screen and (max-width: 800px) {
+  #no-table table, #no-table thead, #no-table tbody, #no-table th, #no-table td, #no-table tr {
+    display: block;
+  }
+  #no-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+  #no-table tr {
+    border: 3px solid #ccc;
+    border-radius: 10px;
+  }
+  #no-table td {
+    border: none;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    padding-left: 50%;
+    white-space: normal;
+    text-align:left;
+  }
+  #no-table td:before {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    width: 45%;
+    padding-right: 10px;
+    white-space: nowrap;
+    text-align:left;
+    font-weight: bold;
+  }
+  #no-table td:before {
+    content: attr(data-title);
+  }
+}
+
+th{
+  border-bottom: 5px solid darkcyan;
+}
