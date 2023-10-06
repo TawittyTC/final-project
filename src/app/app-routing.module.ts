@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { DeviceComponent } from './device/device.component';
@@ -10,7 +10,7 @@ import { HomeComponent } from './home/home.component';
 import { ChartComponent } from 'ng-apexcharts';
 import { CircleChartComponent } from "./circle-chart/circle-chart.component";
 import { DeviceCardComponent } from './device-card/device-card.component';
-
+import { TableDeviceComponent } from './table-device/table-device.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -23,6 +23,7 @@ const routes: Routes = [
   { path: 'chart-component',component: ChartComponent },
   { path: 'circle-component',component:CircleChartComponent},
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
+  { path: 'tabledevice-component', component:TableDeviceComponent},
 ];
 
 @NgModule({

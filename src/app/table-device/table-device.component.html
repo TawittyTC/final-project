@@ -1,0 +1,98 @@
+<h2>Data</h2>
+
+<!-- แสดงปุ่มเพิ่ม -->
+<button (click)="enableAddMode()" class="btn btn-success">เพิ่มข้อมูล</button>
+
+<!-- เพิ่มข้อมูล -->
+<div *ngIf="addMode" class="container mt-3">
+  <h3>เพิ่มข้อมูลใหม่</h3>
+  <form (submit)="createNewData(newData)">
+    <div class="form-group">
+      <label for="new_ESP_id">ESP ID:</label>
+      <input type="text" class="form-control" id="new_ESP_id" [(ngModel)]="newData.ESP_id" name="new_ESP_id" required>
+    </div>
+    <div class="form-group">
+      <label for="new_device_name">Device Name:</label>
+      <input type="text" class="form-control" id="new_device_name" [(ngModel)]="newData.device_name" name="new_device_name" required>
+    </div>
+    <div class="form-group">
+      <label for="new_device_detail">Device Detail:</label>
+      <input type="text" class="form-control" id="new_device_detail" [(ngModel)]="newData.device_detail" name="new_device_detail" required>
+    </div>
+    <div class="form-group">
+      <label for="new_device_location">Device Location:</label>
+      <input type="text" class="form-control" id="new_device_location" [(ngModel)]="newData.device_location" name="new_device_location" required>
+    </div>
+    <button type="submit" class="btn btn-success">เพิ่ม</button>
+    <button (click)="cancelAddMode()" class="btn btn-secondary">ยกเลิก</button>
+  </form>
+</div>
+
+
+<!-- แสดงข้อมูล -->
+<div *ngIf="!editMode">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Device ID</th>
+        <th>Device Name</th>
+        <th>Device Detail</th>
+        <th>Device location</th>
+        <th>Created At</th>
+        <th>Updated At</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data">
+        <td>{{ item.ESP_id }}</td>
+        <td>{{ item.device_name }}</td>
+        <td>{{ item.device_detail }}</td>
+        <td>{{ item.device_location }}</td>
+        <td>{{ item.created_timestamp | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td>{{ item.modified_timestamp | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+        <td>
+          <button (click)="enableEditMode(item)" class="btn btn-primary">แก้ไข</button>
+          <button (click)="deleteData(item.ESP_id)" class="btn btn-danger">ลบ</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<!-- แก้ไขข้อมูล -->
+<div *ngIf="editMode">
+  <form (submit)="saveData()">
+    <!-- <div class="form-group">
+      <label for="device_id">Device ID:</label>
+      <input type="text" class="form-control" id="device_id" [(ngModel)]="editedData.device_id" name="device_id">
+    </div> -->
+    <div class="form-group">
+      <label for="ESP_id">ESP_id:</label>
+      <input type="text" class="form-control" id="ESP_id" [(ngModel)]="editedData.ESP_id" name="ESP_id">
+    </div>
+    <div class="form-group">
+      <label for="device_name">device_name:</label>
+      <input type="text" class="form-control" id="device_name" [(ngModel)]="editedData.device_name" name="device_name">
+    </div>
+    <div class="form-group">
+      <label for="device_detail">device_detail:</label>
+      <input type="text" class="form-control" id="device_detail" [(ngModel)]="editedData.device_detail" name="device_detail">
+    </div>
+    <div class="form-group">
+      <label for="device_location">device_location:</label>
+      <input type="text" class="form-control" id="device_location" [(ngModel)]="editedData.device_location" name="device_location">
+    </div>
+    <button type="submit" class="btn btn-success">บันทึก</button>
+    <button (click)="cancelEditMode()" class="btn btn-secondary">ยกเลิก</button>
+  </form>
+</div>
+
+
+
+
+
+
+
+
