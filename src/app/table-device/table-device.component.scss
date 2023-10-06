@@ -1,11 +1,13 @@
 @media only screen and (max-width: 800px) {
   #no-table table, #no-table thead, #no-table tbody, #no-table th, #no-table td, #no-table tr {
     display: block;
+    margin-bottom: 0.5rem;
   }
   #no-table thead tr {
     position: absolute;
     top: -9999px;
     left: -9999px;
+
   }
   #no-table tr {
     border: 3px solid #ccc;
