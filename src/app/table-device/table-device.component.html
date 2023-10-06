@@ -4,7 +4,7 @@
 <button (click)="enableAddMode()" class="btn btn-success">เพิ่มข้อมูล</button>
 
 <!-- เพิ่มข้อมูล -->
-<div *ngIf="addMode">
+<div *ngIf="addMode" class="container mt-3">
   <h3>เพิ่มข้อมูลใหม่</h3>
   <form (submit)="createNewData(newData)">
     <div class="form-group">
@@ -27,6 +27,7 @@
     <button (click)="cancelAddMode()" class="btn btn-secondary">ยกเลิก</button>
   </form>
 </div>
+
 
 <!-- แสดงข้อมูล -->
 <div *ngIf="!editMode">
@@ -87,3 +88,11 @@
     <button (click)="cancelEditMode()" class="btn btn-secondary">ยกเลิก</button>
   </form>
 </div>
+
+
+
+
+
+
+
+
