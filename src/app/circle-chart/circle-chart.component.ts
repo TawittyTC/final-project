@@ -63,7 +63,7 @@ export class CircleChartComponent implements OnInit, OnDestroy {
 
     this.fetchData();
 
-    this.dataSubscription = interval(1000).subscribe(() => {
+    this.dataSubscription = interval(5000).subscribe(() => {
       this.fetchData();
     });
   }
