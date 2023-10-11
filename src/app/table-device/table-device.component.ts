@@ -37,12 +37,14 @@ export class TableDeviceComponent implements OnInit {
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
+      console.log(response);
     });
   }
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
     this.apiService.createData(newData).subscribe(() => {
+
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -55,20 +57,20 @@ export class TableDeviceComponent implements OnInit {
   }
 
   // อัปเดตข้อมูล
-  updateData(ESP_id: any, updatedData: any) {
-    this.apiService.updateData(ESP_id, updatedData).subscribe(() => {
+  updateData(device_id: any, updatedData: any) {
+    this.apiService.updateData(device_id, updatedData).subscribe(() => {
       this.loadData();
     });
   }
 
   // ลบข้อมูล
-  deleteData(ESP_id: string) {
-    console.log('ESP_id:', ESP_id); // ตรวจสอบค่า ESP_id ในคอลัมน์
+  deleteData(device_id: string) {
+    console.log('device_id:', device_id); // ตรวจสอบค่า device_id ในคอลัมน์
 
     // ใช้ confirm() เพื่อขอยืนยันการลบข้อมูล
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
-      this.apiService.deleteData(ESP_id).subscribe(() => {
+      this.apiService.deleteData(device_id).subscribe(() => {
         this.loadData();
       });
     }
@@ -82,7 +84,7 @@ export class TableDeviceComponent implements OnInit {
 
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
-    this.apiService.updateData(this.editedData.ESP_id, this.editedData).subscribe(
+    this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
       () => {
         this.editMode = false;
         this.loadData();

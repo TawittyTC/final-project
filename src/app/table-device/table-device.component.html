@@ -10,13 +10,13 @@
   <h3>เพิ่มข้อมูลใหม่</h3>
   <form (submit)="createNewData(newData)">
     <div class="form-group">
-      <label for="new_ESP_id">ESP ID:</label>
+      <label for="new_device_id">ESP ID:</label>
       <input
         type="text"
         class="form-control"
-        id="new_ESP_id"
-        [(ngModel)]="newData.ESP_id"
-        name="new_ESP_id"
+        id="new_device_id"
+        [(ngModel)]="newData.device_id"
+        name="new_device_id"
         required
       />
     </div>
@@ -75,7 +75,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of data">
-          <td data-title="Device ID">{{ item.ESP_id }}</td>
+          <td data-title="Device ID">{{ item.device_id }}</td>
           <td data-title="Device Name">{{ item.device_name }}</td>
           <td data-title="Device Detail">{{ item.device_detail }}</td>
           <td data-title="Device Location">{{ item.device_location }}</td>
@@ -89,7 +89,7 @@
             <button (click)="enableEditMode(item)" class="btn btn-primary">
               แก้ไข
             </button>
-            <button (click)="deleteData(item.ESP_id)" class="btn btn-danger">
+            <button (click)="deleteData(item.device_id)" class="btn btn-danger">
               ลบ
             </button>
           </td>
@@ -107,8 +107,8 @@
       <input type="text" class="form-control" id="device_id" [(ngModel)]="editedData.device_id" name="device_id">
     </div> -->
     <div class="form-group h3">
-      <label for="ESP_id">ESP ID :</label>
-      <span id="ESP_id"> {{editedData.ESP_id}}</span>
+      <label for="device_id">ESP ID :</label>
+      <span id="device_id"> {{editedData.device_id}}</span>
     </div>
     <div class="form-group">
       <label for="device_name">device_name:</label>

@@ -29,10 +29,10 @@ export class ApiService {
   }
 
   // อัปเดตข้อมูลผ่าน API
-  updateData(ESP_id: any, data: any): Observable<any> {
+  updateData(device_id: any, data: any): Observable<any> {
     const headers = { 'content-type': 'application/json' };
     const body = JSON.stringify(data);
-    const url = `${this.apiUrl}/${ESP_id}`;
+    const url = `${this.apiUrl}/${device_id}`;
     return this.http.put<any>(url, data).pipe(
       catchError((error) => {
         console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
@@ -42,8 +42,8 @@ export class ApiService {
   }
 
   // ลบข้อมูล
-  deleteData(ESP_id: any): Observable<any> {
-    const url = `${this.apiUrl}/${ESP_id}`;
+  deleteData(device_id: any): Observable<any> {
+    const url = `${this.apiUrl}/${device_id}`;
     return this.http.delete(url).pipe(
       catchError((error) => {
         console.error('เกิดข้อผิดพลาดในการลบข้อมูล:', error);

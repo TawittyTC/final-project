@@ -30,7 +30,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    this.http.get<any[]>('http://localhost:3000/api/data').subscribe(data => {
+    this.http.get<any[]>('http://localhost:3000/devices').subscribe(data => {
       this.device_id = [...new Set(data.map(item => item.device_id))];
 
       this.latestDeviceData = {};

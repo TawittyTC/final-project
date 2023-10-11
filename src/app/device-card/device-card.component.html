@@ -11,10 +11,11 @@
 
           <!-- details -->
           <div class="text-dark">
-            <p>Voltage: {{ latestDeviceData[device_id]?.voltage }}</p>
-            <p>Current: {{ latestDeviceData[device_id]?.current }}</p>
-            <p>Power: {{ latestDeviceData[device_id]?.power }}</p>
-            <p>Energy: {{ latestDeviceData[device_id]?.energy }}</p>
+            <p>Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
+            <p>Location: {{ latestDeviceData[device_id]?.device_location }}</p>
+            <p>Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
+            <p>Type: {{ latestDeviceData[device_id]?.device_type }}</p>
+            <p>Group: {{ latestDeviceData[device_id]?.group_id }}</p>
             <!-- แสดงข้อมูลอื่นๆ ตามที่คุณต้องการ -->
           </div>
         </div>
