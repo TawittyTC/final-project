@@ -2,9 +2,67 @@
   <header class="pb-3">
     <p class="display-5 fw-bold h1">Device</p>
   </header>
+<!-- แสดงปุ่มเพิ่ม -->
+<button (click)="enableAddMode()" class="btn mb-3 col-2">
+  <i class="bi bi-plus-circle-fill text-primary" style="font-size: 30px"></i>
+</button>
 
+<!-- เพิ่มข้อมูล -->
+<div *ngIf="addMode" class="container mt-3">
+  <h3>เพิ่มข้อมูลใหม่</h3>
+  <form (submit)="createNewData(newData)">
+    <div class="form-group">
+      <label for="new_device_id">ESP ID:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="new_device_id"
+        [(ngModel)]="newData.device_id"
+        name="new_device_id"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="new_device_name">Device Name:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="new_device_name"
+        [(ngModel)]="newData.device_name"
+        name="new_device_name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="new_device_detail">Device Detail:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="new_device_detail"
+        [(ngModel)]="newData.device_detail"
+        name="new_device_detail"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="new_device_location">Device Location:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="new_device_location"
+        [(ngModel)]="newData.device_location"
+        name="new_device_location"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-success">เพิ่ม</button>
+    <button (click)="cancelAddMode()" class="btn btn-secondary">ยกเลิก</button>
+  </form>
+</div>
+
+</div>
   <div class="row">
     <app-device-card></app-device-card>
     <app-table-device></app-table-device>
   </div>
-</div>
+

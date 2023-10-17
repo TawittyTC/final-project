@@ -51,10 +51,10 @@ export class TableDeviceComponent implements OnInit {
     });
   }
 
-  // รีเฟรชข้อมูล
-  refreshData(): void {
-    this.loadData();
-  }
+  // // รีเฟรชข้อมูล
+  // refreshData(): void {
+  //   this.loadData();
+  // }
 
   // อัปเดตข้อมูล
   updateData(device_id: any, updatedData: any) {
