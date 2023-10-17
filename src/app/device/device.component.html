@@ -56,6 +56,22 @@
         required
       />
     </div>
+    <div class="form-group">
+      <label for="new_device_type">Device Type:</label>
+      <select class="form-control" id="new_device_type" [(ngModel)]="newData.device_type" name="new_device_type" required>
+        <option value="1">ESP</option>
+        <option value="2">Tuya</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="new_group_id">Group:</label>
+      <select class="form-control" id="new_device_group" [(ngModel)]="newData.device_group" name="new_device_group" required>
+        <option value="1">A</option>
+        <option value="2">B</option>
+      </select>
+    </div>
+
     <button type="submit" class="btn btn-success">เพิ่ม</button>
     <button (click)="cancelAddMode()" class="btn btn-secondary">ยกเลิก</button>
   </form>
