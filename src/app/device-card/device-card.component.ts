@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
+import { ApiService } from 'src/app/api.service';
 
 @Component({
   selector: 'app-device-card',
@@ -8,35 +9,42 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./device-card.component.scss']
 })
 export class DeviceCardComponent implements OnInit, OnDestroy {
-  device_id: string[] = [];
+  device_id: [] = [];
   latestDeviceData: any = {};
-
+  editMode = false;
+  editedData: any = {};
+  newData: any = {};
+  addMode = false;
   private dataSubscription: Subscription | undefined;
+  data: any;
 
-  constructor(private http: HttpClient) { }
+  constructor(private apiService: ApiService) { }
 
-  ngOnInit(): void {
-    this.fetchData();
+  ngOnInit() {
+    this.loadData();
 
-    this.dataSubscription = interval(1000).subscribe(() => {
-      this.fetchData();
+    // ใช้ interval สำหรับโหลดข้อมูลอัปเดตทุก 2 วินาที
+    this.dataSubscription = interval(2000).subscribe(() => {
+      this.loadData();
     });
   }
 
-  ngOnDestroy(): void {
+  ngOnDestroy() {
+    // ยกเลิกการสมัครสมาชิกเมื่อคอมโพนนิ้งถูกทำลาย
     if (this.dataSubscription) {
-      this.dataSubscription.unsubscribe(); // เลิกรับข้อมูลเมื่อออกจากหน้า
+      this.dataSubscription.unsubscribe();
     }
   }
 
-  fetchData() {
-    this.http.get<any[]>('http://localhost:3000/devices').subscribe(data => {
-      this.device_id = [...new Set(data.map(item => item.device_id))];
+  loadData() {
+    this.apiService.getAllData().subscribe((response: any) => {
+      this.data = response;
+      this.device_id = this.data.map((item: { device_id: any; }) => item.device_id.toString());
 
       this.latestDeviceData = {};
       this.device_id.forEach(id => {
-        const filteredData = data.filter(item => item.device_id === id);
-        const latestEntry = filteredData.reduce((prev, current) => (prev.id > current.id) ? prev : current);
+        const filteredData = this.data.filter((item: { device_id: string; }) => item.device_id === id);
+        const latestEntry = filteredData.reduce((prev: { id: number; }, current: { id: number; }) => (prev.id > current.id) ? prev : current);
         this.latestDeviceData[id] = latestEntry;
       });
     });
