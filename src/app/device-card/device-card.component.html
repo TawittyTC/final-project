@@ -30,14 +30,6 @@
 
 <!-- ปุ่มลบข้อมูล -->
 <i (click)="deleteData(deviceData.device_id)" class="bi bi-trash" style="font-size: 26px;"></i>
-
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
 <!-- แก้ไขข้อมูล -->
 <div *ngIf="editMode">
   <form (submit)="saveData()">
@@ -79,4 +71,13 @@
     <button (click)="cancelEditMode()" class="btn btn-secondary">ยกเลิก</button>
   </form>
 </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
 
