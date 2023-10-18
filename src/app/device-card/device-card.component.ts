@@ -9,6 +9,7 @@ import { ApiService } from 'src/app/api.service';
   styleUrls: ['./device-card.component.scss']
 })
 export class DeviceCardComponent implements OnInit, OnDestroy {
+  @Input() deviceData: any; // รับข้อมูลอุปกรณ์จากภายนอก
   device_id: [] = [];
   latestDeviceData: any = {};
   editMode = false;
@@ -67,31 +68,34 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ลบข้อมูล
+  //ลบข้อมูล
   deleteData(device_id: string) {
-    console.log('device_id:', device_id); // ตรวจสอบค่า device_id ในคอลัมน์
+    console.log('device_id:', device_id); // Check the device_id value
 
-    // ใช้ confirm() เพื่อขอยืนยันการลบข้อมูล
+    // Use confirm() to request confirmation for data deletion
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
       this.apiService.deleteData(device_id).subscribe(() => {
-        this.loadData();
+        // You can optionally handle the result of the deletion here
+        // this.loadData();
       });
     }
   }
 
+
   // เริ่มโหมดแก้ไขข้อมูล
-  enableEditMode(item: any) {
+  enableEditMode(device_id: string) {
     this.editMode = true;
-    this.editedData = { ...item };
+    this.editedData = { ...this.latestDeviceData[device_id] };
   }
+
 
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
       () => {
         this.editMode = false;
-        this.loadData();
+        // ไม่ต้องโหลดข้อมูลใหม่เนื่องจากคุณแก้ไขข้อมูลในส่วนเดียวกัน
         this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
       },
       (error) => {

@@ -19,10 +19,19 @@
         </div>
 
         <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }">
-            <i class="bi bi-box-arrow-in-right me-3" style="font-size: 26px;"></i>
+            <i class="bi bi-box-arrow-in-right me-3" style="font-size: 30px;"></i>
         </a>
+       <!-- ใน HTML ของ DeviceCardComponent -->
+<!-- ปุ่มแก้ไขข้อมูล -->
 
-        <i class="bi bi-trash"style="font-size: 26px;"></i>
+<button (click)="enableEditMode(device_id)" class="btn ">
+  <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+</button>
+
+<!-- ปุ่มลบข้อมูล -->
+<i (click)="deleteData(deviceData.device_id)" class="bi bi-trash" style="font-size: 26px;"></i>
+
+
       </div>
     </div>
   </div>
@@ -32,11 +41,7 @@
 <!-- แก้ไขข้อมูล -->
 <div *ngIf="editMode">
   <form (submit)="saveData()">
-    <!-- <div class="form-group">
-      <label for="device_id">Device ID:</label>
-      <input type="text" class="form-control" id="device_id" [(ngModel)]="editedData.device_id" name="device_id">
-    </div> -->
-    <div class="form-group h3">
+    <div class="form-group">
       <label for="device_id">ESP ID :</label>
       <span id="device_id"> {{ editedData.device_id }}</span>
     </div>
@@ -74,3 +79,4 @@
     <button (click)="cancelEditMode()" class="btn btn-secondary">ยกเลิก</button>
   </form>
 </div>
+
