@@ -28,8 +28,10 @@
   <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
 </button>
 
-<!-- ปุ่มลบข้อมูล -->
-<i (click)="deleteData(deviceData.device_id)" class="bi bi-trash" style="font-size: 26px;"></i>
+<button (click)="deleteData(device_id)" class="btn">
+  <i class="bi bi-trash-fill text-danger" style="font-size: 26px"></i>
+</button>
+
 <!-- แก้ไขข้อมูล -->
 <div *ngIf="editMode">
   <form (submit)="saveData()">
