@@ -2,29 +2,75 @@
   <div class="row">
     <div class="col-md-4" *ngFor="let device_id of device_id">
       <!-- link -->
-      <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }" class="text-decoration-none">
-        <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
-          <div>
-            <img src="/assets/img/img1.jpg" class="card-img-top rounded-4" alt="..." />
-          </div>
-          <div class="h3 mb-3">Device ID: {{ device_id }}</div>
-
-
-          <!-- details -->
-          <div class="text-dark">
-            <p>Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
-            <p>Location: {{ latestDeviceData[device_id]?.device_location }}</p>
-            <p>Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
-            <p>Type: {{ latestDeviceData[device_id]?.device_type }}</p>
-            <p>Group: {{ latestDeviceData[device_id]?.group_id }}</p>
-            <!-- แสดงข้อมูลอื่นๆ ตามที่คุณต้องการ -->
-          </div>
-
-          <i class="bi bi-pencil-square me-3" style="font-size: 26px;"></i>
-          <i class="bi bi-trash"style="font-size: 26px;"></i>
-
+      <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
+        <div>
+          <img src="/assets/img/img1.jpg" class="card-img-top rounded-4" alt="..." />
         </div>
-      </a>
+        <div class="h3 mb-3">Device ID: {{ device_id }}</div>
+
+        <!-- details -->
+        <div class="text-dark">
+          <p>Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
+          <p>Location: {{ latestDeviceData[device_id]?.device_location }}</p>
+          <p>Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
+          <p>Type: {{ latestDeviceData[device_id]?.device_type }}</p>
+          <p>Group: {{ latestDeviceData[device_id]?.group_id }}</p>
+          <!-- แสดงข้อมูลอื่น ๆ ตามที่คุณต้องการ -->
+        </div>
+
+        <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }">
+            <i class="bi bi-box-arrow-in-right me-3" style="font-size: 26px;"></i>
+        </a>
+
+        <i class="bi bi-trash"style="font-size: 26px;"></i>
+      </div>
     </div>
   </div>
+</div>
+
+
+<!-- แก้ไขข้อมูล -->
+<div *ngIf="editMode">
+  <form (submit)="saveData()">
+    <!-- <div class="form-group">
+      <label for="device_id">Device ID:</label>
+      <input type="text" class="form-control" id="device_id" [(ngModel)]="editedData.device_id" name="device_id">
+    </div> -->
+    <div class="form-group h3">
+      <label for="device_id">ESP ID :</label>
+      <span id="device_id"> {{ editedData.device_id }}</span>
+    </div>
+    <div class="form-group">
+      <label for="device_name">device_name:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="device_name"
+        [(ngModel)]="editedData.device_name"
+        name="device_name"
+      />
+    </div>
+    <div class="form-group">
+      <label for="device_detail">device_detail:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="device_detail"
+        [(ngModel)]="editedData.device_detail"
+        name="device_detail"
+      />
+    </div>
+    <div class="form-group">
+      <label for="device_location">device_location:</label>
+      <input
+        type="text"
+        class="form-control"
+        id="device_location"
+        [(ngModel)]="editedData.device_location"
+        name="device_location"
+      />
+    </div>
+    <button type="submit" class="btn btn-success">บันทึก</button>
+    <button (click)="cancelEditMode()" class="btn btn-secondary">ยกเลิก</button>
+  </form>
 </div>
