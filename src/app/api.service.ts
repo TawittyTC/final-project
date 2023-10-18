@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { interval, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private apiUrl = 'http://localhost:3000/devices'; // URL ของ API ของ Express.js
+  private dataSubscription: Subscription | undefined;
 
   constructor(private http: HttpClient) {}
 
@@ -35,11 +37,14 @@ export class ApiService {
     const url = `${this.apiUrl}/${device_id}`;
     return this.http.put<any>(url, data).pipe(
       catchError((error) => {
-        console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+        //console.error('เกิดข้อผิดพลาดในการอัปเดตข้อมูล:', error);
+        console.error('Error Details:', error); // Log the error details
         return throwError('เกิดข้อผิดพลาดในการอัปเดตข้อมูล');
       })
     );
   }
+
+  
 
   // ลบข้อมูล
   deleteData(device_id: any): Observable<any> {

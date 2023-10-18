@@ -47,6 +47,10 @@
         <form (submit)="saveData()">
           <!-- Add your form fields here -->
           <div class="form-group">
+            <label for="device_id">Device ID:</label>
+            <input type="text" class="form-control" id="device_id" [(ngModel)]="editedData.device_id" name="device_id" readonly />
+          </div>
+          <div class="form-group">
             <label for="device_name">Device Name:</label>
             <input type="text" class="form-control" id="device_name" [(ngModel)]="editedData.device_name" name="device_name" />
           </div>
@@ -58,14 +62,48 @@
             <label for="device_location">Device Location:</label>
             <input type="text" class="form-control" id="device_location" [(ngModel)]="editedData.device_location" name="device_location" />
           </div>
+          <div class="form-group">
+            <label for="device_map">Device Map:</label>
+            <input type="text" class="form-control" id="device_map" [(ngModel)]="editedData.device_map" name="device_map" />
+          </div>
+          <div class="form-group">
+            <label for="device_type">Device Type:</label>
+            <select class="form-control" id="device_type" [(ngModel)]="editedData.device_type" name="device_type" required>
+              <option [value]="">Select Device Type</option>
+              <option value="1">ESP</option>
+              <option value="2">Tuya</option>
+            </select>
+          </div>
+          
+          <!-- Group ID -->
+          <div class="form-group">
+            <label for="group_id">Group ID:</label>
+            <select class="form-control" id="group_id" [(ngModel)]="editedData.group_id" name="group_id" required>
+              <option [value]="">Select Group ID</option>
+              <option value="1">A</option>
+              <option value="2">B</option>
+            </select>
+          </div>
+          
+        
+
+
+
+
+
+          
+          
+          
+          
           <!-- Add more fields as needed -->
-          <button type="submit" class="btn btn-success">Save</button>
+          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Save</button>
           <button (click)="cancelEditMode()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
 
 
       </div>

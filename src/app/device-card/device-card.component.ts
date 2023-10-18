@@ -1,5 +1,4 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 
@@ -19,6 +18,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   private dataSubscription: Subscription | undefined;
   data: any;
 
+  
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -99,7 +99,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
         this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
       },
       (error) => {
-        console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
+        //console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
       }
     );
   }
