@@ -116,13 +116,13 @@
 
                   <!-- Device Map -->
                   <div class="form-group">
-                    <label for="device_map">Device Map:</label>
+                    <label for="device_map_img">Device Map:</label>
                     <input
                       type="text"
                       class="form-control"
-                      id="device_map"
-                      [(ngModel)]="editedData.device_map"
-                      name="device_map"
+                      id="device_map_img"
+                      [(ngModel)]="editedData.device_map_img"
+                      name="device_map_img"
                       required
                     />
                   </div>
@@ -153,9 +153,9 @@
                       name="group_id"
                       required
                     >
-                      <option [value]="">Select Group ID</option>
-                      <option value="1">A</option>
-                      <option value="2">B</option>
+                      <option [ngValue]="null">Select Group ID</option>
+                      <option [ngValue]="1">A</option>
+                      <option [ngValue]="2">B</option>
                     </select>
                   </div>
 

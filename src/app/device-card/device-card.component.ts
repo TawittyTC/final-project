@@ -95,7 +95,9 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     this.formIsValid =
       !!this.editedData.device_name &&
       !!this.editedData.device_detail &&
-      !!this.editedData.device_location;
+      !!this.editedData.device_location&&
+      !!this.editedData.device_map_img&&
+      !!this.editedData.group_id;
     this.formIncompleteAlert = this.formIsValid ? '' : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
   }
 
