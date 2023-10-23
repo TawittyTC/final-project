@@ -21,6 +21,8 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   formIncompleteAlert: string = '';
 
 
+
+
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -134,6 +136,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   // เริ่มโหมดเพิ่มข้อมูล
   enableAddMode() {
     this.addMode = true;
+
   }
 
   // ยกเลิกโหมดเพิ่มข้อมูล

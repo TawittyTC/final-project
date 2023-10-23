@@ -121,7 +121,7 @@
                       type="text"
                       class="form-control"
                       id="device_map"
-                      [(ngModel)]="editedData.device_map"
+                      [(ngModel)]="editedData.device_map_img"
                       name="device_map"
                       required
                     />
@@ -137,7 +137,7 @@
                       name="device_type"
                       required
                     >
-                      <option [ngValue]="null">Select Device Type</option>
+                      <option [ngValue]="">Select Device Type</option>
                       <option [ngValue]="1">ESP</option>
                       <option [ngValue]="2">Tuya</option>
                     </select>
