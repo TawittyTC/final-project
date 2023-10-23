@@ -17,8 +17,10 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   addMode = false;
   private dataSubscription: Subscription | undefined;
   data: any;
+  formIsValid: boolean = false;
+  formIncompleteAlert: string = '';
 
-  
+
   constructor(private apiService: ApiService) { }
 
   ngOnInit() {
@@ -89,9 +91,28 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     this.editedData = { ...this.latestDeviceData[device_id] };
   }
 
+  checkFormValidity() {
+    this.formIsValid =
+      !!this.editedData.device_name &&
+      !!this.editedData.device_detail &&
+      !!this.editedData.device_location;
+    this.formIncompleteAlert = this.formIsValid ? '' : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
+  }
+
 
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
+    if (this.formIsValid) {
+      this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
+        () => {
+          this.editMode = false;
+          this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
+        },
+        (error) => {
+          console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
+        }
+      );
+    }
     this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
       () => {
         this.editMode = false;

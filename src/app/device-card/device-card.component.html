@@ -4,7 +4,11 @@
       <!-- link -->
       <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
         <div>
-          <img src="/assets/img/img1.jpg" class="card-img-top rounded-4" alt="..." />
+          <img
+            src="/assets/img/img1.jpg"
+            class="card-img-top rounded-4"
+            alt="..."
+          />
         </div>
         <div class="h3 mb-3">Device ID: {{ device_id }}</div>
 
@@ -18,23 +22,35 @@
           <!-- แสดงข้อมูลอื่น ๆ ตามที่คุณต้องการ -->
         </div>
 
-        <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }">
-            <i class="bi bi-box-arrow-in-right me-3" style="font-size: 30px;"></i>
+        <a
+          [routerLink]="['/dashboard-component']"
+          [queryParams]="{ device_id: device_id }"
+        >
+          <i class="bi bi-box-arrow-in-right me-3" style="font-size: 30px"></i>
         </a>
-       <!-- ใน HTML ของ DeviceCardComponent -->
-<!-- ปุ่มแก้ไขข้อมูล -->
+        <!-- ใน HTML ของ DeviceCardComponent -->
+        <!-- ปุ่มแก้ไขข้อมูล -->
 
-<button (click)="enableEditMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#editModal">
-  <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
-</button>
+        <button
+          (click)="enableEditMode(device_id)"
+          class="btn"
+          data-bs-toggle="modal"
+          data-bs-target="#editModal"
+        >
+          <i
+            class="bi bi-pencil-square text-primary"
+            style="font-size: 26px"
+          ></i>
+        </button>
 
-<button (click)="deleteData(device_id)" class="btn">
-  <i class="bi bi-trash-fill text-danger" style="font-size: 26px"></i>
-</button>
+        <button (click)="deleteData(device_id)" class="btn">
+          <i class="bi bi-trash-fill text-danger" style="font-size: 26px"></i>
+        </button>
 
-
-<!-- แก้ไขข้อมูล -->
-<!-- Modal Template -->
+        <!-- แก้ไขข้อมูล -->
+        <!-- Modal Template -->
+        <!-- Edit Device Modal -->
+<!-- Edit Device Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -43,37 +59,48 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <!-- Edit form goes here -->
-        <form (submit)="saveData()">
+        <form (submit)="saveData()" #editForm="ngForm">
           <!-- Add your form fields here -->
           <div class="form-group">
             <label for="device_id">Device ID:</label>
             <input type="text" class="form-control" id="device_id" [(ngModel)]="editedData.device_id" name="device_id" readonly />
+
           </div>
+
+          <!-- Device Name -->
           <div class="form-group">
             <label for="device_name">Device Name:</label>
-            <input type="text" class="form-control" id="device_name" [(ngModel)]="editedData.device_name" name="device_name" />
+            <input type="text" class="form-control" id="device_name" [(ngModel)]="editedData.device_name" name="device_name" required>
           </div>
+
+          <!-- Device Detail -->
           <div class="form-group">
             <label for="device_detail">Device Detail:</label>
-            <input type="text" class="form-control" id="device_detail" [(ngModel)]="editedData.device_detail" name="device_detail" />
+            <input type="text" class="form-control" id="device_detail" [(ngModel)]="editedData.device_detail" name="device_detail" required>
           </div>
+
+          <!-- Device Location -->
           <div class="form-group">
             <label for="device_location">Device Location:</label>
-            <input type="text" class="form-control" id="device_location" [(ngModel)]="editedData.device_location" name="device_location" />
+            <input type="text" class="form-control" id="device_location" [(ngModel)]="editedData.device_location" name="device_location" required>
           </div>
+
+          <!-- Device Map -->
           <div class="form-group">
             <label for="device_map">Device Map:</label>
-            <input type="text" class="form-control" id="device_map" [(ngModel)]="editedData.device_map" name="device_map" />
+            <input type="text" class="form-control" id="device_map" [(ngModel)]="editedData.device_map" name="device_map" required>
           </div>
-          <div class="form-group">
-            <label for="device_type">Device Type:</label>
-            <select class="form-control" id="device_type" [(ngModel)]="editedData.device_type" name="device_type" required>
-              <option [value]="">Select Device Type</option>
-              <option value="1">ESP</option>
-              <option value="2">Tuya</option>
-            </select>
-          </div>
+
+          <!-- Device Type -->
+<div class="form-group">
+  <label for="device_type">Device Type:</label>
+  <select class="form-control" id="device_type" [(ngModel)]="editedData.device_type" name="device_type" required>
+    <option [ngValue]="null">Select Device Type</option>
+    <option [ngValue]="1">ESP</option>
+    <option [ngValue]="2">Tuya</option>
+  </select>
+</div>
+
 
           <!-- Group ID -->
           <div class="form-group">
@@ -85,10 +112,14 @@
             </select>
           </div>
 
+          <!-- Error message -->
+          <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
+            Please fill in all required fields.
+          </div>
 
           <!-- Add more fields as needed -->
-          <button type="submit" class="btn btn-success" data-bs-dismiss="modal">Save</button>
-          <button (click)="cancelEditMode()" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success" [disabled]="editForm.invalid">Save</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelEditMode()">Cancel</button>
         </form>
       </div>
     </div>
@@ -96,13 +127,7 @@
 </div>
 
 
-
       </div>
-
     </div>
   </div>
 </div>
-
-
-
-
