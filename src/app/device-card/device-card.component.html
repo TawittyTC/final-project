@@ -10,13 +10,14 @@
           />
         </div>
         <div class="h3 mb-3">Device ID: {{ device_id }}</div>
-        <div class="text-dark">
-          <p>Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
-          <p>Location: {{ latestDeviceData[device_id]?.device_location }}</p>
-          <p>Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
-          <p>Type: {{ latestDeviceData[device_id]?.device_type }}</p>
-          <p>Group: {{ latestDeviceData[device_id]?.group_id }}</p>
+        <div class="text-dark mb-2" style="margin: -10px 0;">
+          <p style="margin: 1px 0;">Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
+          <p style="margin: 1px 0;">Location: {{ latestDeviceData[device_id]?.device_location }}</p>
+          <p style="margin: 1px 0;">Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
+          <p style="margin: 1px 0;">Type: {{ latestDeviceData[device_id]?.device_type }}</p>
+          <p style="margin: 1px 0;">Group: {{ latestDeviceData[device_id]?.group_id }}</p>
         </div>
+
         <div class="bg-light rounded-5 d-flex justify-content-between">
           <div class="d-flex">
             <button class="btn me-2"
