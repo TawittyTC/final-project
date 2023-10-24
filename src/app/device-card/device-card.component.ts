@@ -33,9 +33,14 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   }
 
   onUpload() {
-    if (this.selectedFile) {
+    if (this.selectedFile && this.currentDeviceId) {
       const formData = new FormData();
-      formData.append('file', this.selectedFile, this.selectedFile.name);
+
+      // Change the file name to the currentDeviceId
+      const fileName = `${this.currentDeviceId}.png`;
+
+      formData.append('file', new File([this.selectedFile], fileName));
+
       this.http.post('http://localhost:3000/upload', formData).subscribe(
         (response) => {
           console.log('File uploaded successfully');
@@ -46,6 +51,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       );
     }
   }
+
 
 
   ngOnInit() {
@@ -113,8 +119,10 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   // เริ่มโหมดแก้ไขข้อมูล
   enableEditMode(device_id: string) {
     this.editMode = true;
+    this.currentDeviceId = device_id; // Set the currentDeviceId when entering edit mode
     this.editedData = { ...this.latestDeviceData[device_id] };
   }
+
 
   checkFormValidity() {
     this.formIsValid =

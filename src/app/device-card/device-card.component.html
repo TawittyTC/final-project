@@ -1,6 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-12 col-md-4 col-xl-3" *ngFor="let device_id of device_id">
+    <div
+      class="col-sm-12 col-md-4 col-xl-3"
+      *ngFor="let device_id of device_id"
+    >
       <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
         <div>
           <img
@@ -26,38 +29,36 @@
         </div>
 
         <div class="bg-light rounded-5">
+          <button
+            class="btn me-2"
+            [routerLink]="['/dashboard-component']"
+            [queryParams]="{ device_id: device_id }"
+          >
+            <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
+          </button>
+          <button
+            (click)="enableEditMode(device_id)"
+            class="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#editModal"
+          >
+            <i
+              class="bi bi-pencil-square text-primary"
+              style="font-size: 26px"
+            ></i>
+          </button>
+          <button
+            class="btn"
+            (click)="setCurrentDeviceId(device_id)"
+            data-bs-toggle="modal"
+            data-bs-target="#mapModal"
+          >
+            <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
+          </button>
 
-            <button
-              class="btn me-2"
-              [routerLink]="['/dashboard-component']"
-              [queryParams]="{ device_id: device_id }"
-            >
-              <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
-            </button>
-            <button
-              (click)="enableEditMode(device_id)"
-              class="btn"
-              data-bs-toggle="modal"
-              data-bs-target="#editModal"
-            >
-              <i
-                class="bi bi-pencil-square text-primary"
-                style="font-size: 26px"
-              ></i>
-            </button>
-            <button
-              class="btn"
-              (click)="setCurrentDeviceId(device_id)"
-              data-bs-toggle="modal"
-              data-bs-target="#mapModal"
-            >
-              <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
-            </button>
-
-            <button (click)="deleteData(device_id)" class="btn">
-              <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
-            </button>
-
+          <button (click)="deleteData(device_id)" class="btn">
+            <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
+          </button>
         </div>
 
         <!-- แสดง map -->
@@ -165,7 +166,7 @@
                   <div class="form-group">
                     <label for="device_map_img">Device Map:</label>
 
-                    <input type="file" (change)="onFileSelected($event)"/>
+                    <input type="file" (change)="onFileSelected($event)" />
                   </div>
 
                   <!-- Device Type -->
@@ -206,13 +207,15 @@
                   </div>
 
                   <!-- Add more fields as needed -->
-                  <button (click)="onUpload(); saveData()"
-        type="submit"
-        class="btn btn-success"
-        [disabled]="editForm.invalid"
-        data-bs-dismiss="modal">
-  Save
-</button>
+                  <button
+                    (click)="onUpload(); saveData()"
+                    type="submit"
+                    class="btn btn-success"
+                    [disabled]="editForm.invalid"
+                    data-bs-dismiss="modal"
+                  >
+                    Save
+                  </button>
 
                   <button
                     type="button"
