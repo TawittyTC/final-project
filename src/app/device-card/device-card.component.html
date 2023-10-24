@@ -164,14 +164,8 @@
                   <!-- Device Map -->
                   <div class="form-group">
                     <label for="device_map_img">Device Map:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="device_map_img"
-                      [(ngModel)]="editedData.device_map_img"
-                      name="device_map_img"
-                      required
-                    />
+                    
+                    <input type="file" (change)="onFileSelected($event)"/>
                   </div>
 
                   <!-- Device Type -->
@@ -212,14 +206,14 @@
                   </div>
 
                   <!-- Add more fields as needed -->
-                  <button
-                    type="submit"
-                    class="btn btn-success"
-                    [disabled]="editForm.invalid"
-                    data-bs-dismiss="modal"
-                  >
-                    Save
-                  </button>
+                  <button (click)="onUpload(); saveData()"
+        type="submit"
+        class="btn btn-success"
+        [disabled]="editForm.invalid"
+        data-bs-dismiss="modal">
+  Save
+</button>
+
                   <button
                     type="button"
                     class="btn btn-secondary"

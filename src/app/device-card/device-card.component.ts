@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
+import { HttpClient } from '@angular/common/http'; // Import HttpClient here
+
 
 @Component({
   selector: 'app-device-card',
@@ -8,6 +10,7 @@ import { ApiService } from 'src/app/api.service';
   styleUrls: ['./device-card.component.scss']
 })
 export class DeviceCardComponent implements OnInit, OnDestroy {
+  selectedFile: File | null = null;
   @Input() deviceData: any; // รับข้อมูลอุปกรณ์จากภายนอก
   device_id: [] = [];
   latestDeviceData: any = {};
@@ -23,7 +26,27 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private http: HttpClient) { }
+
+  onFileSelected(event: any) {
+    this.selectedFile = event.target.files[0];
+  }
+
+  onUpload() {
+    if (this.selectedFile) {
+      const formData = new FormData();
+      formData.append('file', this.selectedFile, this.selectedFile.name);
+      this.http.post('http://localhost:3000/upload', formData).subscribe(
+        (response) => {
+          console.log('File uploaded successfully');
+        },
+        (error) => {
+          console.error('Error uploading file:', error);
+        }
+      );
+    }
+  }
+
 
   ngOnInit() {
     this.loadData();
