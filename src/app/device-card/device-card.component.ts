@@ -19,6 +19,8 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   data: any;
   formIsValid: boolean = false;
   formIncompleteAlert: string = '';
+  currentDeviceId: string | null = null;
+
 
 
   constructor(private apiService: ApiService) { }
@@ -143,4 +145,9 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     this.addMode = false;
     this.newData = {}; // ล้างข้อมูลที่กรอกหลังยกเลิก
   }
+
+  setCurrentDeviceId(deviceId: string) {
+    this.currentDeviceId = deviceId;
+  }
+
 }

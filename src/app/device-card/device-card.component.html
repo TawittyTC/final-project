@@ -47,11 +47,13 @@
             </button>
             <button
               class="btn"
+              (click)="setCurrentDeviceId(device_id)"
               data-bs-toggle="modal"
               data-bs-target="#mapModal"
             >
               <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
             </button>
+
             <button (click)="deleteData(device_id)" class="btn">
               <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
             </button>
@@ -59,6 +61,7 @@
         </div>
 
         <!-- แสดง map -->
+        <!-- Map Modal -->
         <div
           class="modal fade"
           id="mapModal"
@@ -72,9 +75,9 @@
                 <h5 class="modal-title" id="mapModalLabel">Map</h5>
               </div>
               <div class="modal-body">
-                <div>{{ device_id }}</div>
+                <div>{{ currentDeviceId }}</div>
                 <img
-                  src="/assets/img/map-img/{{ device_id }}.png"
+                  src="/assets/img/map-img/{{ currentDeviceId }}.png"
                   class="img-fluid"
                   alt="Maps"
                 />
