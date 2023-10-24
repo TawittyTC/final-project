@@ -1,0 +1,16 @@
+.image-container {
+  width: 300px; /* Set your desired width */
+  height: 200px; /* Set your desired height */
+  overflow: hidden; /* Hide the overflow to keep the image within the container */
+  border: 1px solid #ccc; /* Add a border for visual separation */
+  position: relative; /* Create a positioning context for the child image */
+}
+
+.draggable-image {
+  width: 100%; /* Make the image fill the container width */
+  height: auto; /* Maintain the image's aspect ratio */
+  cursor: grab; /* Change cursor to indicate the image is draggable */
+
+  /* Add transitions for smooth dragging */
+  transition: transform 0.2s ease;
+}

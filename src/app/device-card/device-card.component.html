@@ -10,17 +10,25 @@
           />
         </div>
         <div class="h3 mb-3">Device ID: {{ device_id }}</div>
-        <div class="text-dark mb-2" style="margin: -10px 0;">
-          <p style="margin: 1px 0;">Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
-          <p style="margin: 1px 0;">Location: {{ latestDeviceData[device_id]?.device_location }}</p>
-          <p style="margin: 1px 0;">Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
-          <p style="margin: 1px 0;">Type: {{ latestDeviceData[device_id]?.device_type }}</p>
-          <p style="margin: 1px 0;">Group: {{ latestDeviceData[device_id]?.group_id }}</p>
+        <div class="text-dark mb-2" style="margin: -10px 0">
+          <p style="margin: 1px 0">
+            Details: {{ latestDeviceData[device_id]?.device_detail }}
+          </p>
+          <p style="margin: 1px 0">
+            Location: {{ latestDeviceData[device_id]?.device_location }}
+          </p>
+          <p style="margin: 1px 0">
+            Type: {{ latestDeviceData[device_id]?.device_type }}
+          </p>
+          <p style="margin: 1px 0">
+            Group: {{ latestDeviceData[device_id]?.group_id }}
+          </p>
         </div>
 
         <div class="bg-light rounded-5 d-flex justify-content-between">
           <div class="d-flex">
-            <button class="btn me-2"
+            <button
+              class="btn me-2"
               [routerLink]="['/dashboard-component']"
               [queryParams]="{ device_id: device_id }"
             >
@@ -32,11 +40,46 @@
               data-bs-toggle="modal"
               data-bs-target="#editModal"
             >
-              <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+              <i
+                class="bi bi-pencil-square text-primary"
+                style="font-size: 26px"
+              ></i>
+            </button>
+            <button
+              class="btn"
+              data-bs-toggle="modal"
+              data-bs-target="#mapModal"
+            >
+              <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
             </button>
             <button (click)="deleteData(device_id)" class="btn">
-              <i class="bi bi-trash-fill text-danger" style="font-size: 26px"></i>
+              <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
             </button>
+          </div>
+        </div>
+
+        <!-- แสดง map -->
+        <div
+          class="modal fade"
+          id="mapModal"
+          tabindex="-1"
+          aria-labelledby="mapModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">Map</h5>
+              </div>
+              <div class="modal-body">
+                <div>{{ device_id }}</div>
+                <img
+                  src="/assets/img/map-img/{{ device_id }}.png"
+                  class="img-fluid"
+                  alt="Maps"
+                />
+              </div>
+            </div>
           </div>
         </div>
 

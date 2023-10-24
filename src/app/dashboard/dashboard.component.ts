@@ -14,4 +14,6 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
   }
+
+  
 }
