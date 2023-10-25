@@ -12,6 +12,8 @@
             alt="..."
           />
         </div>
+
+
         <div class="h3 mb-3">Device ID: {{ device_id }}</div>
         <div class="text-dark mb-2" style="margin: -10px 0">
           <p style="margin: 1px 0">
@@ -77,8 +79,14 @@
               </div>
               <div class="modal-body">
                 <div>{{ currentDeviceId }}</div>
+                <img [src]="currentDeviceId ? getImageUrl(currentDeviceId) : ''" alt="Device Image" />
                 <img
                   src="/assets/img/map-img/{{ currentDeviceId }}.png"
+                  class="img-fluid"
+                  alt="Maps"
+                />
+                <img
+                  src="http://localhost:3000/uploads/{{currentDeviceId}}"
                   class="img-fluid"
                   alt="Maps"
                 />

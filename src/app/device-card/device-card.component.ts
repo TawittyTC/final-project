@@ -1,8 +1,8 @@
+import { GetImageService } from './../get-img.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient here
-
 
 @Component({
   selector: 'app-device-card',
@@ -10,6 +10,7 @@ import { HttpClient } from '@angular/common/http'; // Import HttpClient here
   styleUrls: ['./device-card.component.scss']
 })
 export class DeviceCardComponent implements OnInit, OnDestroy {
+  imageBlob: Blob | null = null;
   selectedFile: File | null = null;
   @Input() deviceData: any; // รับข้อมูลอุปกรณ์จากภายนอก
   device_id: [] = [];
@@ -26,7 +27,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
 
 
-  constructor(private apiService: ApiService, private http: HttpClient) { }
+  constructor(private apiService: ApiService, private http: HttpClient, private GetImageService: GetImageService) { }
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0];
@@ -41,7 +42,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
       formData.append('file', new File([this.selectedFile], fileName));
 
-      this.http.post('http://localhost:3000/upload', formData).subscribe(
+      this.http.post('http://localhost:3000/upload/', formData).subscribe(
         (response) => {
           console.log('File uploaded successfully');
         },
@@ -54,7 +55,8 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
 
 
-  ngOnInit() {
+  ngOnInit():void {
+    this.loadImageByDeviceId('device_id');
     this.loadData();
 
     // ใช้ interval สำหรับโหลดข้อมูลอัปเดตทุก 2 วินาที
@@ -69,6 +71,34 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       this.dataSubscription.unsubscribe();
     }
   }
+
+// คำสั่งนี้จะทำการโหลดรูปภาพเมื่อมีข้อมูลใหม่
+loadImageByDeviceId(deviceId: string) {
+  if (deviceId) {
+    this.GetImageService.getImageByDeviceId(deviceId).subscribe(
+      (data) => {
+        this.imageBlob = data;
+      },
+      (error) => {
+        console.error('Error loading image:', error);
+      }
+    );
+  }
+}
+
+
+// ที่อยู่ URL ของรูปภาพ ควรถูกเรียกใช้ใน HTML template
+getImageUrl(deviceId: string) {
+  const imageUrl = `localhost:3000/uploads/${deviceId}.png`;
+  console.log('Image URL:', imageUrl);
+  if (this.imageBlob) {
+    return imageUrl;
+  }
+  return ''; // หรือ URL โดย default ในกรณีที่ไม่มีรูปภาพ
+}
+
+
+
 
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
@@ -103,7 +133,6 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
   //ลบข้อมูล
   deleteData(device_id: string) {
-    console.log('device_id:', device_id); // Check the device_id value
 
     // Use confirm() to request confirmation for data deletion
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
