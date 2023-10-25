@@ -13,7 +13,6 @@
           />
         </div>
 
-
         <div class="h3 mb-3">Device ID: {{ device_id }}</div>
         <div class="text-dark mb-2" style="margin: -10px 0">
           <p style="margin: 1px 0">
@@ -81,7 +80,7 @@
                 <div>{{ currentDeviceId }}</div>
 
                 <img
-                  src="http://localhost:3000/uploads/{{currentDeviceId}}"
+                  src="http://localhost:3000/uploads/{{ currentDeviceId }}"
                   class="img-fluid"
                   alt="Maps"
                 />
@@ -165,12 +164,16 @@
                     />
                   </div>
 
-
                   <!-- Device Map -->
                   <div class="form-group">
                     <label for="device_map_img">Device Map:</label>
 
-                    <input type="file" class="form-control" id="device_map_img" (change)="onFileSelected($event)" />
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="device_map_img"
+                      (change)="onFileSelected($event)"
+                    />
                   </div>
 
                   <!-- Device Type -->
@@ -211,10 +214,11 @@
                   </div>
 
                   <!-- Add more fields as needed -->
+                  <div class="mt-2">
                   <button
-                    (click)="onUpload(); saveData()"
+                    (click)="onUpload(); saveData(); reloadPage()"
                     type="submit"
-                    class="btn btn-success"
+                    class="btn btn-success me-2"
                     [disabled]="editForm.invalid"
                     data-bs-dismiss="modal"
                   >
@@ -229,6 +233,7 @@
                   >
                     Cancel
                   </button>
+                </div>
                 </form>
               </div>
             </div>

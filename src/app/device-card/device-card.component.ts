@@ -210,4 +210,8 @@ getImageUrl(deviceId: string) {
     this.currentDeviceId = deviceId;
   }
 
+  reloadPage() {
+    // รีโหลดหน้าเว็บ
+    location.reload();
+  }
 }
