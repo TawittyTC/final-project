@@ -30,8 +30,23 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   constructor(private apiService: ApiService, private http: HttpClient, private GetImageService: GetImageService) { }
 
   onFileSelected(event: any) {
-    this.selectedFile = event.target.files[0];
+    const file = event.target.files[0];
+
+    if (file) {
+      // Check the file size (in bytes)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        // File size is too large
+        alert('ไฟล์มีขนาดใหญ่เกินไป (มากกว่า 5MB)');
+        this.selectedFile = null;
+      } else {
+        this.selectedFile = file;
+      }
+    } else {
+      this.selectedFile = null;
+    }
   }
+
 
   onUpload() {
     if (this.selectedFile && this.currentDeviceId) {
