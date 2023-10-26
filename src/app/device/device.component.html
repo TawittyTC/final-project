@@ -1,13 +1,21 @@
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center pb-3">
-    <p class="display-5 fw-bold h1 d-inline m-0">Device
-      <!-- icon ในการเลือก group -->
-      <i class="bi bi-caret-down-fill" style="font-size: 30px"></i></p>
+    <div class="dropdown">
+      <button class="btn dropdown-toggle" type="button" id="groupDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="h1 fw-bold">Device</span>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="groupDropdown">
+        <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
+        <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of groups">{{ group }}</a>
+      </div>
+    </div>
     <!-- แสดงปุ่มเพิ่ม -->
     <button (click)="enableAddMode()" class="btn">
       <i class="bi bi-plus-circle-fill text-primary" style="font-size: 40px"></i>
     </button>
   </div>
+  <!-- ส่วนอื่น ๆ ของเนื้อหาของคุณ -->
+</div>
 
 
 <!-- เพิ่มข้อมูล -->
@@ -80,7 +88,6 @@
   </form>
 </div>
 
-</div>
   <div class="row">
     <app-device-card></app-device-card>
     <app-table-device></app-table-device>

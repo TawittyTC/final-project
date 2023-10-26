@@ -8,6 +8,9 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./device.component.scss']
 })
 export class DeviceComponent implements OnInit{
+  showGroupDropdown: boolean = false;
+  selectedGroup: string = '';
+  groups: string[] = ['Group A', 'Group B', 'Group C'];
   data: any[] = [];
   editMode = false;
   editedData: any = {};
@@ -16,6 +19,20 @@ export class DeviceComponent implements OnInit{
   private dataSubscription: Subscription | undefined;
 
   constructor(private apiService: ApiService){}
+
+  toggleGroupDropdown() {
+    this.showGroupDropdown = !this.showGroupDropdown;
+  }
+ // ฟังก์ชันเลือกกลุ่ม
+ selectGroup(group: string) {
+  this.selectedGroup = group;
+  this.showGroupDropdown = false;
+}
+
+// สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
+getDevicesByGroup(group: string) {
+  // ทำงานเรียกข้อมูลของ device ตามกลุ่มที่เลือก
+}
 
   ngOnInit(){
     this.loadData();
