@@ -23,6 +23,8 @@ import { CircleChartComponent } from './circle-chart/circle-chart.component';
 import { DeviceCardComponent } from './device-card/device-card.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TableDeviceComponent } from './table-device/table-device.component';
+import { SigninComponent } from './signin/signin.component';
+import { SignupComponent } from './signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +41,8 @@ import { TableDeviceComponent } from './table-device/table-device.component';
     CircleChartComponent,
     DeviceCardComponent,
     TableDeviceComponent,
+    SigninComponent,
+    SignupComponent,
 
   ],
   imports: [
