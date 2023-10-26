@@ -11,6 +11,11 @@ import { ChartComponent } from 'ng-apexcharts';
 import { CircleChartComponent } from "./circle-chart/circle-chart.component";
 import { DeviceCardComponent } from './device-card/device-card.component';
 import { TableDeviceComponent } from './table-device/table-device.component';
+
+import { SigninComponent } from './signin/signin.component';
+import { SignupComponent } from './signup/signup.component';
+import { AuthGuard } from '@auth0/auth0-angular';
+
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -24,6 +29,9 @@ const routes: Routes = [
   { path: 'circle-component',component:CircleChartComponent},
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
   { path: 'tabledevice-component', component:TableDeviceComponent},
+  { path: 'log-in', component: SigninComponent },
+  { path: 'sign-up', component: SignupComponent },
+  { path: 'user-profile/:id', component: ProfileComponent, canActivate: [AuthGuard] }
 ];
 
 @NgModule({

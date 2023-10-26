@@ -1,6 +1,6 @@
 export class User {
-    id: number;
-    name: String;
-    email: String;
-    password: String;
+    id: number | undefined;
+    name: String | undefined;
+    email: String | undefined;
+    password: String | undefined;
 }

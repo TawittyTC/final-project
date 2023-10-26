@@ -25,6 +25,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { TableDeviceComponent } from './table-device/table-device.component';
 import { SigninComponent } from './signin/signin.component';
 import { SignupComponent } from './signup/signup.component';
+import { ReactiveFormsModule } from '@angular/forms';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -52,6 +54,7 @@ import { SignupComponent } from './signup/signup.component';
     NgbModule,
     NgApexchartsModule,
     FormsModule,
+    ReactiveFormsModule,
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
