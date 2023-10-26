@@ -33,7 +33,7 @@ export class CircleChartComponent implements OnInit, OnDestroy {
     this.chartOptions = {
       series: [this.energy], // ใช้ this.energy ใน series เพื่อแสดงข้อมูลได้
       chart: {
-        height: 350,
+        height: 270,
         type: "radialBar",
         toolbar: {
           show: true
@@ -50,9 +50,9 @@ export class CircleChartComponent implements OnInit, OnDestroy {
             },
             value: {
               show: true,
-              fontSize: "36px",
+              fontSize: "50px",
               formatter: function (val: number) {
-                return val.toFixed(2) + "%";
+                return val.toFixed(2) + "";
               },
             },
           },
