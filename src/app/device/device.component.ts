@@ -53,7 +53,7 @@ getDevicesByGroup(group: string) {
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
-      console.log(response);
+      console.log('123');
     });
   }
 

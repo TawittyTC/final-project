@@ -37,7 +37,6 @@ export class TableDeviceComponent implements OnInit {
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
-      console.log(response);
     });
   }
 
