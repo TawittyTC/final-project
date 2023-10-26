@@ -75,7 +75,7 @@ export class CircleChartComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    const apiUrl = `http://localhost:3000/latest_data_esp?device_id=${this.device_id}`;
+    const apiUrl = `http://localhost:3000/latest_data?device_id=${this.device_id}`;
 
     this.http.get(apiUrl).subscribe((data: any) => {
       console.log(apiUrl);
