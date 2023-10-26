@@ -10,7 +10,7 @@ import { interval, Subscription } from 'rxjs';
 export class DeviceComponent implements OnInit{
   showGroupDropdown: boolean = false;
   selectedGroup: string = '';
-  groups: string[] = ['Group A', 'Group B', 'Group C'];
+  groups: string[] = [''];
   data: any[] = [];
   editMode = false;
   editedData: any = {};
@@ -53,9 +53,16 @@ getDevicesByGroup(group: string) {
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
-      console.log('123');
+
+      // สร้างอาร์เรย์ใหม่ที่มีค่า group_id เฉพาะ
+      this.groups = this.data.map((item: any) => item.group_id);
+
+      // ลบค่าซ้ำออกจากอาร์เรย์ groups
+      this.groups = [...new Set(this.groups)]; // ใช้ Set ในการลบค่าซ้ำ
+      console.log(response);
     });
   }
+
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
