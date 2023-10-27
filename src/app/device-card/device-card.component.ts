@@ -7,9 +7,11 @@ import { HttpClient } from '@angular/common/http'; // Import HttpClient here
 @Component({
   selector: 'app-device-card',
   templateUrl: './device-card.component.html',
-  styleUrls: ['./device-card.component.scss']
+  styleUrls: ['./device-card.component.scss'],
 })
 export class DeviceCardComponent implements OnInit, OnDestroy {
+  isMapModalOpen = false;
+
   imageBlob: Blob | null = null;
   selectedFile: File | null = null;
   @Input() deviceData: any; // รับข้อมูลอุปกรณ์จากภายนอก
@@ -25,9 +27,11 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   formIncompleteAlert: string = '';
   currentDeviceId: string | null = null;
 
-
-
-  constructor(private apiService: ApiService, private http: HttpClient, private GetImageService: GetImageService) { }
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private GetImageService: GetImageService
+  ) {}
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
@@ -41,12 +45,14 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
         this.selectedFile = null;
       } else {
         this.selectedFile = file;
+
+        // Set the currentDeviceId based on your logic, e.g., from the selected device's ID
+        this.currentDeviceId = this.deviceData.device_id; // Set it to the selected device's ID
       }
     } else {
       this.selectedFile = null;
     }
   }
-
 
   onUpload() {
     if (this.selectedFile && this.currentDeviceId) {
@@ -68,9 +74,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     }
   }
 
-
-
-  ngOnInit():void {
+  ngOnInit(): void {
     this.loadImageByDeviceId('device_id');
     this.loadData();
 
@@ -87,49 +91,54 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     }
   }
 
-// คำสั่งนี้จะทำการโหลดรูปภาพเมื่อมีข้อมูลใหม่
-loadImageByDeviceId(deviceId: string) {
-  if (deviceId) {
-    this.GetImageService.getImageByDeviceId(deviceId).subscribe(
-      (data) => {
-        this.imageBlob = data;
-      },
-      (error) => {
-        console.error('Error loading image:', error);
-      }
-    );
+  // คำสั่งนี้จะทำการโหลดรูปภาพเมื่อมีข้อมูลใหม่
+  loadImageByDeviceId(deviceId: string) {
+    if (deviceId) {
+      this.GetImageService.getImageByDeviceId(deviceId).subscribe(
+        (data) => {
+          this.imageBlob = data;
+        },
+        (error) => {
+          console.error('Error loading image:', error);
+        }
+      );
+    }
   }
-}
 
-
-// ที่อยู่ URL ของรูปภาพ ควรถูกเรียกใช้ใน HTML template
-getImageUrl(deviceId: string) {
-  const imageUrl = `localhost:3000/uploads/${deviceId}.png`;
-  console.log('Image URL:', imageUrl);
-  if (this.imageBlob) {
-    return imageUrl;
+  // ที่อยู่ URL ของรูปภาพ ควรถูกเรียกใช้ใน HTML template
+  getImageUrl(deviceId: string): string {
+    if (this.imageBlob) {
+      // มีรูปภาพใน this.imageBlob
+      const imageUrl = `localhost:3000/uploads/${deviceId}.png`;
+      return imageUrl;
+    } else {
+      // ไม่มีรูปภาพ
+      return ''; // หรือ URL โดย default ในกรณีที่ไม่มีรูปภาพ
+    }
   }
-  return ''; // หรือ URL โดย default ในกรณีที่ไม่มีรูปภาพ
-}
-
-
-
 
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
-      this.device_id = this.data.map((item: { device_id: any; }) => item.device_id.toString());
+      this.device_id = this.data.map((item: { device_id: any }) =>
+        item.device_id.toString()
+      );
 
       this.latestDeviceData = {};
-      this.device_id.forEach(id => {
-        const filteredData = this.data.filter((item: { device_id: string; }) => item.device_id === id);
-        const latestEntry = filteredData.reduce((prev: { id: number; }, current: { id: number; }) => (prev.id > current.id) ? prev : current);
+      this.device_id.forEach((id) => {
+        const filteredData = this.data.filter(
+          (item: { device_id: string }) => item.device_id === id
+        );
+        const latestEntry = filteredData.reduce(
+          (prev: { id: number }, current: { id: number }) =>
+            prev.id > current.id ? prev : current
+        );
         this.latestDeviceData[id] = latestEntry;
 
         // ตรวจสอบสถานะของอุปกรณ์และเพิ่มข้อมูลสถานะลงใน latestDeviceData
         this.latestDeviceData[id] = {
-        ...latestEntry,
-        status: this.checkOnlineStatus(latestEntry)
+          ...latestEntry,
+          status: this.checkOnlineStatus(latestEntry),
         };
       });
     });
@@ -138,7 +147,6 @@ getImageUrl(deviceId: string) {
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
     this.apiService.createData(newData).subscribe(() => {
-
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -154,7 +162,6 @@ getImageUrl(deviceId: string) {
 
   //ลบข้อมูล
   deleteData(device_id: string) {
-
     // Use confirm() to request confirmation for data deletion
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
@@ -165,7 +172,6 @@ getImageUrl(deviceId: string) {
     }
   }
 
-
   // เริ่มโหมดแก้ไขข้อมูล
   enableEditMode(device_id: string) {
     this.editMode = true;
@@ -173,40 +179,44 @@ getImageUrl(deviceId: string) {
     this.editedData = { ...this.latestDeviceData[device_id] };
   }
 
-
   checkFormValidity() {
     this.formIsValid =
       !!this.editedData.device_name &&
       !!this.editedData.device_detail &&
-      !!this.editedData.device_location&&
+      !!this.editedData.device_location &&
       !!this.editedData.group_id;
-    this.formIncompleteAlert = this.formIsValid ? '' : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
+    this.formIncompleteAlert = this.formIsValid
+      ? ''
+      : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
   }
-
 
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     if (this.formIsValid) {
-      this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
+      this.apiService
+        .updateData(this.editedData.device_id, this.editedData)
+        .subscribe(
+          () => {
+            this.editMode = false;
+            this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
+          },
+          (error) => {
+            console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
+          }
+        );
+    }
+    this.apiService
+      .updateData(this.editedData.device_id, this.editedData)
+      .subscribe(
         () => {
           this.editMode = false;
+          // ไม่ต้องโหลดข้อมูลใหม่เนื่องจากคุณแก้ไขข้อมูลในส่วนเดียวกัน
           this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
         },
         (error) => {
-          console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
+          //console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
         }
       );
-    }
-    this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
-      () => {
-        this.editMode = false;
-        // ไม่ต้องโหลดข้อมูลใหม่เนื่องจากคุณแก้ไขข้อมูลในส่วนเดียวกัน
-        this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
-      },
-      (error) => {
-        //console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
-      }
-    );
   }
 
   // ยกเลิกโหมดแก้ไข
@@ -236,15 +246,15 @@ getImageUrl(deviceId: string) {
   }
 
   // สร้างฟังก์ชันเพื่อตรวจสอบสถานะ
-checkOnlineStatus(data: any): string {
-  const createdTimestamp = new Date(data.created_timestamp).getTime(); // เวลาใน created_timestamp จาก API
-  const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
+  checkOnlineStatus(data: any): string {
+    const createdTimestamp = new Date(data.created_timestamp).getTime(); // เวลาใน created_timestamp จาก API
+    const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
 
-  // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-  if (currentTimestamp - createdTimestamp <= 60000) {
-    return 'ออนไลน์';
-  } else {
-    return 'ออฟไลน์';
+    // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
+    if (currentTimestamp - createdTimestamp <= 10000) {
+      return 'ออนไลน์';
+    } else {
+      return 'ออฟไลน์';
+    }
   }
-}
 }
