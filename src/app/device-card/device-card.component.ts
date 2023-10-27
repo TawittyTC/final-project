@@ -251,10 +251,10 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
 
     // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-    if (currentTimestamp - createdTimestamp <= 10000) {
-      return 'ออนไลน์';
+    if (currentTimestamp - createdTimestamp <= 100000) {
+      return 'ON';
     } else {
-      return 'ออฟไลน์';
+      return 'OFF';
     }
   }
 }
