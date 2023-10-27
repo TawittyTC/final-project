@@ -19,15 +19,15 @@
       <div class="row">
         <div class="col bg-success">
           <div class="text-muted fw-light">Current</div>
-          <div class="h1 fw-light">200 A</div>
+          <div class="h1 fw-light"> {{ data[0].current }} A</div>
         </div>
         <div class="col bg-danger">
           <div class="text-muted fw-light">Voltage</div>
-          <div class="h1 fw-light">100 V</div>
+          <div class="h1 fw-light"> {{ data[0].voltage }} V</div>
         </div>
         <div class="col bg-light">
           <div class="text-muted fw-light">Power</div>
-          <div class="h1 fw-light">50 W</div>
+          <div class="h1 fw-light"> {{ data[0].power }} W</div>
         </div>
       </div>
       <div class="row bg-primary">

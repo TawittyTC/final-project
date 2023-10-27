@@ -75,26 +75,22 @@ export class CircleChartComponent implements OnInit, OnDestroy {
   }
   fetchData() {
     const apiUrl = `http://localhost:3000/latest_data?device_id=${this.device_id}`;
-  
+
     this.http.get<any[]>(apiUrl).subscribe((data) => {
-      console.log(apiUrl);
-      console.log(data);
-  
+
       if (data && data.length > 0) {
         this.energy = data[0].energy; // รับข้อมูล energy จาก API
-        console.log(this.energy);
-  
+
         // อัพเดตข้อมูลในกราฟ
         this.chart.updateOptions({
           series: [this.energy],
         });
-  
-        console.log("Updated energy:", this.energy);
+
       }
     });
   }
-  
-  
+
+
 
 
 
