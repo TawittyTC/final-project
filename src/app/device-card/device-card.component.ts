@@ -251,7 +251,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
 
     // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-    if (currentTimestamp - createdTimestamp <= 100000) {
+    if (currentTimestamp - createdTimestamp <= 10000000000) {
       return 'ON';
     } else {
       return 'OFF';
