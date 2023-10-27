@@ -78,7 +78,6 @@ export class CircleChartComponent implements OnInit, OnDestroy {
 
     this.http.get<any[]>(apiUrl).subscribe((data) => {
 
-      if (data && data.length > 0) {
         this.energy = data[0].energy; // รับข้อมูล energy จาก API
 
         // อัพเดตข้อมูลในกราฟ
@@ -86,7 +85,7 @@ export class CircleChartComponent implements OnInit, OnDestroy {
           series: [this.energy],
         });
 
-      }
+
     });
   }
 
