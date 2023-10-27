@@ -125,6 +125,12 @@ getImageUrl(deviceId: string) {
         const filteredData = this.data.filter((item: { device_id: string; }) => item.device_id === id);
         const latestEntry = filteredData.reduce((prev: { id: number; }, current: { id: number; }) => (prev.id > current.id) ? prev : current);
         this.latestDeviceData[id] = latestEntry;
+
+        // ตรวจสอบสถานะของอุปกรณ์และเพิ่มข้อมูลสถานะลงใน latestDeviceData
+        this.latestDeviceData[id] = {
+        ...latestEntry,
+        status: this.checkOnlineStatus(latestEntry)
+        };
       });
     });
   }
@@ -228,4 +234,17 @@ getImageUrl(deviceId: string) {
     // รีโหลดหน้าเว็บ
     location.reload();
   }
+
+  // สร้างฟังก์ชันเพื่อตรวจสอบสถานะ
+checkOnlineStatus(data: any): string {
+  const createdTimestamp = new Date(data.created_timestamp).getTime(); // เวลาใน created_timestamp จาก API
+  const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
+
+  // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
+  if (currentTimestamp - createdTimestamp <= 60000) {
+    return 'ออนไลน์';
+  } else {
+    return 'ออฟไลน์';
+  }
+}
 }
