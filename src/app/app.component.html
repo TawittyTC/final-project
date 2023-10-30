@@ -2,10 +2,17 @@
 <app-navbar></app-navbar>
 <div class="container-fluid bg-light">
 <router-outlet></router-outlet>
+
 </div>
+<df-messenger
+  intent="WELCOME"
+  chat-title="Angular-Dialogflow"
+  agent-id="2f038d5d-856c-4776-8420-cdb1a5ac00de"
+  language-code="th"
+></df-messenger>
 <app-footer></app-footer>
 
-<script type="text/javascript">
+<!-- <script type="text/javascript">
     (function(d, m){
         var kommunicateSettings =
             {"appId":"3a8fabc0db6d4f8b8211417d48fa715e8","popupWidget":true,"automaticChatOpenOnNavigation":true};
@@ -15,4 +22,4 @@
         window.kommunicate = m; m._globals = kommunicateSettings;
     })(document, window.kommunicate || {});
 /* NOTE : Use web server to view HTML files as real-time update will not work if you directly open the HTML file in the browser. */
-</script>
+</script> -->
