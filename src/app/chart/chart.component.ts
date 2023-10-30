@@ -49,6 +49,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         },
       },
       xaxis: {
+    
         type: 'datetime',
         labels: {
           format: 'dd MMM yyyy HH:mm:ss', // เพิ่มระดับวินาทีในรูปแบบวัน เดือน ปี ชั่วโมง นาที วินาที
@@ -137,7 +138,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       },
       yaxis: {
         title: {
-          text: 'Energy'
+          text: 'Cost'
         }
       }
     };
