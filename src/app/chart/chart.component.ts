@@ -239,7 +239,7 @@ export class ChartComponent implements OnInit, OnDestroy {
 
       // คำนวณค่าไฟรวม
     const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
-    console.log(`Total Energy: ${totalEnergy} kWh`);
+    
     });
   }
 

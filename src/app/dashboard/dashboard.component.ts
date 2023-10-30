@@ -9,18 +9,22 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+  public chartData: any[] = [];
   device_id: string = '';
   dataSubscription: Subscription | undefined;
-  data: any = {}; // เพิ่มตัวแปร data สำหรับเก็บข้อมูล
+  data: any = {};
+  totalEnergy: number = 0; // เพิ่มตัวแปร totalEnergy และกำหนดค่าเริ่มต้น
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
     this.fetchData();
+    this.fetchData1(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
 
     this.dataSubscription = interval(5000).subscribe(() => {
       this.fetchData();
+      this.fetchData1(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
     });
   }
 
@@ -35,13 +39,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.http.get<any[]>(apiUrl).subscribe(
       (data) => {
-
-        this.data = data; // บันทึกข้อมูลที่ได้รับในตัวแปร data
+        this.data = data;
         console.log(data);
       },
       (error) => {
         console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
       }
     );
+  }
+
+  fetchData1() {
+    this.http.get<any[]>(`http://localhost:3000/energy?device_id=${this.device_id}`).subscribe(data => {
+      this.chartData = data;
+
+      const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
+      console.log(`Total Energy: ${totalEnergy} kWh`);
+      this.totalEnergy = totalEnergy; // อัพเดทค่า totalEnergy
+      this.chartData = data; // อัพเดทค่า chartData หลังจากคำนวณ
+    });
   }
 }
