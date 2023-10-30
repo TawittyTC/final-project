@@ -54,8 +54,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
       const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
       console.log(`Total Energy: ${totalEnergy} kWh`);
-      this.totalEnergy = totalEnergy; // อัพเดทค่า totalEnergy
-      this.chartData = data; // อัพเดทค่า chartData หลังจากคำนวณ
+      this.totalEnergy = totalEnergy.toFixed(3); // อัพเดทค่า totalEnergy
+
     });
   }
 }
