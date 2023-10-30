@@ -11,6 +11,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ChartComponent implements OnInit {
   public chartData: any[] = [];
   public chartOptions: any;
+  public chartOptions2: any;
   device_id: string = '';
 
   constructor(private route: ActivatedRoute,private http: HttpClient) {
@@ -57,7 +58,40 @@ export class ChartComponent implements OnInit {
       }
     };
   }
-
+  generateChart2() {
+    // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts
+    this.chartOptions2 = {
+      series: [{
+        name: "Energy",
+        data: this.chartData.map(item => ({
+          x: new Date(item.created_timestamp).getTime(),
+          y: item.energy
+        }))
+      }],
+      chart: {
+        type: 'line',
+        height: 350,
+        animations: {
+          enabled: true,
+          easing: 'linear',
+          dynamicAnimation: {
+            speed: 2000
+          }
+        }
+      },
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          format: 'dd MMM yyyy'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Energy'
+        }
+      }
+    };
+  }
   fetchData() {
     // ดึงข้อมูลจาก API โดยใช้ค่า device_id จากตัวแปร
     this.http.get<any[]>(`http://localhost:3000/energy?device_id=${this.device_id}`).subscribe(data => {
@@ -65,6 +99,7 @@ export class ChartComponent implements OnInit {
       console.log(this.chartData)
       // เรียกเมธอดสร้างกราฟ
       this.generateChart();
+      this.generateChart2()
     });
   }
   
