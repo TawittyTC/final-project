@@ -21,9 +21,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
     this.fetchData();
-    this.dataSubscription = interval(5000).subscribe(() => {
-      this.fetchData();
-    });
+  
   }
   
   generateChart() {
