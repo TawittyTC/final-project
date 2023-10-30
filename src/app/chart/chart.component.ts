@@ -14,6 +14,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   public chartOptions2: any;
   device_id: string = '';
   dataSubscription: Subscription | undefined;
+  unitCost: number = 4;
 
   constructor(private route: ActivatedRoute,private http: HttpClient) {
   }
@@ -110,39 +111,116 @@ export class ChartComponent implements OnInit, OnDestroy {
   
   
   generateChart2() {
-    // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts
+    // Calculate cost of electricity and add it to the data
+    const chartDataWithCost = this.chartData.map((item: { created_timestamp: string | number | Date; energy: number; }) => ({
+        x: new Date(item.created_timestamp).getTime(),
+        y: item.energy,
+        cost: item.energy * this.unitCost  // Calculate the cost of electricity
+    }));
+
+    // Create and set options for the chart using ng-apexcharts
     this.chartOptions2 = {
-      series: [{
-        name: "Energy",
-        data: this.chartData.map(item => ({
-          x: new Date(item.created_timestamp).getTime(),
-          y: item.energy
-        }))
-      }],
-      chart: {
-        type: 'line',
-        height: 350,
-        animations: {
-          enabled: true,
-          easing: 'linear',
-          dynamicAnimation: {
-            speed: 2000
+        series: [
+            {
+                name: "Cost",
+                data: chartDataWithCost.map((item: { x: any; cost: any; }) => ({
+                    x: item.x,
+                    y: item.cost
+                }))
+            }
+        ],
+        chart: {
+            type: 'line',
+            height: 450, // Increase the chart height
+            animations: {
+                enabled: true,
+                easing: 'linear',
+                dynamicAnimation: {
+                    speed: 2000
+                }
+            },
+            zoom: {
+                enabled: true, // Enable zooming
+            },
+        },
+        xaxis: {
+            type: 'datetime',
+            labels: {
+                format: 'dd MMM yyyy HH:mm:ss',
+                datetimeFormatter: {
+                    year: 'yyyy',
+                    month: 'MMM \'yy',
+                    day: 'dd MMM',
+                    hour: 'HH',
+                    minute: 'mm',
+                    second: 'ss'
+                }
+            }
+        },
+        yaxis: [
+          {
+              title: {
+                  text: 'Energy (kWh)'
+              },
+              labels: {
+                  formatter: function (value: number) {
+                      return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
+                  }
+              }
+          },
+          {
+              opposite: true,
+              title: {
+                  text: 'Cost (฿)'
+              },
+              labels: {
+                  formatter: function (value: number) {
+                      return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
+                  }
+              }
           }
+      ],
+  
+        dataLabels: {
+            enabled: true, // Show data labels for each point
+            style: {
+                fontSize: '12px',
+                colors: ['#333']
+            },
+            background: {
+                enabled: true,
+                foreColor: '#fff',
+                borderRadius: 3,
+                padding: 5
+            },
+            textAnchor: 'middle', // Show data labels in the middle of data points
+        },
+        markers: {
+            size: 6,
+            hover: {
+                size: 10
+            }
+        },
+        tooltip: {
+            enabled: true,
+            style: {
+                fontSize: '12px',
+            },
+            y: [
+                {
+                    formatter: function (value: number) {
+                        return value.toFixed(2); // Display values in the tooltip with two decimal places
+                    }
+                },
+                {
+                    formatter: function (value: number) {
+                        return value.toFixed(2); // Display values in the tooltip with two decimal places
+                    }
+                }
+            ]
         }
-      },
-      xaxis: {
-        type: 'datetime',
-        labels: {
-          format: 'dd MMM yyyy'
-        }
-      },
-      yaxis: {
-        title: {
-          text: 'Cost'
-        }
-      }
     };
-  }
+}
 
   ngOnDestroy(): void {
     if (this.dataSubscription) {
