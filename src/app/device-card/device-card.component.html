@@ -1,28 +1,254 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-4" *ngFor="let device_id of device_id">
-      <!-- link -->
-      <a [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }" class="text-decoration-none">
-        <div class="bg-white mb-5 p-4 rounded-5 shadow-sm">
-          <div>
-            <img src="/assets/img/img1.jpg" class="card-img-top rounded-4" alt="..." />
-          </div>
-          <div class="h3 mb-3">Device ID: {{ device_id }}</div>
-
-          <!-- details -->
-          <div class="text-dark">
-            <p>Details: {{ latestDeviceData[device_id]?.device_detail }}</p>
-            <p>Location: {{ latestDeviceData[device_id]?.device_location }}</p>
-            <p>Map: {{ latestDeviceData[device_id]?.device_map_img }}</p>
-            <p>Type: {{ latestDeviceData[device_id]?.device_type }}</p>
-            <p>Group: {{ latestDeviceData[device_id]?.group_id }}</p>
-            <!-- แสดงข้อมูลอื่นๆ ตามที่คุณต้องการ -->
-          </div>
-          <i class="bi bi-pencil-square me-3" style="font-size: 26px;"></i>
-          <i class="bi bi-trash"style="font-size: 26px;"></i>
-
+    <div
+      class="col-sm-12 col-md-4 col-xl-3"
+      *ngFor="let device_id of device_id"
+    >
+      <div class="bg-white mb-5 p-4 rounded-5">
+        <div class=" text-center mb-4 mt-1">
+          <img
+            src="/assets/img/{{latestDeviceData[device_id]?.status}}.gif"
+            class="card-img-top rounded-4 img-small " style = "width: 100px; /* กำหนดความกว้างของรูปภาพ */
+            height: auto; "
+            alt="..."
+          />
         </div>
-      </a>
+
+        <div class="h3 mb-3">
+          {{ latestDeviceData[device_id]?.device_name }}
+        </div>
+        <div class="text-dark mb-2" style="margin: -10px 0">
+          <p style="margin: 1px 0">
+            Device ID: {{ latestDeviceData[device_id]?.device_id }}
+          </p>
+          <p style="margin: 1px 0">
+            Details: {{ latestDeviceData[device_id]?.device_detail }}
+          </p>
+          <p style="margin: 1px 0">
+            Location: {{ latestDeviceData[device_id]?.device_location }}
+          </p>
+          <p style="margin: 1px 0">
+            Type: {{ latestDeviceData[device_id]?.device_type }}
+          </p>
+          <p style="margin: 1px 0">
+            Group: {{ latestDeviceData[device_id]?.group_id }}
+          </p>
+        </div>
+
+        <div class="bg-light rounded-5">
+          <button
+            class="btn me-2"
+            [routerLink]="['/dashboard-component']"
+            [queryParams]="{ device_id: device_id }"
+          >
+            <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
+          </button>
+          <button
+            (click)="enableEditMode(device_id)"
+            class="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#editModal"
+          >
+            <i
+              class="bi bi-pencil-square text-primary"
+              style="font-size: 26px"
+            ></i>
+          </button>
+          <button
+            class="btn"
+            (click)="setCurrentDeviceId(device_id)"
+            data-bs-toggle="modal"
+            data-bs-target="#mapModal"
+          >
+            <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
+          </button>
+
+          <button (click)="deleteData(device_id)" class="btn">
+            <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
+          </button>
+        </div>
+
+        <!-- แสดง map -->
+        <!-- Map Modal -->
+        <div
+          class="modal fade"
+          id="mapModal"
+          tabindex="-1"
+          aria-labelledby="mapModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="mapModalLabel">
+                  Map : {{ currentDeviceId }}
+                </h5>
+              </div>
+              <div class="modal-body modal-lg text-center">
+                <img
+                  src="http://localhost:3000/uploads/{{ currentDeviceId }}"
+                  class="img-fluid"
+                  alt="Maps"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- แก้ไขข้อมูล -->
+        <!-- Edit Device Modal -->
+
+        <div
+          class="modal fade"
+          id="editModal"
+          tabindex="-1"
+          aria-labelledby="editModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Device</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form (submit)="saveData()" #editForm="ngForm">
+                  <!-- Add your form fields here -->
+                  <div class="form-group">
+                    <label for="device_id">Device ID:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="device_id"
+                      [(ngModel)]="editedData.device_id"
+                      name="device_id"
+                      readonly
+                    />
+                  </div>
+
+                  <!-- Device Name -->
+                  <div class="form-group">
+                    <label for="device_name">Device Name:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="device_name"
+                      [(ngModel)]="editedData.device_name"
+                      name="device_name"
+                      required
+                    />
+                  </div>
+
+                  <!-- Device Detail -->
+                  <div class="form-group">
+                    <label for="device_detail">Device Detail:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="device_detail"
+                      [(ngModel)]="editedData.device_detail"
+                      name="device_detail"
+                      required
+                    />
+                  </div>
+
+                  <!-- Device Location -->
+                  <div class="form-group">
+                    <label for="device_location">Device Location:</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="device_location"
+                      [(ngModel)]="editedData.device_location"
+                      name="device_location"
+                      required
+                    />
+                  </div>
+
+                  <!-- Device Map -->
+                  <div class="form-group">
+                    <label for="device_map_img">Device Map:</label>
+
+                    <input
+                      type="file"
+                      class="form-control"
+                      id="device_map_img"
+                      (change)="onFileSelected($event)"
+                    />
+                  </div>
+
+                  <!-- Device Type -->
+                  <div class="form-group">
+                    <label for="device_type">Device Type:</label>
+                    <select
+                      class="form-control"
+                      id="device_type"
+                      [(ngModel)]="editedData.device_type"
+                      name="device_type"
+                      required
+                    >
+                      <option [ngValue]="null">Select Device Type</option>
+                      <option [ngValue]="1">ESP</option>
+                      <option [ngValue]="2">Tuya</option>
+                    </select>
+                  </div>
+
+                  <!-- Group ID -->
+                  <div class="form-group">
+                    <label for="group_id">Group ID:</label>
+                    <select
+                      class="form-control"
+                      id="group_id"
+                      [(ngModel)]="editedData.group_id"
+                      name="group_id"
+                      required
+                    >
+                      <option [ngValue]="null">Select Group ID</option>
+                      <option [ngValue]="1">A</option>
+                      <option [ngValue]="2">B</option>
+                    </select>
+                  </div>
+
+                  <!-- Error message -->
+                  <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
+                    Please fill in all required fields.
+                  </div>
+
+                  <!-- Add more fields as needed -->
+                  <div class="mt-2">
+                    <button
+                      (click)="onUpload(); saveData(); reloadPage()"
+                      type="submit"
+                      class="btn btn-success me-2"
+                      [disabled]="
+                        editForm.invalid ||
+                        (selectedFile && selectedFile.size > 5 * 1024 * 1024)
+                      "
+                      data-bs-dismiss="modal"
+                    >
+                      Save
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal"
+                      (click)="cancelEditMode()"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -33,7 +33,7 @@ export class CircleChartComponent implements OnInit, OnDestroy {
     this.chartOptions = {
       series: [this.energy], // ใช้ this.energy ใน series เพื่อแสดงข้อมูลได้
       chart: {
-        height: 350,
+        height: 270,
         type: "radialBar",
         toolbar: {
           show: true
@@ -50,9 +50,9 @@ export class CircleChartComponent implements OnInit, OnDestroy {
             },
             value: {
               show: true,
-              fontSize: "36px",
+              fontSize: "50px",
               formatter: function (val: number) {
-                return val.toFixed(2) + "%";
+                return val.toFixed(2) + "";
               },
             },
           },
@@ -73,27 +73,23 @@ export class CircleChartComponent implements OnInit, OnDestroy {
       this.dataSubscription.unsubscribe();
     }
   }
-
   fetchData() {
-    const apiUrl = `http://localhost:3000/latest_data_esp?device_id=${this.device_id}`;
+    const apiUrl = `http://localhost:3000/latest_data?device_id=${this.device_id}`;
 
-    this.http.get(apiUrl).subscribe((data: any) => {
-      console.log(apiUrl);
-      console.log(data);
+    this.http.get<any[]>(apiUrl).subscribe((data) => {
 
-      if (data) {
-        this.energy = data.energy; // รับข้อมูล energy จาก API
-        console.log(this.energy);
+        this.energy = data[0].energy; // รับข้อมูล energy จาก API
 
         // อัพเดตข้อมูลในกราฟ
         this.chart.updateOptions({
           series: [this.energy],
         });
 
-        console.log("Updated energy:", this.energy);
-      }
+
     });
   }
+
+
 
 
 

@@ -37,7 +37,6 @@ export class TableDeviceComponent implements OnInit {
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
-      console.log(response);
     });
   }
 
@@ -51,10 +50,10 @@ export class TableDeviceComponent implements OnInit {
     });
   }
 
-  // รีเฟรชข้อมูล
-  refreshData(): void {
-    this.loadData();
-  }
+  // // รีเฟรชข้อมูล
+  // refreshData(): void {
+  //   this.loadData();
+  // }
 
   // อัปเดตข้อมูล
   updateData(device_id: any, updatedData: any) {

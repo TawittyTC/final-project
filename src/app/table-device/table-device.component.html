@@ -1,9 +1,12 @@
-<h2>Data</h2>
+<div class="row">
+  <div class="h1 col-10">Data</div>
 
-<!-- แสดงปุ่มเพิ่ม -->
-<button (click)="enableAddMode()" class="btn btn-success mb-3">
-  เพิ่มข้อมูล
-</button>
+  <!-- แสดงปุ่มเพิ่ม -->
+  <button (click)="enableAddMode()" class="btn mb-3 col-2">
+    <i class="bi bi-plus-circle-fill text-primary" style="font-size: 30px"></i>
+  </button>
+
+</div>
 
 <!-- เพิ่มข้อมูล -->
 <div *ngIf="addMode" class="container mt-3">
@@ -61,7 +64,7 @@
 <!-- แสดงข้อมูล -->
 <div *ngIf="!editMode">
   <div id="no-table">
-    <table class="col-sm-12 table ">
+    <table class="col-sm-12 table">
       <thead class="cf">
         <tr>
           <th>Device ID</th>
@@ -85,12 +88,13 @@
           <td data-title="Updated At">
             {{ item.modified_timestamp | date : "yyyy-MM-dd HH:mm:ss" }}
           </td>
+          <!-- แก้ไขข้อมูล -->
           <td data-title="Actions">
-            <button (click)="enableEditMode(item)" class="btn btn-primary">
-              แก้ไข
+            <button (click)="enableEditMode(item)" class="btn ">
+              <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
             </button>
-            <button (click)="deleteData(item.device_id)" class="btn btn-danger">
-              ลบ
+            <button (click)="deleteData(item.device_id)" class="btn">
+              <i class="bi bi-trash-fill text-danger" style="font-size: 26px"></i>
             </button>
           </td>
         </tr>
@@ -108,7 +112,7 @@
     </div> -->
     <div class="form-group h3">
       <label for="device_id">ESP ID :</label>
-      <span id="device_id"> {{editedData.device_id}}</span>
+      <span id="device_id"> {{ editedData.device_id }}</span>
     </div>
     <div class="form-group">
       <label for="device_name">device_name:</label>
