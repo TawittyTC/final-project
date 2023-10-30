@@ -1,0 +1,32 @@
+.custom-dialogflow-messenger {
+    .df-messenger {
+      .df-messenger-title {
+        font-weight: bold;
+        font-size: 18px;
+        color: #333;
+      }
+  
+      .df-messenger-agent {
+        font-size: 14px;
+        color: #666;
+      }
+  
+      /* ปรับแต่งสไตล์ของ Suggestion Chips ตรงนี้ */
+      .df-messenger-suggested-chips {
+        .df-messenger-suggested-chip {
+          background-color: #4CAF50; /* สีพื้นหลังของ Suggestion Chip */
+          color: #fff; /* สีข้อความของ Suggestion Chip */
+          margin: 4px; /* ระยะห่างระหว่าง Suggestion Chips */
+          padding: 10px 15px; /* ขนาดของ Suggestion Chip */
+          border-radius: 5px; /* ขอบโค้งของ Suggestion Chip */
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+  
+        .df-messenger-suggested-chip:hover {
+          background-color: #45a049; /* สีพื้นหลังเมื่อโฮเวอร์ Suggestion Chip */
+        }
+      }
+    }
+  }
+  
