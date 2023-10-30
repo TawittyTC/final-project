@@ -126,7 +126,8 @@ export class ChartComponent implements OnInit, OnDestroy {
                 data: chartDataWithCost.map((item: { x: any; cost: any; }) => ({
                     x: item.x,
                     y: item.cost
-                }))
+                })),
+                color: '#00D41A' // เพิ่มสีเขียวที่นี่
             }
         ],
         chart: {
