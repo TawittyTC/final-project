@@ -6,7 +6,7 @@ import { interval, Subscription } from 'rxjs';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public chartData: any[] = [];
@@ -14,6 +14,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dataSubscription: Subscription | undefined;
   data: any = {};
   totalEnergy: number = 0; // เพิ่มตัวแปร totalEnergy และกำหนดค่าเริ่มต้น
+  cost: number = 0;
+  unitCost: number = 4;
 
   constructor(private route: ActivatedRoute, private http: HttpClient) {}
 
@@ -49,13 +51,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData1() {
-    this.http.get<any[]>(`http://localhost:3000/energy?device_id=${this.device_id}`).subscribe(data => {
-      this.chartData = data;
+    this.http
+      .get<any[]>(`http://localhost:3000/energy?device_id=${this.device_id}`)
+      .subscribe((data) => {
+        this.chartData = data;
 
-      const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
-      console.log(`Total Energy: ${totalEnergy} kWh`);
-      this.totalEnergy = totalEnergy.toFixed(3); // อัพเดทค่า totalEnergy
+        const totalEnergy = this.chartData.reduce(
+          (total, dataPoint) => total + dataPoint.energy,
+          0
+        );
+        console.log(`Total Energy: ${totalEnergy} kWh`);
+        this.totalEnergy = totalEnergy.toFixed(3); // อัพเดทค่า totalEnergy
 
-    });
+        this.cost = totalEnergy * this.unitCost;
+        this.cost = +this.cost.toFixed(3); // กำหนดค่า cost เป็นตัวเลขและปัดทศนิยม 3 ตำแหน่ง
+      });
   }
 }
