@@ -1,16 +1,17 @@
 <div class="container py-4">
   <!-- head details -->
-  <header class="pb-3">
+  <div class="p-2">
     <div class="display-5 h1">Dashboard</div>
-    <p class="fs-5 text-muted">Device ID: {{ device_id }}</p>
-  </header>
+    <p class="h4 text-muted fw-light">Device ID: {{ device_id }}</p>
+  </div>
 
   <div class="row">
     <div class="col-sm-6">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4">
-          Realtime Energy
+        <div class="h4 text-muted fw-light">
+          Energy
         </div>
+        <!-- <div class="text-muted fw-light">Energy</div> -->
           <!-- <app-circle-chart></app-circle-chart> -->
           <div class="fw-light h1 mt-3">97410 Kwh</div>
 
@@ -19,13 +20,15 @@
 
     <div class="col-sm-3">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4">Total Energy</div>
+        <div class="h4 text-muted fw-light">Total Energy</div>
+        <!-- <div class="text-muted fw-light">Energy</div> -->
         <div class="fw-light h1 mt-3">97410 Kwh</div>
       </div>
     </div>
     <div class="col-sm-3">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4">Total Cost</div>
+        <div class="h4 text-muted fw-light">Total Energy</div>
+        <!-- <div class="text-muted fw-light">Energy</div> -->
         <div class="fw-light h1 mt-3">$480</div>
       </div>
     </div>
@@ -34,22 +37,22 @@
   <div class="row">
     <div class="col-sm-12">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4">Realtime</div>
+        <!-- <div class="h4">Realtime</div> -->
         <div class="row">
           <div class="col">
-            <div class="text-muted fw-light">Current</div>
+            <div class="h4 text-muted fw-light">Current</div>
             <div class="h1 fw-light">{{ data[0].current }} A</div>
           </div>
           <div class="col">
-            <div class="text-muted fw-light">Voltage</div>
+            <div class="h4 text-muted fw-light">Voltage</div>
             <div class="h1 fw-light">{{ data[0].voltage }} V</div>
           </div>
           <div class="col">
-            <div class="text-muted fw-light">Power</div>
+            <div class="h4 text-muted fw-light">Power</div>
             <div class="h1 fw-light">{{ data[0].power }} W</div>
           </div>
         </div>
-        <div class="row">
+        <!-- <div class="row">
           <div class="col">
             <div class="h2 mb-2 mt-1">Amount</div>
             <div class="text-muted fw-light">Current</div>
@@ -86,7 +89,7 @@
               ></div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
