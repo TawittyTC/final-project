@@ -22,9 +22,9 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
     this.fetchData();
-  
+
   }
-  
+
   generateChart() {
     // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts
     this.chartOptions = {
@@ -50,7 +50,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         },
       },
       xaxis: {
-    
+
         type: 'datetime',
         labels: {
           format: 'dd MMM yyyy HH:mm:ss', // เพิ่มระดับวินาทีในรูปแบบวัน เดือน ปี ชั่วโมง นาที วินาที
@@ -66,7 +66,7 @@ export class ChartComponent implements OnInit, OnDestroy {
       },
       yaxis: {
         title: {
-          text: 'Energy'
+          text: 'Energy (kWh)'
         },
         labels: {
           formatter: function (value: number) {
@@ -107,9 +107,9 @@ export class ChartComponent implements OnInit, OnDestroy {
       }
     };
   }
-  
-  
-  
+
+
+
   generateChart2() {
     // Calculate cost of electricity and add it to the data
     const chartDataWithCost = this.chartData.map((item: { created_timestamp: string | number | Date; energy: number; }) => ({
@@ -160,7 +160,7 @@ export class ChartComponent implements OnInit, OnDestroy {
         yaxis: [
           {
               title: {
-                  text: 'Energy (kWh)'
+                  text: 'Cost (฿)'
               },
               labels: {
                   formatter: function (value: number) {
@@ -171,7 +171,7 @@ export class ChartComponent implements OnInit, OnDestroy {
           {
               opposite: true,
               title: {
-                  text: 'Cost (฿)'
+                  text: ''
               },
               labels: {
                   formatter: function (value: number) {
@@ -180,7 +180,7 @@ export class ChartComponent implements OnInit, OnDestroy {
               }
           }
       ],
-  
+
         dataLabels: {
             enabled: true, // Show data labels for each point
             style: {
@@ -241,5 +241,5 @@ export class ChartComponent implements OnInit, OnDestroy {
     console.log(`Total Energy: ${totalEnergy} kWh`);
     });
   }
-  
+
 }
