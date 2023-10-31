@@ -19,8 +19,8 @@
 
 
 <!-- เพิ่มข้อมูล -->
-<div *ngIf="addMode" class="container mt-3 mb-4">
-  <h3>เพิ่มข้อมูลใหม่</h3>
+<div *ngIf="addMode" class="container mt-3 mb-4 p-5 bg-white rounded-5">
+  <div class="h3 fw-light mb-2">เพิ่มข้อมูลใหม่</div>
   <form (submit)="createNewData(newData)">
     <div class="form-group">
       <label for="new_device_id">ESP ID:</label>
