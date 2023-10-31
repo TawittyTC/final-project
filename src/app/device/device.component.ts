@@ -16,6 +16,8 @@ export class DeviceComponent implements OnInit{
   editedData: any = {};
   newData: any = {};
   addMode = false;
+  unitCost: number = 0;
+
   private dataSubscription: Subscription | undefined;
 
   constructor(private apiService: ApiService){}
@@ -133,5 +135,17 @@ getDevicesByGroup(group: string) {
     // รีโหลดหน้าเว็บ
     location.reload();
   }
+
+  // ฟังก์ชันเปิดโหมดตั้งค่าหน่วยค่าไฟ
+enableUnitCostMode() {
+  // ทำการเปิดโหมดตั้งค่าหน่วยค่าไฟ และเรียก Modal ที่คุณสร้างขึ้น
+  // เพื่อให้ผู้ใช้กรอกหน่วยค่าไฟ
+}
+
+// ฟังก์ชันสำหรับการตั้งค่าหน่วยค่าไฟ
+setUnitCost(unitCost: number) {
+  // ทำการบันทึกหน่วยค่าไฟที่ผู้ใช้กรอกลงในแหล่งข้อมูลหรือที่คุณต้องการ
+}
+
 }
 
