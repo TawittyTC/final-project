@@ -129,5 +129,9 @@ getDevicesByGroup(group: string) {
     this.addMode = false;
     this.newData = {}; // ล้างข้อมูลที่กรอกหลังยกเลิก
   }
+  reloadPage() {
+    // รีโหลดหน้าเว็บ
+    location.reload();
+  }
 }
 
