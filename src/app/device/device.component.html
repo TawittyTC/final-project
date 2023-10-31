@@ -10,10 +10,15 @@
         <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of groups">{{ group }}</a>
       </div>
     </div>
+    <span>
+    <button type="button" class="btn" (click)="enableAddMode()" data-bs-toggle="modal" data-bs-target="#addDataModal">
+      <i class="bi bi-cash-coin text-primary" style="font-size: 40px"></i>
+    </button>
     <!-- แสดงปุ่มเพิ่ม -->
     <button type="button" class="btn" (click)="enableAddMode()" data-bs-toggle="modal" data-bs-target="#addDataModal">
       <i class="bi bi-plus-circle-fill text-primary" style="font-size: 40px"></i>
     </button>
+  </span>
   </div>
   <!-- ส่วนอื่น ๆ ของเนื้อหาของคุณ -->
 </div>
