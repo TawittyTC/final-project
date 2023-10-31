@@ -146,6 +146,8 @@ enableUnitCostMode() {
 setUnitCost(unitCost: number) {
   // ทำการบันทึกหน่วยค่าไฟที่ผู้ใช้กรอกลงในแหล่งข้อมูลหรือที่คุณต้องการ
   this.unitCost = unitCost; // กำหนดค่า unitCost
+  console.log(unitCost);
+
 }
 
 
