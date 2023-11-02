@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api.service';
 import { interval, Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-device',
   templateUrl: './device.component.html',
-  styleUrls: ['./device.component.scss']
+  styleUrls: ['./device.component.scss'],
 })
-export class DeviceComponent implements OnInit{
+export class DeviceComponent implements OnInit {
   showGroupDropdown: boolean = false;
   selectedGroup: string = '';
   groups: string[] = [''];
@@ -24,28 +25,28 @@ export class DeviceComponent implements OnInit{
 
   private dataSubscription: Subscription | undefined;
 
-  constructor(private apiService: ApiService){}
+  constructor(private apiService: ApiService, private http: HttpClient) {}
 
   toggleGroupDropdown() {
     this.showGroupDropdown = !this.showGroupDropdown;
   }
- // ฟังก์ชันเลือกกลุ่ม
- selectGroup(group: string) {
-  this.selectedGroup = group;
-  this.showGroupDropdown = false;
-}
+  // ฟังก์ชันเลือกกลุ่ม
+  selectGroup(group: string) {
+    this.selectedGroup = group;
+    this.showGroupDropdown = false;
+  }
 
-// สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
-getDevicesByGroup(group: string) {
-  // ทำงานเรียกข้อมูลของ device ตามกลุ่มที่เลือก
-}
+  // สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
+  getDevicesByGroup(group: string) {
+    // ทำงานเรียกข้อมูลของ device ตามกลุ่มที่เลือก
+  }
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadData();
 
-    this.dataSubscription = interval (2000).subscribe(()=>{
-      this.loadData
-    })
+    this.dataSubscription = interval(2000).subscribe(() => {
+      this.loadData;
+    });
   }
 
   ngOnDestroy() {
@@ -69,11 +70,9 @@ getDevicesByGroup(group: string) {
     });
   }
 
-
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
     this.apiService.createData(newData).subscribe(() => {
-
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -107,16 +106,18 @@ getDevicesByGroup(group: string) {
 
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
-    this.apiService.updateData(this.editedData.device_id, this.editedData).subscribe(
-      () => {
-        this.editMode = false;
-        this.loadData();
-        this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
-      },
-      (error) => {
-        console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
-      }
-    );
+    this.apiService
+      .updateData(this.editedData.device_id, this.editedData)
+      .subscribe(
+        () => {
+          this.editMode = false;
+          this.loadData();
+          this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
+        },
+        (error) => {
+          console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
+        }
+      );
   }
 
   // ยกเลิกโหมดแก้ไข
@@ -141,22 +142,34 @@ getDevicesByGroup(group: string) {
   }
 
   // ฟังก์ชันเปิดโหมดตั้งค่าหน่วยค่าไฟ
-enableUnitCostMode() {
-  // ทำการเปิดโหมดตั้งค่าหน่วยค่าไฟ และเรียก Modal ที่คุณสร้างขึ้น
-  // เพื่อให้ผู้ใช้กรอกหน่วยค่าไฟ
-}
+  enableUnitCostMode() {
+    // ทำการเปิดโหมดตั้งค่าหน่วยค่าไฟ และเรียก Modal ที่คุณสร้างขึ้น
+    // เพื่อให้ผู้ใช้กรอกหน่วยค่าไฟ
+  }
 
-// ฟังก์ชันสำหรับการตั้งค่าหน่วยค่าไฟ
+  // ฟังก์ชันสำหรับการอัปเดตหน่วยค่าไฟ
 saveUnitCost(): void {
   if (this.isNumeric(this.unitCost)) {
-    // บันทึกค่า Unit Cost ได้ที่นี่
-    console.log('Unit Cost saved:', this.unitCost);
+    // ค่าที่คุณกรอก
+    console.log('ค่าที่คุณกรอก:', this.unitCost);
+
+    // ส่งค่า unitCost ไปยัง API สำหรับการอัปเดตค่า Unit Cost
+    this.http
+      .put('http://localhost:3000/putUnitCost', { unitCost: this.unitCost })
+      .subscribe(
+        (response: any) => {
+          console.log('Unit Cost updated:', this.unitCost);
+          alert('อัปเดต Unit Cost สำเร็จ');
+        },
+        (error) => {
+          console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
+          alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
+        }
+      );
   } else {
     alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
   }
 }
 
 
-
 }
-
