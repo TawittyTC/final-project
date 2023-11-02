@@ -25,7 +25,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   data: any;
   formIsValid: boolean = false;
   formIncompleteAlert: string = '';
-  public currentDeviceId: string | null = null;
+  public currentDeviceId!: string;
   infoMode: boolean | undefined;
 
   constructor(
