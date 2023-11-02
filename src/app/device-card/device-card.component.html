@@ -65,7 +65,7 @@
           data-bs-toggle="modal"
           data-bs-target="#infoModal"
         >
-          <i class="bi bi-info-circle-fill" style="font-size: 26px"></i>
+          <i class="bi bi-info-circle text-success" style="font-size: 26px"></i>
         </button>
 
 
@@ -79,13 +79,11 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">{{ latestDeviceData[currentDeviceId]?.device_name }}</h5>
+                <h5 class="modal-title fw-light h2" id="infoModalLabel">{{ latestDeviceData[currentDeviceId]?.device_name }}</h5>
               </div>
               <div class="modal-body">
                 <div class="bg-white mb-1 rounded-5">
-                  <!-- <div class="display-4 mb-3 fw-light">
-                     <span class="fw-light">Device :</span> {{ latestDeviceData[currentDeviceId]?.device_name }}
-                  </div> -->
+
                     <p class="fw-light" >
                       Device ID: {{ latestDeviceData[currentDeviceId]?.device_id }}
                     </p>
