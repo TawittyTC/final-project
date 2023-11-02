@@ -1,12 +1,15 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-12 col-md-4 col-xl-3" *ngFor="let device_id of device_id">
+    <div
+      class="col-sm-12 col-md-4 col-xl-3"
+      *ngFor="let device_id of device_id"
+    >
       <div class="bg-white mb-5 p-4 rounded-5">
-        <div class=" text-center mb-4 mt-1">
+        <div class="text-center mb-4 mt-1">
           <img
-            src="/assets/img/{{latestDeviceData[device_id]?.status}}.jpg"
-            class="card-img-top rounded-4 img-small " style = "width: 100px; /* กำหนดความกว้างของรูปภาพ */
-            height: auto; "
+            src="/assets/img/{{ latestDeviceData[device_id]?.status }}.jpg"
+            class="card-img-top rounded-4 img-small"
+            style="width: 100px; /* กำหนดความกว้างของรูปภาพ */ height: auto"
             alt="..."
           />
         </div>
@@ -14,19 +17,19 @@
           {{ latestDeviceData[device_id]?.device_name }}
         </div>
         <div class="text-dark mb-2" style="margin: -10px 0">
-          <p class="fw-light" >
+          <p class="fw-light">
             Device ID: {{ latestDeviceData[device_id]?.device_id }}
-          </p >
+          </p>
           <!-- <p class="fw-light">
             Details: {{ latestDeviceData[device_id]?.device_detail }}
           </p>
           <p class="fw-light" >
             Location: {{ latestDeviceData[device_id]?.device_location }}
           </p> -->
-          <p class="fw-light" >
+          <p class="fw-light">
             Type: {{ latestDeviceData[device_id]?.device_type }}
           </p>
-          <p class="fw-light" >
+          <p class="fw-light">
             Group: {{ latestDeviceData[device_id]?.group_id }}
           </p>
         </div>
@@ -60,54 +63,69 @@
           </button> -->
           <!-- Info Button -->
           <button
-          (click)="enableInfoMode(device_id)"
-          class="btn"
-          data-bs-toggle="modal"
-          data-bs-target="#infoModal"
-        >
-          <i class="bi bi-info-circle-fill" style="font-size: 26px"></i>
-        </button>
-
-
+            (click)="enableInfoMode(device_id)"
+            class="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#infoModal"
+          >
+            <i class="bi bi-info-circle-fill" style="font-size: 26px"></i>
+          </button>
 
           <button (click)="deleteData(device_id)" class="btn">
             <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
           </button>
         </div>
+
         <!-- Info Modal -->
-        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true" *ngIf="currentDeviceId">
+        <div
+          class="modal fade"
+          id="infoModal"
+          tabindex="-1"
+          aria-labelledby="infoModalLabel"
+          aria-hidden="true"
+          *ngIf="currentDeviceId"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">{{ latestDeviceData[currentDeviceId]?.device_name }}</h5>
+                <h5 class="modal-title" id="infoModalLabel">
+                  {{ latestDeviceData[currentDeviceId]?.device_name }}
+                </h5>
               </div>
               <div class="modal-body">
                 <div class="bg-white mb-1 rounded-5">
                   <!-- <div class="display-4 mb-3 fw-light">
                      <span class="fw-light">Device :</span> {{ latestDeviceData[currentDeviceId]?.device_name }}
                   </div> -->
-                    <p class="fw-light" >
-                      Device ID: {{ latestDeviceData[currentDeviceId]?.device_id }}
-                    </p>
-                    <p class="fw-light" >
-                      Details: {{ latestDeviceData[currentDeviceId]?.device_detail }}
-                    </p>
-                    <p class="fw-light" >
-                      Location: {{ latestDeviceData[currentDeviceId]?.device_location }}
-                    </p>
-                    <p class="fw-light" >
-                      Type: {{ latestDeviceData[currentDeviceId]?.device_type }}
-                    </p>
-                    <p class="fw-light" >
-                      Group: {{ latestDeviceData[currentDeviceId]?.group_id }}
-                    </p>
-                    <!-- Add status to display online/offline status -->
-                    <p class="fw-light" >
-                      Status: {{ latestDeviceData[currentDeviceId]?.status }}
-                    </p>
-                    <p class = "fw-light">
-                      Modified: {{ latestDeviceData[currentDeviceId]?.modified_timestamp | date: 'dd MMM y HH.mm' }}
-                    </p>
+                  <p class="fw-light">
+                    Device ID:
+                    {{ latestDeviceData[currentDeviceId]?.device_id }}
+                  </p>
+                  <p class="fw-light">
+                    Details:
+                    {{ latestDeviceData[currentDeviceId]?.device_detail }}
+                  </p>
+                  <p class="fw-light">
+                    Location:
+                    {{ latestDeviceData[currentDeviceId]?.device_location }}
+                  </p>
+                  <p class="fw-light">
+                    Type: {{ latestDeviceData[currentDeviceId]?.device_type }}
+                  </p>
+                  <p class="fw-light">
+                    Group: {{ latestDeviceData[currentDeviceId]?.group_id }}
+                  </p>
+                  <!-- Add status to display online/offline status -->
+                  <p class="fw-light">
+                    Status: {{ latestDeviceData[currentDeviceId]?.status }}
+                  </p>
+                  <p class="fw-light">
+                    Modified:
+                    {{
+                      latestDeviceData[currentDeviceId]?.modified_timestamp
+                        | date : "dd MMM y HH.mm"
+                    }}
+                  </p>
                   <!-- Rest of the content for this device card -->
                 </div>
 
@@ -121,7 +139,9 @@
                     </div>
                     <div class="modal-body modal-lg text-center">
                       <img
-                        src="http://localhost:3000/uploads/{{ currentDeviceId }}"
+                        src="http://localhost:3000/uploads/{{
+                          currentDeviceId
+                        }}"
                         class="img-fluid"
                         alt="Maps"
                       />
@@ -130,7 +150,13 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
@@ -147,8 +173,15 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <div class="modal-title h5 fw-light" id="editModalLabel">Edit Device</div>
-                <button  type="button"  class="btn-close"  data-bs-dismiss="modal"  aria-label="Close" ></button>
+                <div class="modal-title h5 fw-light" id="editModalLabel">
+                  Edit Device
+                </div>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
               <div class="modal-body">
                 <form (submit)="saveData()" #editForm="ngForm">
@@ -281,7 +314,8 @@
               </div>
             </div>
           </div>
-        </div><!-- แก้ไขข้อมูล -->
+        </div>
+        <!-- แก้ไขข้อมูล -->
       </div>
     </div>
   </div>
