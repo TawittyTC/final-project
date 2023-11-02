@@ -16,7 +16,11 @@ export class DeviceComponent implements OnInit{
   editedData: any = {};
   newData: any = {};
   addMode = false;
-  unitCost: number = 0;
+  unitCost: number | null = null;
+
+  isNumeric(value: any): boolean {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  }
 
   private dataSubscription: Subscription | undefined;
 
@@ -143,12 +147,15 @@ enableUnitCostMode() {
 }
 
 // ฟังก์ชันสำหรับการตั้งค่าหน่วยค่าไฟ
-setUnitCost(unitCost: number) {
-  // ทำการบันทึกหน่วยค่าไฟที่ผู้ใช้กรอกลงในแหล่งข้อมูลหรือที่คุณต้องการ
-  this.unitCost = unitCost; // กำหนดค่า unitCost
-  console.log("Your Unit Cost is",unitCost);
-
+saveUnitCost(): void {
+  if (this.isNumeric(this.unitCost)) {
+    // บันทึกค่า Unit Cost ได้ที่นี่
+    console.log('Unit Cost saved:', this.unitCost);
+  } else {
+    alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+  }
 }
+
 
 
 }
