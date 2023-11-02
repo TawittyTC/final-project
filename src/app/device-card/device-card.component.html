@@ -1,9 +1,6 @@
 <div class="container">
   <div class="row">
-    <div
-      class="col-sm-12 col-md-4 col-xl-3"
-      *ngFor="let device_id of device_id"
-    >
+    <div class="col-sm-12 col-md-4 col-xl-3" *ngFor="let device_id of device_id">
       <div class="bg-white mb-5 p-4 rounded-5">
         <div class=" text-center mb-4 mt-1">
           <img
@@ -13,8 +10,6 @@
             alt="..."
           />
         </div>
-
-
         <div class="h2 mb-3 fw-normal">
           {{ latestDeviceData[device_id]?.device_name }}
         </div>
@@ -22,12 +17,12 @@
           <p class="fw-light" style="margin: 1px 0">
             Device ID: {{ latestDeviceData[device_id]?.device_id }}
           </p >
-          <p class="fw-light"style="margin: 1px 0">
+          <!-- <p class="fw-light"style="margin: 1px 0">
             Details: {{ latestDeviceData[device_id]?.device_detail }}
           </p>
           <p class="fw-light" style="margin: 1px 0">
             Location: {{ latestDeviceData[device_id]?.device_location }}
-          </p>
+          </p> -->
           <p class="fw-light" style="margin: 1px 0">
             Type: {{ latestDeviceData[device_id]?.device_type }}
           </p>
@@ -55,50 +50,96 @@
               style="font-size: 26px"
             ></i>
           </button>
-          <button
+          <!-- <button
             class="btn"
             (click)="setCurrentDeviceId(device_id)"
             data-bs-toggle="modal"
             data-bs-target="#mapModal"
           >
             <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
-          </button>
+          </button> -->
+          <!-- Info Button -->
+          <button
+          (click)="enableInfoMode(device_id)"
+          class="btn"
+          data-bs-toggle="modal"
+          data-bs-target="#infoModal"
+        >
+          <i class="bi bi-info-circle-fill" style="font-size: 26px"></i>
+        </button>
+        
+
 
           <button (click)="deleteData(device_id)" class="btn">
             <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
           </button>
         </div>
-
-        <!-- แสดง map -->
-        <!-- Map Modal -->
-        <div
-          class="modal fade"
-          id="mapModal"
-          tabindex="-1"
-          aria-labelledby="mapModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog modal-lg">
+        <!-- Info Modal -->
+        <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true" *ngIf="currentDeviceId">
+          <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="mapModalLabel">
-                  Map : {{ currentDeviceId }}
-                </h5>
+                <h5 class="modal-title" id="infoModalLabel">Device Information</h5>
               </div>
-              <div class="modal-body modal-lg text-center">
-                <img
-                  src="http://localhost:3000/uploads/{{ currentDeviceId }}"
-                  class="img-fluid"
-                  alt="Maps"
-                />
+              <div class="modal-body">
+                <div class="bg-white mb-5 p-4 rounded-5">
+                  <div class="h2 mb-3 fw-normal">
+                    Device Name: {{ latestDeviceData[currentDeviceId]?.device_name }}
+                  </div>
+                  <div class="text-dark mb-2" style="margin: -10px 0">
+                    <p class="fw-light" style="margin: 1px 0">
+                      Device ID: {{ latestDeviceData[currentDeviceId]?.device_id }}
+                    </p>
+                    <p class="fw-light" style="margin: 1px 0">
+                      Details: {{ latestDeviceData[currentDeviceId]?.device_detail }}
+                    </p>
+                    <p class="fw-light" style="margin: 1px 0">
+                      Location: {{ latestDeviceData[currentDeviceId]?.device_location }}
+                    </p>
+                    <p class="fw-light" style="margin: 1px 0">
+                      Type: {{ latestDeviceData[currentDeviceId]?.device_type }}
+                    </p>
+                    <p class="fw-light" style="margin: 1px 0">
+                      Group: {{ latestDeviceData[currentDeviceId]?.group_id }}
+                    </p>
+                    <!-- Add status to display online/offline status -->
+                    <p class="fw-light" style="margin: 1px 0">
+                      Status: {{ latestDeviceData[currentDeviceId]?.status }}
+                    </p>
+                    <p style="margin: 1px 0">
+                      Modified: {{ latestDeviceData[currentDeviceId]?.modified_timestamp | date: 'dd MMM y HH.mm' }}
+                    </p>
+                    
+                  </div>
+                  <!-- Rest of the content for this device card -->
+                </div>
+
+                <!-- Display Map Here -->
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="mapModalLabel">
+                        Map : {{ currentDeviceId }}
+                      </h5>
+                    </div>
+                    <div class="modal-body modal-lg text-center">
+                      <img
+                        src="http://localhost:3000/uploads/{{ currentDeviceId }}"
+                        class="img-fluid"
+                        alt="Maps"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
               </div>
             </div>
           </div>
         </div>
-
         <!-- แก้ไขข้อมูล -->
         <!-- Edit Device Modal -->
-
         <div
           class="modal fade"
           id="editModal"
@@ -110,12 +151,7 @@
             <div class="modal-content">
               <div class="modal-header">
                 <div class="modal-title h5 fw-light" id="editModalLabel">Edit Device</div>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                <button  type="button"  class="btn-close"  data-bs-dismiss="modal"  aria-label="Close" ></button>
               </div>
               <div class="modal-body">
                 <form (submit)="saveData()" #editForm="ngForm">
@@ -246,9 +282,9 @@
                   </div>
                 </form>
               </div>
-            </div>
+            </div>      
           </div>
-        </div>
+        </div><!-- แก้ไขข้อมูล -->   
       </div>
     </div>
   </div>
