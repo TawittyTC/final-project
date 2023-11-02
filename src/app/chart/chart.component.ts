@@ -14,7 +14,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   public chartOptions2: any;
   device_id: string = '';
   dataSubscription: Subscription | undefined;
-  unitCost: number = 4;
+  unitCost: number = 0;
 
   constructor(private route: ActivatedRoute,private http: HttpClient) {
   }
@@ -22,7 +22,11 @@ export class ChartComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
     this.fetchData();
+    this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
 
+    this.dataSubscription = interval(5000).subscribe(() => {
+      this.fetchUnitCost();
+    });
   }
 
   generateChart() {
@@ -239,8 +243,23 @@ export class ChartComponent implements OnInit, OnDestroy {
 
       // คำนวณค่าไฟรวม
     const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
-    
+
     });
   }
 
+  // สร้างฟังก์ชันใหม่เพื่อดึงค่า unitCost จาก API
+  fetchUnitCost() {
+    this.http.get<any[]>('http://localhost:3000/getUnitCost').subscribe(
+      (response: any[]) => {
+        if (response.length > 0) {
+          // กำหนดค่า unitCost จากอ็อบเจ็กต์แรกในอาร์เรย์
+          this.unitCost = response[0].unitCost;
+          console.log('UnitCost:คือ:',this.unitCost);
+        }
+      },
+      (error) => {
+        console.error('เกิดข้อผิดพลาดในการดึงข้อมูล Unit Cost:', error);
+      }
+    );
+  }
 }
