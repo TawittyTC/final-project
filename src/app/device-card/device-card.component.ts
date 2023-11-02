@@ -25,7 +25,8 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   data: any;
   formIsValid: boolean = false;
   formIncompleteAlert: string = '';
-  currentDeviceId: string | null = null;
+  public currentDeviceId: string | null = null;
+  infoMode: boolean | undefined;
 
   constructor(
     private apiService: ApiService,
@@ -190,6 +191,11 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
   }
 
+  // เริ่มโหมดแสดงข้อมูล (Info Mode)
+  enableInfoMode(device_id: string) {
+  this.infoMode = true;
+  this.currentDeviceId = device_id; // Set the currentDeviceId when entering info mode
+}
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     if (this.formIsValid) {
