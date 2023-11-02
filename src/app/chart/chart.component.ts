@@ -71,28 +71,17 @@ export class ChartComponent implements OnInit, OnDestroy {
         }
       },
       yaxis: [
-        {
-            title: {
-                text: 'Cost (฿)'
-            },
-            labels: {
-                formatter: function (value: number) {
-                    return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
-                }
-            }
-        },
-        {
-            opposite: true,
-            title: {
-                text: ''
-            },
-            labels: {
-                formatter: function (value: number) {
-                    return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
-                }
-            }
-        }
-    ],
+          {
+              title: {
+                  text: 'Energy (Khw)'
+              },
+              labels: {
+                  formatter: function (value: number) {
+                      return 'Khw' + value.toFixed(2); // Add "฿" as the currency symbol
+                  }
+              }
+          },
+      ],
       dataLabels: {
         enabled: true, // แสดงข้อมูลแต่ละจุด
         style: {
@@ -190,17 +179,6 @@ export class ChartComponent implements OnInit, OnDestroy {
                   }
               }
           },
-          {
-              opposite: true,
-              title: {
-                  text: ''
-              },
-              labels: {
-                  formatter: function (value: number) {
-                      return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
-                  }
-              }
-          }
       ],
 
         dataLabels: {
