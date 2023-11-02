@@ -40,6 +40,8 @@ export class ChartComponent implements OnInit, OnDestroy {
         }))
       }],
       chart: {
+        id: 'line-2',
+        group: 'social',
         type: 'line',
         height: 450, // เพิ่มความสูงของกราฟ
         animations: {
@@ -68,16 +70,29 @@ export class ChartComponent implements OnInit, OnDestroy {
           }
         }
       },
-      yaxis: {
-        title: {
-          text: 'Energy (kWh)'
+      yaxis: [
+        {
+            title: {
+                text: 'Cost (฿)'
+            },
+            labels: {
+                formatter: function (value: number) {
+                    return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
+                }
+            }
         },
-        labels: {
-          formatter: function (value: number) {
-            return value.toFixed(2); // แสดงค่าของ y-axis ในรูปแบบทศนิยม
-          }
+        {
+            opposite: true,
+            title: {
+                text: ''
+            },
+            labels: {
+                formatter: function (value: number) {
+                    return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
+                }
+            }
         }
-      },
+    ],
       dataLabels: {
         enabled: true, // แสดงข้อมูลแต่ละจุด
         style: {
@@ -135,6 +150,8 @@ export class ChartComponent implements OnInit, OnDestroy {
             }
         ],
         chart: {
+            id: 'line-1',
+            group: 'social',
             type: 'line',
             height: 450, // Increase the chart height
             animations: {
