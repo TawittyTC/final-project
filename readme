@@ -1,0 +1,8 @@
+http://localhost:3000
+
+src\app\get-img.service.ts
+src\app\api.service.ts
+src\app\device-card\device-card.component.ts
+src\app\device-card\device-card.component.html
+src\app\device\device.component.ts
+src\app\dashboard\dashboard.component.ts
