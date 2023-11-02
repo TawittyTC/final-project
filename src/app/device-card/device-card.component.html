@@ -14,19 +14,19 @@
           {{ latestDeviceData[device_id]?.device_name }}
         </div>
         <div class="text-dark mb-2" style="margin: -10px 0">
-          <p class="fw-light" style="margin: 1px 0">
+          <p class="fw-light" >
             Device ID: {{ latestDeviceData[device_id]?.device_id }}
           </p >
-          <!-- <p class="fw-light"style="margin: 1px 0">
+          <!-- <p class="fw-light">
             Details: {{ latestDeviceData[device_id]?.device_detail }}
           </p>
-          <p class="fw-light" style="margin: 1px 0">
+          <p class="fw-light" >
             Location: {{ latestDeviceData[device_id]?.device_location }}
           </p> -->
-          <p class="fw-light" style="margin: 1px 0">
+          <p class="fw-light" >
             Type: {{ latestDeviceData[device_id]?.device_type }}
           </p>
-          <p class="fw-light" style="margin: 1px 0">
+          <p class="fw-light" >
             Group: {{ latestDeviceData[device_id]?.group_id }}
           </p>
         </div>
@@ -67,7 +67,7 @@
         >
           <i class="bi bi-info-circle-fill" style="font-size: 26px"></i>
         </button>
-        
+
 
 
           <button (click)="deleteData(device_id)" class="btn">
@@ -82,34 +82,34 @@
                 <h5 class="modal-title" id="infoModalLabel">Device Information</h5>
               </div>
               <div class="modal-body">
-                <div class="bg-white mb-5 p-4 rounded-5">
+                <div class="bg-white mb-1 p-4 rounded-5">
                   <div class="h2 mb-3 fw-normal">
-                    Device Name: {{ latestDeviceData[currentDeviceId]?.device_name }}
+                     {{ latestDeviceData[currentDeviceId]?.device_name }}
                   </div>
                   <div class="text-dark mb-2" style="margin: -10px 0">
-                    <p class="fw-light" style="margin: 1px 0">
+                    <p class="fw-light" >
                       Device ID: {{ latestDeviceData[currentDeviceId]?.device_id }}
                     </p>
-                    <p class="fw-light" style="margin: 1px 0">
+                    <p class="fw-light" >
                       Details: {{ latestDeviceData[currentDeviceId]?.device_detail }}
                     </p>
-                    <p class="fw-light" style="margin: 1px 0">
+                    <p class="fw-light" >
                       Location: {{ latestDeviceData[currentDeviceId]?.device_location }}
                     </p>
-                    <p class="fw-light" style="margin: 1px 0">
+                    <p class="fw-light" >
                       Type: {{ latestDeviceData[currentDeviceId]?.device_type }}
                     </p>
-                    <p class="fw-light" style="margin: 1px 0">
+                    <p class="fw-light" >
                       Group: {{ latestDeviceData[currentDeviceId]?.group_id }}
                     </p>
                     <!-- Add status to display online/offline status -->
-                    <p class="fw-light" style="margin: 1px 0">
+                    <p class="fw-light" >
                       Status: {{ latestDeviceData[currentDeviceId]?.status }}
                     </p>
-                    <p style="margin: 1px 0">
+                    <p class = "fw-light">
                       Modified: {{ latestDeviceData[currentDeviceId]?.modified_timestamp | date: 'dd MMM y HH.mm' }}
                     </p>
-                    
+
                   </div>
                   <!-- Rest of the content for this device card -->
                 </div>
@@ -282,9 +282,9 @@
                   </div>
                 </form>
               </div>
-            </div>      
+            </div>
           </div>
-        </div><!-- แก้ไขข้อมูล -->   
+        </div><!-- แก้ไขข้อมูล -->
       </div>
     </div>
   </div>
