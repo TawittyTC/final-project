@@ -24,8 +24,12 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.fetchData();
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
 
-    this.dataSubscription = interval(5000).subscribe(() => {
-      this.fetchUnitCost();
+   // กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
+  this.dataSubscription = interval(5000).subscribe(() => {
+    if (this.unitCost !== 0) {
+      this.fetchData();
+    }
+
     });
   }
 
