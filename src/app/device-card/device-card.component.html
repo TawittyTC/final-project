@@ -79,14 +79,13 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="infoModalLabel">Device Information</h5>
+                <h5 class="modal-title" id="infoModalLabel">{{ latestDeviceData[currentDeviceId]?.device_name }}</h5>
               </div>
               <div class="modal-body">
-                <div class="bg-white mb-1 p-4 rounded-5">
-                  <div class="h2 mb-3 fw-normal">
-                     {{ latestDeviceData[currentDeviceId]?.device_name }}
-                  </div>
-                  <div class="text-dark mb-2" style="margin: -10px 0">
+                <div class="bg-white mb-1 rounded-5">
+                  <!-- <div class="display-4 mb-3 fw-light">
+                     <span class="fw-light">Device :</span> {{ latestDeviceData[currentDeviceId]?.device_name }}
+                  </div> -->
                     <p class="fw-light" >
                       Device ID: {{ latestDeviceData[currentDeviceId]?.device_id }}
                     </p>
@@ -109,8 +108,6 @@
                     <p class = "fw-light">
                       Modified: {{ latestDeviceData[currentDeviceId]?.modified_timestamp | date: 'dd MMM y HH.mm' }}
                     </p>
-
-                  </div>
                   <!-- Rest of the content for this device card -->
                 </div>
 
