@@ -15,6 +15,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   device_id: string = '';
   dataSubscription: Subscription | undefined;
   unitCost: number = 0;
+  level: number = 1 ;
 
   constructor(private route: ActivatedRoute,private http: HttpClient) {
   }
