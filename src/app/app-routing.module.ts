@@ -21,12 +21,12 @@ const routes: Routes = [
   { path: 'footer-component',component: FooterComponent },
   { path: 'about-component',component: AboutComponent },
   { path: 'profile-component',component: ProfileComponent },
-  { path: '**',component: HomeComponent },
   { path: 'chart-component',component: ChartComponent },
   { path: 'circle-component',component:CircleChartComponent},
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
-  { path: 'tabledevice-component', component:TableDeviceComponent},
+  { path: 'table-device-component', component:TableDeviceComponent},
   { path: 'login-component', component:LoginComponent},
+  { path: '**',component: HomeComponent },
 ];
 
 @NgModule({
