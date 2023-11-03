@@ -19,13 +19,13 @@
         <div class="fw-light">
           Device ID: {{ latestDeviceData[device_id]?.device_id }}
         </div>
-        <p class="fw-light">
+        <div class="fw-light">
           Type: {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
-        </p>
-        <p class="fw-light">
+        </div>
+        <div class="fw-light">
           Group: {{ latestDeviceData[device_id]?.group_id === 1 ? 'A' : latestDeviceData[device_id]?.group_id === 2 ? 'B' : 'Unknown' }}
-        </p>
-        
+        </div>
+
         <div class="fw-light">
           Status: {{ latestDeviceData[device_id]?.status }}
         </div>
@@ -114,7 +114,7 @@
                   </p>
                   <p class="fw-light">
                     Group: {{ latestDeviceData[currentDeviceId]?.group_id === 1 ? 'A' : latestDeviceData[currentDeviceId]?.group_id === 2 ? 'B' : 'Unknown' }}
-                  </p>                  
+                  </p>
                   <!-- Add status to display online/offline status -->
                   <p class="fw-light">
                     Status: {{ latestDeviceData[currentDeviceId]?.status }}
