@@ -6,30 +6,64 @@
   </div>
 
   <div class="row">
-    <div class="col-sm-12 col-md-12 col-lg-4 ">
+    <div class="col-sm-12 col-md-12 col-lg-4">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4 text-muted fw-light">
-          Energy
+        <div class="progress mb-2" style="height: 5px">
+          <div
+            class="progress-bar bg-primary"
+            role="progressbar"
+            style="width: {{ data[0].energy }}%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
         </div>
-        <!-- <div class="text-muted fw-light">Energy</div> -->
-          <!-- <app-circle-chart></app-circle-chart> -->
-          <div class="fw-light mt-3 display-4">{{ data[0].energy }} <span class="h4 text-muted fw-light">Kwh</span></div>
-
+        <div class="h4 text-muted fw-light">Energy</div>
+        <div class="fw-light mt-3 display-4">
+          {{ data[0].energy }} <span class="h4 text-muted fw-light">Kwh</span>
+          <img src="/assets/img/img003.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
+        </div>
       </div>
     </div>
 
-    <div class="col-sm-6 col-md-6 col-lg-4">
+    <div class="col-sm-12 col-md-6 col-lg-4">
       <div class="mb-3 bg-white rounded-4 p-5">
+        <div class="progress mb-2" style="height: 5px">
+          <div
+            class="progress-bar bg-success"
+            role="progressbar"
+            style="width: {{ totalEnergy }}%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
         <div class="h4 text-muted fw-light">Total Energy</div>
-        <!-- <div class="text-muted fw-light">Energy</div> -->
-        <div class="fw-light mt-3 display-4">{{totalEnergy}} <span class="h4 text-muted fw-light">Kwh</span></div>
+
+        <div class="fw-light mt-3 display-4">
+          {{ totalEnergy }} <span class="h4 text-muted fw-light">Kwh</span>
+          <img src="/assets/img/img001.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
+        </div>
       </div>
     </div>
-    <div class="col-sm-6 col-md-6 col-lg-4">
+    <div class="col-sm-12 col-md-6 col-lg-4">
       <div class="mb-3 bg-white rounded-4 p-5">
+        <div class="progress mb-2" style="height: 5px">
+          <div
+            class="progress-bar bg-warning"
+            role="progressbar"
+            style="width: {{ cost }}%;"
+            aria-valuenow="25"
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></div>
+        </div>
         <div class="h4 text-muted fw-light">Total Cost</div>
-        <!-- <div class="text-muted fw-light">Energy</div> -->
-        <div class="fw-light mt-3 display-4">{{cost}} <span class="h4 text-muted fw-light">baht</span></div>
+
+        <div class="fw-light mt-3 display-4">
+          {{ cost }} <span class="h4 text-muted fw-light">baht</span>
+          <img src="/assets/img/img002.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
+        </div>
       </div>
     </div>
   </div>
@@ -40,59 +74,61 @@
         <!-- <div class="h4">Realtime</div> -->
         <div class="row">
           <div class="col-4">
+            <div class="pe-3">
+              <div class="progress mb-2 me-5" style="height: 5px">
+                <div
+                  class="progress-bar bg-info"
+                  role="progressbar"
+                  style="width: 100%"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
             <div class="h4 text-muted fw-light">Current</div>
             <div class="display-5 fw-light">{{ data[0].current }} A</div>
+            <img src="/assets/img/img004.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
           </div>
           <div class="col-4">
+            <div class="pe-3">
+              <div class="progress mb-2 me-5" style="height: 5px">
+                <div
+                  class="progress-bar bg-danger"
+                  role="progressbar"
+                  style="width: 100%"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
             <div class="h4 text-muted fw-light">Voltage</div>
             <div class="display-5 fw-light">{{ data[0].voltage }} V</div>
+            <img src="/assets/img/img006.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
           </div>
           <div class="col-4">
+            <div class="ps-5">
+              <div class="progress mb-2 me-5" style="height: 5px">
+                <div
+                  class="progress-bar bg-secondary"
+                  role="progressbar"
+                  style="width: 100%"
+                  aria-valuenow="25"
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                ></div>
+              </div>
+            </div>
             <div class="h4 text-muted fw-light">Power</div>
             <div class="display-5 fw-light">{{ data[0].power }} W</div>
+            <img src="/assets/img/img005.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
           </div>
         </div>
-        <!-- <div class="row">
-          <div class="col">
-            <div class="h2 mb-2 mt-1">Amount</div>
-            <div class="text-muted fw-light">Current</div>
-            <div class="progress mb-3">
-              <div
-                class="progress-bar bg-success"
-                role="progressbar"
-                style="width: {{ data[0].current }}%"
-                [attr.aria-valuenow]="data[0].current"
-                [attr.aria-valuemin]="0"
-                [attr.aria-valuemax]="100"
-              ></div>
-            </div>
-            <div class="text-muted fw-light">Voltage</div>
-            <div class="progress mb-3">
-              <div
-                class="progress-bar bg-info"
-                role="progressbar"
-                style="width: {{ data[0].voltage }}%"
-                [attr.aria-valuenow]="data[0].voltage"
-                [attr.aria-valuemin]="0"
-                [attr.aria-valuemax]="100"
-              ></div>
-            </div>
-            <div class="text-muted fw-light">Power</div>
-            <div class="progress">
-              <div
-                class="progress-bar bg-warning"
-                role="progressbar"
-                style="width: {{ data[0].power }}%"
-                [attr.aria-valuenow]="data[0].power"
-                [attr.aria-valuemin]="0"
-                [attr.aria-valuemax]="100"
-              ></div>
-            </div>
-          </div>
-        </div> -->
       </div>
     </div>
   </div>
+
 
   <div class="row">
     <div class="col-sm-12">
