@@ -3,10 +3,8 @@
     <div class="col-sm-12 col-md-6">
       <div class="mt-4 rounded-5">
         <div class="display-5 fw-light mb-2">Sign In</div>
-        <div class="fw-light mb-3">
-          RUTS Energy Monitoring Platform.
-        </div>
-        <form (ngSubmit)="login() ">
+        <div class="fw-light mb-3">RUTS Energy Monitoring Platform.</div>
+        <form (ngSubmit)="login()">
           <div class="form-group fw-light">
             <label for="exampleDropdownFormEmail1">Email Address</label>
             <input
@@ -36,19 +34,23 @@
             <label class="form-check-label" for="checkbox">Remember me</label>
           </div>
           <div class="me-2 mb-2 mt-2">
-          <button type="submit" class="btn btn-primary me-2">Sign in</button>
-          <button (click)="logout();reloadPage()" class="btn btn-danger">Logout</button>
-        </div>
+            <button type="submit" class="btn btn-primary me-2">Sign in</button>
+          </div>
         </form>
-
       </div>
-      <a class="nav-link" a routerLink="/signup-component">New around here? Sign up</a>
+      <a class="nav-link" a routerLink="/signup-component"
+        >New around here? Sign up</a
+      >
       <!-- <a class="nav-link" a routerLink="/about-component"> Forgot Password?</a> -->
     </div>
     <div class="col-sm-12 col-md-6">
       <div class="d-md-none d-lg-block">
         <div class="mb-5 mx-5 p-5">
-          <img src="/assets/img/SignIn.png" class="img-fluid" alt="Responsive image">
+          <img
+            src="/assets/img/SignIn.png"
+            class="img-fluid"
+            alt="Responsive image"
+          />
         </div>
       </div>
       <div class="bg-image">
@@ -58,7 +60,5 @@
     <div class="alert alert-danger" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
-
   </div>
 </div>
-
