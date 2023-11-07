@@ -24,6 +24,7 @@ import { DeviceCardComponent } from './device-card/device-card.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,6 +42,7 @@ import { LoginComponent } from './login/login.component';
     DeviceCardComponent,
     TableDeviceComponent,
     LoginComponent,
+    SignupComponent,
 
   ],
   imports: [

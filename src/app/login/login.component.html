@@ -3,7 +3,7 @@
     <div class="col-sm-12 col-md-6">
       <div class="mt-4 rounded-5">
         <div class="display-5 fw-light mb-2">Sign In</div>
-        <div class="fw-light mb-3 ms-1">
+        <div class="fw-light mb-3">
           RUTS Energy Monitoring Platform.
         </div>
         <form (ngSubmit)="login() ">
@@ -14,7 +14,7 @@
               class="form-control"
               id="exampleDropdownFormEmail1"
               placeholder="youremail@email.com"
-              [(ngModel)]="user.email" 
+              [(ngModel)]="user.email"
               name="email"
             />
           </div>
@@ -26,7 +26,7 @@
               class="form-control"
               id="exampleDropdownFormPassword1"
               placeholder="Password"
-              [(ngModel)]="user.password" 
+              [(ngModel)]="user.password"
               name="password"
             />
           </div>
@@ -35,11 +35,15 @@
             <input type="checkbox" class="form-check-input" id="checkbox" />
             <label class="form-check-label" for="checkbox">Remember me</label>
           </div>
-
-          <button type="submit" class="btn btn-primary">Sign in</button>
+          <div class="me-2 mb-2 mt-2">
+          <button type="submit" class="btn btn-primary me-2">Sign in</button>
+          <button (click)="logout();reloadPage()" class="btn btn-danger">Logout</button>
+        </div>
         </form>
-        <button (click)="logout();reloadPage()" class="btn btn-danger">Logout</button>
+
       </div>
+      <a class="nav-link" a routerLink="/about-component"> Sign up</a>
+      <a class="nav-link" a routerLink="/about-component"> Forgot Password?</a>
     </div>
     <div class="col-sm-12 col-md-6">
       <div class="d-none d-md-none d-lg-block">
@@ -54,7 +58,7 @@
     <div class="alert alert-danger" *ngIf="errorMessage">
       {{ errorMessage }}
     </div>
-    
+
   </div>
 </div>
 
