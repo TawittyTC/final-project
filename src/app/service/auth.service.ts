@@ -9,6 +9,9 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class AuthService {
+  getCurrentUserEmail() {
+    throw new Error('Method not implemented.');
+  }
   endpoint: string = 'http://localhost:3000/api'; // URL ของ Express.js API
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
@@ -39,6 +42,12 @@ export class AuthService {
         map((data: any) => {
           if (data.token) {
             localStorage.setItem('access_token', data.token);
+            localStorage.setItem('name', data.name);
+            localStorage.setItem('email', data.email);
+            localStorage.setItem('role', data.role);
+            localStorage.setItem('level', data.level);
+            localStorage.setItem('group', data.group);
+
             return data;
           } else {
             throw new Error('ชื่อหรือรหัสไม่ถูกต้อง');
@@ -55,24 +64,20 @@ export class AuthService {
   get isLoggedIn(): boolean {
     return this.getToken() !== null;
   }
-
-  doLogout() {
-    localStorage.removeItem('access_token');
-    this.router.navigate(['log-in']);
-  }
   logout() {
     localStorage.removeItem('access_token');
-    this.router.navigate(['/login-componet']); // นำทางไปยังหน้าล็อกอินหลังจากล็อกเอาท์
+    this.router.navigate(['/home-componet']); // นำทางไปยังหน้าล็อกอินหลังจากล็อกเอาท์
   }
   // User profile
-  getUserProfile(): Observable<any> {
-    const api = `${this.endpoint}/user-profile`;
+  getUserProfile(email: string): Observable<any> {
+    const api = `${this.endpoint}/profile/${email}`;
     return this.http.get(api, { headers: this.headers }).pipe(
       map((res: any) => res),
       catchError(this.handleError)
     );
   }
-
+  
+  
   // Error
   private handleError(error: HttpErrorResponse) {
     let msg = '';

@@ -22,10 +22,9 @@ export class LoginComponent {
           if (res.token) {
             // บันทึก JWT ใน localStorage หลังจากล็อกอินสำเร็จ
             localStorage.setItem('access_token', res.token);
-            this.reloadPage();
             // นำทางไปยังหน้าที่คุณต้องการหลังจากล็อกอินสำเร็จ
             this.router.navigate(['/device-component']); // แก้ไขเส้นทางตามต้องการ
-            
+
           } else {
             this.errorMessage = 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
           }

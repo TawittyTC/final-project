@@ -7,13 +7,18 @@ import { AuthService } from '../service/auth.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  user: any; // ใช้รับข้อมูลผู้ใช้
-
-  constructor(private authService: AuthService) {}
+  name: string = '';
+  email: string = '';
+  role: string = '';
+  level: string = '';
+  group: string = '';
 
   ngOnInit() {
-    this.authService.getUserProfile().subscribe((data: any) => {
-      this.user = data;
-    });
+    // ดึงค่าจาก local storage และกำหนดให้กับตัวแปร
+  this.name = localStorage.getItem('name') || ''; // หากเป็น null กำหนดเป็นสตริงว่าง
+  this.email = localStorage.getItem('email') || '';
+  this.role = localStorage.getItem('role') || '';
+  this.level = localStorage.getItem('level') || '';
+  this.group = localStorage.getItem('group') || '';
   }
 }

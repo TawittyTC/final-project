@@ -3,4 +3,7 @@ export class User {
     name: String= '';
     email: String = '';
     password: String= '';
+    role: string='';
+    level!: number;
+    group!: number;
 }
