@@ -4,9 +4,9 @@
       <div class="mt-4 rounded-5">
         <div class="display-5 fw-light mb-2">Sign Up</div>
         <div class="fw-light mb-3">
-          Enter your information for register in our platform.
+          Enter your information to register on our platform.
         </div>
-        <form>
+        <form (ngSubmit)="signUp()">
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
@@ -17,6 +17,8 @@
                   id="firstName"
                   placeholder="First Name"
                   name="firstName"
+                  [(ngModel)]="user.name"
+                  required
                 />
               </div>
             </div>
@@ -29,6 +31,8 @@
                   id="lastName"
                   placeholder="Last Name"
                   name="lastName"
+                  [(ngModel)]="user.lname"
+                  required
                 />
               </div>
             </div>
@@ -41,6 +45,8 @@
               id="email"
               placeholder="Your Email"
               name="email"
+              [(ngModel)]="user.email" 
+              required
             />
           </div>
           <div class="form-group">
@@ -51,6 +57,7 @@
               id="confirmEmail"
               placeholder="Confirm Your Email"
               name="confirmEmail"
+              required
             />
           </div>
 
@@ -62,6 +69,8 @@
               id="password"
               placeholder="Password"
               name="password"
+              [(ngModel)]="user.password" 
+              required
             />
           </div>
           <div class="form-group">
@@ -72,15 +81,18 @@
               id="confirmPassword"
               placeholder="Confirm Password"
               name="confirmPassword"
+              required
             />
           </div>
           <div class="mt-2">
             <button type="submit" class="btn btn-primary me-2">Sign Up</button>
-            <button class="btn btn-danger" a routerLink="/login-component">Back</button>
+            <a routerLink="/login-component" class="btn btn-danger">Back</a>
           </div>
-
         </form>
-
+        <!-- Display error message if any -->
+        <div *ngIf="errorMessage" class="text-danger mt-2">
+          {{ errorMessage }}
+        </div>
       </div>
     </div>
     <div class="col-sm-12 col-md-6">
@@ -94,7 +106,7 @@
         </div>
       </div>
       <div class="bg-image">
-        <!-- เพิ่มข้อความหรือเนื้อหาที่คุณต้องการให้แสดงบนพื้นหลัง -->
+        <!-- Add text or content you want to display on the background -->
       </div>
     </div>
   </div>
