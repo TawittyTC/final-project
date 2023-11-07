@@ -26,6 +26,7 @@ import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { TableUsersComponent } from './table-users/table-users.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -45,6 +46,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
     LoginComponent,
     SignupComponent,
     AdminDashboardComponent,
+    TableUsersComponent,
 
   ],
   imports: [

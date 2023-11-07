@@ -9,6 +9,9 @@ import { User } from './user';
   providedIn: 'root'
 })
 export class AuthService {
+  getUserRole() {
+    throw new Error('Method not implemented.');
+  }
   getCurrentUserEmail() {
     throw new Error('Method not implemented.');
   }
