@@ -1,56 +1,15 @@
-<div class="container py-4">
-  <div class="p-2">
-    <div class="display-5 fw-normal">Profile</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <h2>User Profile</h2>
+      <div *ngIf="user">
+        <p><strong>Name:</strong> {{ user.name }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <!-- เพิ่มข้อมูลอื่น ๆ ตามที่คุณต้องการ -->
+      </div>
+      <div *ngIf="!user">
+        <p>Loading user profile...</p>
+      </div>
+    </div>
   </div>
-
-  <div class="row p-3 mb-3 bg-light rounded-4" >
-
-
-<div class="list-group rounded-4" *ngIf="auth.user$ | async as user">
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-2 mt-2"><img src="{{user.picture}}" class="rounded mx-auto d-block" alt="user-picture"></h5>
-
-    </div>
-  </a>
-
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Name</h5>
-
-    </div>
-    <p class="mb-1">{{user.name}}</p>
-
-  </a>
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Email</h5>
-
-    </div>
-    <p class="mb-1">{{user.email}}</p>
-
-  </a>
-
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Phone No.</h5>
-
-    </div>
-    <p class="mb-1">{{user.phone_number}}</p>
-
-  </a>
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Locale</h5>
-
-    </div>
-    <p class="mb-1">{{user.locale}}</p>
-
-  </a>
-</div>
-</div>
 </div>
