@@ -14,7 +14,7 @@ import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './service/auth.guard';
 import { SignupComponent } from './signup/signup.component';
-
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -29,6 +29,7 @@ const routes: Routes = [
   { path: 'table-device-component', component:TableDeviceComponent},
   { path: 'login-component', component:LoginComponent},
   { path: 'signup-component', component:SignupComponent},
+  { path: 'admin',component:AdminDashboardComponent ,canActivate: [AuthGuard],data: { roles: ['admin']}},
   { path: '**',component: HomeComponent },
 ];
 

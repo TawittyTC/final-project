@@ -13,12 +13,21 @@ export class AuthGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean | UrlTree | Observable<boolean | UrlTree> {
-    if (this.authService.isLoggedIn) {
-      // ถ้าผู้ใช้ล็อกอินอยู่ให้อนุญาตให้เข้าถึงเส้นทาง
+    const requiredRoles = next.data['roles'] as Array<string>; // Get the required roles from route data
+
+    if (!requiredRoles || requiredRoles.length === 0) {
+      // If no roles are specified, allow access
+      return true;
+    }
+
+    const userRole = localStorage.getItem('role'); // Retrieve the user's role from localStorage
+
+    if (userRole && requiredRoles.includes(userRole)) {
+      // If the user has one of the required roles, allow access
       return true;
     } else {
-      // ถ้าผู้ใช้ไม่ได้ล็อกอินให้นำทางไปยังหน้าล็อกอิน
-      return this.router.parseUrl('/login-component'); // แก้ไข URL ตามต้องการ
+      // If the user doesn't have the required role, redirect to '/login-component'
+      return this.router.parseUrl('/login-component');
     }
   }
 }

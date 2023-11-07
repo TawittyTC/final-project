@@ -8,6 +8,7 @@ import { AuthService } from '../service/auth.service';
 })
 export class ProfileComponent implements OnInit {
   name: string = '';
+  lname: string = '';
   email: string = '';
   role: string = '';
   level: string = '';

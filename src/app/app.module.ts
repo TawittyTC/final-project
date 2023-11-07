@@ -25,6 +25,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +44,7 @@ import { SignupComponent } from './signup/signup.component';
     TableDeviceComponent,
     LoginComponent,
     SignupComponent,
+    AdminDashboardComponent,
 
   ],
   imports: [

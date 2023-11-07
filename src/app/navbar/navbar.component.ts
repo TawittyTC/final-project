@@ -10,11 +10,11 @@ import { AuthService } from '../service/auth.service';
 })
 export class NavbarComponent implements OnInit{
   isLoggedIn: boolean = false; // ประกาศตัวแปร isLoggedIn
-
+  isAdmin: boolean = false; 
   constructor(private authService: AuthService) {}
   ngOnInit() {
     this.isLoggedIn = this.authService.isLoggedIn; // ตรวจสอบสถานะการล็อกอิน
-
+    this.isAdmin = localStorage.getItem('role') === 'admin';
   }
   logout() {
     this.authService.logout(); // เรียกใช้ฟังก์ชัน logout() ใน AuthService
