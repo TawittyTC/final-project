@@ -13,6 +13,8 @@ import { DeviceCardComponent } from './device-card/device-card.component';
 import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './service/auth.guard';
+import { SignupComponent } from './signup/signup.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -26,6 +28,7 @@ const routes: Routes = [
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
   { path: 'table-device-component', component:TableDeviceComponent},
   { path: 'login-component', component:LoginComponent},
+  { path: 'signup-component', component:SignupComponent},
   { path: '**',component: HomeComponent },
 ];
 
