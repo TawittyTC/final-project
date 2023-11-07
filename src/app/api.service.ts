@@ -9,6 +9,7 @@ import { interval, Subscription } from 'rxjs';
 })
 export class ApiService {
   private apiUrl = 'http://localhost:3000/devices'; // URL ของ API ของ Express.js
+  private userurl = 'http://localhost:3000/users';
   private dataSubscription: Subscription | undefined;
 
   constructor(private http: HttpClient) {}
@@ -53,6 +54,59 @@ export class ApiService {
       catchError((error) => {
         console.error('เกิดข้อผิดพลาดในการลบข้อมูล:', error);
         return throwError('เกิดข้อผิดพลาดในการลบข้อมูล');
+      })
+    );
+  }
+
+  // Create a new user
+  createUser(user: any): Observable<any> {
+    return this.http.post(this.userurl, user).pipe(
+      catchError((error) => {
+        console.error('Error creating user:', error);
+        return throwError('Error creating user');
+      })
+    );
+  }
+
+  // Get all users
+  getAllUsers(): Observable<any[]> {
+    return this.http.get<any[]>(this.userurl);
+  }
+
+  // Get a user by ID
+  getUserById(userId: any): Observable<any> {
+    const url = `${this.userurl}/${userId}`;
+    return this.http.get<any>(url);
+  }
+
+  // Update a user
+  updateUser(userId: any, user: any): Observable<any> {
+    const url = `${this.userurl}/${userId}`;
+    return this.http.put(url, user).pipe(
+      catchError((error) => {
+        console.error('Error updating user:', error);
+        return throwError('Error updating user');
+      })
+    );
+  }
+
+  // Delete a user
+  deleteUser(userId: any): Observable<any> {
+    const url = `${this.userurl}/${userId}`;
+    return this.http.delete(url).pipe(
+      catchError((error) => {
+        console.error('Error deleting user:', error);
+        return throwError('Error deleting user');
+      })
+    );
+  }
+  // Get a user by their email address
+  getUserByEmail(email: string): Observable<any> {
+    const url = `${this.userurl}/${encodeURIComponent(email)}`;
+    return this.http.get<any>(url).pipe(
+      catchError((error) => {
+        console.error('Error getting user by email:', error);
+        return throwError('Error getting user by email');
       })
     );
   }
