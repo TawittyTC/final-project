@@ -14,7 +14,7 @@ export class SignupComponent {
 
   signUp() {
     console.log('Signing up with user data:', this.user); // Debugging statement
-    
+
     this.authService.signUp(this.user).subscribe(
       (result) => {
         console.log('Registration API response:', result); // Debugging statement

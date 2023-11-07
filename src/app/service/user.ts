@@ -7,4 +7,6 @@ export class User {
     role: string='';
     level!: number;
     group!: number;
+   confirmEmail: String = '';
+   confirmPassword: String = '';
 }
