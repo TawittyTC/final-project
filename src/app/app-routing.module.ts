@@ -12,7 +12,7 @@ import { CircleChartComponent } from "./circle-chart/circle-chart.component";
 import { DeviceCardComponent } from './device-card/device-card.component';
 import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
-
+import { AuthGuard } from './service/auth.guard';
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'navbar-component',component: NavbarComponent },
   { path: 'footer-component',component: FooterComponent },
   { path: 'about-component',component: AboutComponent },
-  { path: 'profile-component',component: ProfileComponent },
+  { path: 'profile-component',component: ProfileComponent , canActivate: [AuthGuard]},
   { path: 'chart-component',component: ChartComponent },
   { path: 'circle-component',component:CircleChartComponent},
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
