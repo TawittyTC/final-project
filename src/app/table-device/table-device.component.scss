@@ -29,6 +29,7 @@
   }
   #no-table td:before {
     content: attr(data-title);
+    font-weight: Normal; /* เพิ่มคลาส fw-lighter เพื่อให้เหมือน Bootstrap fw-light */
   }
 }
 
