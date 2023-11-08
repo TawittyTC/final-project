@@ -23,7 +23,7 @@ export class SignupComponent {
           // You can optionally redirect the user to a different page upon successful registration
           // Example: this.router.navigate(['/success-page']);
         } else {
-          this.errorMessage = 'Registration failed. Please try again.';
+          console.log('Resister Fail!');
         }
       },
       (error) => {
