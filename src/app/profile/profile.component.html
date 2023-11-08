@@ -1,17 +1,39 @@
-<div class="container">
+<!-- <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <h2>User Profile</h2>
+      <div class="h2">User Profile</div>
       <div *ngIf="name">
-        <p><strong>ชื่อ:</strong> {{ name }}</p>
-        <p><strong>อีเมล:</strong> {{ email }}</p>
-        <p><strong>บทบาท:</strong> {{ role }}</p>
-        <p><strong>กลุ่ม:</strong> {{ group }}</p>
-
+        <div>ชื่อ: {{ name }}</div>
+        <div>อีเมล: {{ email }}</div>
+        <div>บทบาท: {{ role }}</div>
+        <div>กลุ่ม: {{ group }}</div>
       </div>
       <div *ngIf="!name">
-        <p>Loading user profile...</p>
+        <div>Loading user profile...</div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="container py-4">
+  <div class="p-2">
+    <div class="display-5 fw-normal">Profile</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="mb-3 bg-white rounded-4 p-5">
+        <div class="h4 text-muted fw-light">My Profile</div>
+        <img
+          src="/assets/img/img4.svg"
+          class="img-fluid rounded-4"
+          alt=""
+        />
+        <div class="display-5 fw-light mb-2">{{ name }}</div>
+        <div>อีเมล: {{ email }}</div>
+        <div>บทบาท: {{ role }}</div>
+        <div>กลุ่ม: {{ group }}</div>
       </div>
     </div>
   </div>
 </div>
+
