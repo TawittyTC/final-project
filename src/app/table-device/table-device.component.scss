@@ -7,19 +7,15 @@
     position: absolute;
     top: -9999px;
     left: -9999px;
-
   }
   #no-table tr {
-    border: 3px solid #ccc;
-    border-radius: 10px;
+    border-radius: 10px; /* เอาเส้นขอบออก */
   }
   #no-table td {
-    border: none;
-    border-bottom: 1px solid #ccc;
     position: relative;
     padding-left: 50%;
     white-space: normal;
-    text-align:left;
+    text-align: left;
   }
   #no-table td:before {
     position: absolute;
@@ -28,7 +24,7 @@
     width: 45%;
     padding-right: 10px;
     white-space: nowrap;
-    text-align:left;
+    text-align: left;
     font-weight: bold;
   }
   #no-table td:before {
@@ -36,6 +32,6 @@
   }
 }
 
-th{
-  border-bottom: 5px solid darkcyan;
+th {
+  border-bottom: 1px solid darkcyan; /* เส้นขอบด้านล่าง */
 }
