@@ -6,11 +6,9 @@
         <p><strong>ชื่อ:</strong> {{ name }}</p>
         <p><strong>อีเมล:</strong> {{ email }}</p>
         <p><strong>บทบาท:</strong> {{ role }}</p>
-        <p><strong>ระดับ:</strong> {{ level }}</p>
         <p><strong>กลุ่ม:</strong> {{ group }}</p>
-        
+
       </div>
-      
       <div *ngIf="!name">
         <p>Loading user profile...</p>
       </div>
