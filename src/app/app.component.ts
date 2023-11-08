@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class AppComponent {
   title = 'final-project';
-  constructor(private modalService: NgbModal) {
+  constructor(private modalService: NgbModal,private authService: AuthService) {
   }
 
   public open(modal: any): void {
@@ -16,6 +17,9 @@ export class AppComponent {
   }
 
   ngOnInit() {
-
+    this.authService.tokenExpiration$.subscribe(() => {
+      // Display a notification to the user that the token is about to expire
+      alert('Your session is about to expire. Please log in again.');
+    });
   }
 }

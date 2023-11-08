@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Injectable ,NgZone } from '@angular/core';
+import { Observable, throwError,Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -15,11 +15,15 @@ export class AuthService {
   currentUser = {};
   private jwtHelper = new JwtHelperService();
   private secretKey = 'your-secret-key';
+  private tokenExpiration = new Subject<void>();
+  tokenExpiration$ = this.tokenExpiration.asObservable();
+
   constructor(
     private http: HttpClient,
-    public router: Router
+    public router: Router,
+    private ngZone: NgZone
   ){
-
+    this.checkTokenExpiration();
   }
 
   // Sign-up
@@ -123,5 +127,35 @@ export class AuthService {
     return throwError(msg);
   }
 
+  // Check token expiration
+checkTokenExpiration() {
+  const token = this.getToken();
+  if (token) {
+    const tokenExp = Number(localStorage.getItem('token_exp'));
+    const currentTime = Math.floor(Date.now() / 1000);
+
+    if (tokenExp && currentTime >= tokenExp) {
+      this.logout();
+      this.ngZone.run(() => {
+        this.router.navigate([this.router.url]); // Refresh the current route
+      });
+    } else {
+      const timeToExpire = tokenExp - currentTime;
+      // Emit a notification when the token is about to expire (e.g., 5 minutes before)
+      if (timeToExpire > 0) {
+        this.notifyTokenExpiry(timeToExpire);
+      }
+    }
+  }
+}
+
+
+  // Notify when the token is about to expire
+  notifyTokenExpiry(timeToExpire: number) {
+    // Emit a notification when the token is about to expire
+    setTimeout(() => {
+      this.tokenExpiration.next();
+    }, timeToExpire * 1000);
+  }
  
 }
