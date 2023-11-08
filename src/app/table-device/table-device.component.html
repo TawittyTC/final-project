@@ -1,270 +1,286 @@
-<div class="row">
-  <div class="h1 col-10">Data</div>
-
-  <!-- แสดงปุ่มเพิ่ม -->
-  <button (click)="enableAddMode()" class="btn mb-3 col-2">
-    <i class="bi bi-plus-circle-fill text-primary" style="font-size: 30px"></i>
-  </button>
-
-</div>
-
-<!-- เพิ่มข้อมูล -->
-<div *ngIf="addMode" class="container mt-3">
-  <h3>เพิ่มข้อมูลใหม่</h3>
-  <form (submit)="createNewData(newData)">
-    <div class="form-group">
-      <label for="new_device_id">ESP ID:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_id"
-        [(ngModel)]="newData.device_id"
-        name="new_device_id"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="new_device_name">Name:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_name"
-        [(ngModel)]="newData.device_name"
-        name="new_device_name"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="new_device_detail">Detail:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_detail"
-        [(ngModel)]="newData.device_detail"
-        name="new_device_detail"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="new_device_location">Location:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_location"
-        [(ngModel)]="newData.device_location"
-        name="new_device_location"
-        required
-      />
-    </div>
-    <div class="mb-2 mt-2">
-    <button type="submit" class="btn btn-success me-2">Add</button>
-    <button (click)="cancelAddMode()" class="btn btn-secondary">Cancel</button>
-  </div>
-  </form>
-</div>
-
-<!-- แสดงข้อมูล -->
-<div *ngIf="!editMode">
-  <div id="no-table">
-    <table class="col-sm-12 table">
-      <thead class="cf">
-        <tr>
-          <th>Device ID</th>
-          <th>Name</th>
-          <th>Detail</th>
-          <th>Location</th>
-          <th>Created At</th>
-          <th>Updated At</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of data">
-          <td data-title="Device ID">{{ item.device_id }}</td>
-          <td data-title="Name">{{ item.device_name }}</td>
-          <td data-title="Detail">{{ item.device_detail }}</td>
-          <td data-title="Location">{{ item.device_location }}</td>
-          <td data-title="Created At">
-            {{ item.created_timestamp | date : "yyyy-MM-dd HH:mm:ss" }}
-          </td>
-          <td data-title="Updated At">
-            {{ item.modified_timestamp | date : "yyyy-MM-dd HH:mm:ss" }}
-          </td>
-          <!-- แก้ไขข้อมูล -->
-          <td data-title="Actions">
-            <button
-            (click)="enableEditMode(data)"
-            class="btn"
-            data-bs-toggle="modal"
-            data-bs-target="#editModal"
-          >
-            <i
-              class="bi bi-pencil-square text-primary"
-              style="font-size: 26px"
-            ></i>
+<div class="container fw-light justify-content-center">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Device Name</th>
+        <th>Device ID</th>
+        <th>Type</th>
+        <th>Group</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let device_id of device_id">
+        <td>{{ latestDeviceData[device_id]?.device_name }}</td>
+        <td>{{ latestDeviceData[device_id]?.device_id }}</td>
+        <td>
+          {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
+        </td>
+        <td>
+          {{ latestDeviceData[device_id]?.group_id === 1 ? 'A' : latestDeviceData[device_id]?.group_id === 2 ? 'B' : 'Unknown' }}
+        </td>
+        <td>{{ latestDeviceData[device_id]?.status }}</td>
+        <td>
+          <button class="btn me-2" [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }">
+            <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
           </button>
-            <button (click)="deleteData(item.device_id)" class="btn">
-              <i class="bi bi-trash-fill text-danger" style="font-size: 26px"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+          <button (click)="enableEditMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#editModal">
+            <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+          </button>
+          <!-- Info Button -->
+          <button (click)="enableInfoMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#infoModal">
+            <i class="bi bi-info-circle text-success" style="font-size: 26px"></i>
+          </button>
+          <button (click)="deleteData(device_id)" class="btn">
+            <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- Info Modal -->
+  <div
+  class="modal fade"
+  id="infoModal"
+  tabindex="-1"
+  aria-labelledby="infoModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-light h2" id="infoModalLabel">
+          {{ latestDeviceData[currentDeviceId]?.device_name }}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="bg-white mb-1 rounded-5">
+          <p class="fw-light">
+            Device ID:
+            {{ latestDeviceData[currentDeviceId]?.device_id }}
+          </p>
+          <p class="fw-light">
+            Details:
+            {{ latestDeviceData[currentDeviceId]?.device_detail }}
+          </p>
+          <p class="fw-light">
+            Location:
+            {{ latestDeviceData[currentDeviceId]?.device_location }}
+          </p>
+          <p class="fw-light">
+            Type: {{ latestDeviceData[currentDeviceId]?.device_type === 1 ? 'ESP' : latestDeviceData[currentDeviceId]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
+          </p>
+          <p class="fw-light">
+            Group: {{ latestDeviceData[currentDeviceId]?.group_id === 1 ? 'A' : latestDeviceData[currentDeviceId]?.group_id === 2 ? 'B' : 'Unknown' }}
+          </p>
+          <!-- Add status to display online/offline status -->
+          <p class="fw-light">
+            Status: {{ latestDeviceData[currentDeviceId]?.status }}
+          </p>
+          <p class="fw-light">
+            Modified:
+            {{
+              latestDeviceData[currentDeviceId]?.modified_timestamp
+                | date : "dd MMM y HH.mm"
+            }}
+          </p>
+          <!-- Rest of the content for this device card -->
+        </div>
 
-<!-- แก้ไขข้อมูล -->
-        <!-- Edit Device Modal -->
-        <div
-          class="modal fade"
-          id="editModal"
-          tabindex="-1"
-          aria-labelledby="editModalLabel"
-          aria-hidden="true"
-        >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <div class="modal-title h5 fw-light" id="editModalLabel">
-                  Edit Device
-                </div>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <form (submit)="saveData()" #editForm="ngForm">
-                  <!-- Add your form fields here -->
-                  <div class="form-group">
-                    <label for="device_id">Device ID:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="device_id"
-                      [(ngModel)]="editedData.device_id"
-                      name="device_id"
-                      readonly
-                    />
-                  </div>
-
-                  <!-- Name -->
-                  <div class="form-group">
-                    <label for="device_name">Name:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="device_name"
-                      [(ngModel)]="editedData.device_name"
-                      name="device_name"
-                      required
-                    />
-                  </div>
-
-                  <!-- Detail -->
-                  <div class="form-group">
-                    <label for="device_detail">Detail:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="device_detail"
-                      [(ngModel)]="editedData.device_detail"
-                      name="device_detail"
-                      required
-                    />
-                  </div>
-
-                  <!-- Location -->
-                  <div class="form-group">
-                    <label for="device_location">Location:</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      id="device_location"
-                      [(ngModel)]="editedData.device_location"
-                      name="device_location"
-                      required
-                    />
-                  </div>
-
-                  <!-- Device Map -->
-                  <div class="form-group">
-                    <label for="device_map_img">Device Map:</label>
-
-                    <input
-                      type="file"
-                      class="form-control"
-                      id="device_map_img"
-                      (change)="onFileSelected($event)"
-                    />
-                  </div>
-
-                  <!-- Device Type -->
-                  <div class="form-group">
-                    <label for="device_type">Device Type:</label>
-                    <select
-                      class="form-control"
-                      id="device_type"
-                      [(ngModel)]="editedData.device_type"
-                      name="device_type"
-                      required
-                    >
-                      <option [ngValue]="null">Select Device Type</option>
-                      <option [ngValue]="1">ESP</option>
-                      <option [ngValue]="2">Tuya</option>
-                    </select>
-                  </div>
-
-                  <!-- Group ID -->
-                  <div class="form-group">
-                    <label for="group_id">Group ID:</label>
-                    <select
-                      class="form-control"
-                      id="group_id"
-                      [(ngModel)]="editedData.group_id"
-                      name="group_id"
-                      required
-                    >
-                      <option [ngValue]="null">Select Group ID</option>
-                      <option [ngValue]="1">A</option>
-                      <option [ngValue]="2">B</option>
-                    </select>
-                  </div>
-
-                  <!-- Error message -->
-                  <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
-                    Please fill in all required fields.
-                  </div>
-
-                  <!-- Add more fields as needed -->
-                  <div class="mt-2">
-                    <button
-                      (click)="onUpload(); saveData(); reloadPage()"
-                      type="submit"
-                      class="btn btn-success me-2"
-                      [disabled]="
-                        editForm.invalid ||
-                        (selectedFile && selectedFile.size > 5 * 1024 * 1024)
-                      "
-                      data-bs-dismiss="modal"
-                    >
-                      Save
-                    </button>
-
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-bs-dismiss="modal"
-                      (click)="cancelEditMode()"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              </div>
+        <!-- Display Map Here -->
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="mapModalLabel">
+                Map : {{ currentDeviceId }}
+              </h5>
+            </div>
+            <div class="modal-body modal-lg text-center">
+              <img
+                src="http://localhost:3000/uploads/{{
+                  currentDeviceId
+                }}"
+                class="img-fluid"
+                alt="Maps"
+              />
             </div>
           </div>
         </div>
-        <!-- แก้ไขข้อมูล -->
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+          (click)="reloadPage()"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- แก้ไขข้อมูล -->
+<!-- Edit Device Modal -->
+<div
+  class="modal fade"
+  id="editModal"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title h5 fw-light" id="editModalLabel">
+          Edit Device
+        </div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="saveData()" #editForm="ngForm">
+          <!-- Add your form fields here -->
+          <div class="form-group">
+            <label for="device_id">Device ID:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="device_id"
+              [(ngModel)]="editedData.device_id"
+              name="device_id"
+              readonly
+            />
+          </div>
+
+          <!-- Device Name -->
+          <div class="form-group">
+            <label for="device_name">Device Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="device_name"
+              [(ngModel)]="editedData.device_name"
+              name="device_name"
+              required
+            />
+          </div>
+
+          <!-- Device Detail -->
+          <div class="form-group">
+            <label for="device_detail">Device Detail:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="device_detail"
+              [(ngModel)]="editedData.device_detail"
+              name="device_detail"
+              required
+            />
+          </div>
+
+          <!-- Device Location -->
+          <div class="form-group">
+            <label for="device_location">Device Location:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="device_location"
+              [(ngModel)]="editedData.device_location"
+              name="device_location"
+              required
+            />
+          </div>
+
+          <!-- Device Map -->
+          <div class="form-group">
+            <label for="device_map_img">Device Map:</label>
+
+            <input
+              type="file"
+              class="form-control"
+              id="device_map_img"
+              (change)="onFileSelected($event)"
+            />
+          </div>
+
+          <!-- Device Type -->
+          <div class="form-group">
+            <label for="device_type">Device Type:</label>
+            <select
+              class="form-control"
+              id="device_type"
+              [(ngModel)]="editedData.device_type"
+              name="device_type"
+              required
+            >
+              <option [ngValue]="null">Select Device Type</option>
+              <option [ngValue]="1">ESP</option>
+              <option [ngValue]="2">Tuya</option>
+            </select>
+          </div>
+
+          <!-- Group ID -->
+          <div class="form-group">
+            <label for="group_id">Group ID:</label>
+            <select
+              class="form-control"
+              id="group_id"
+              [(ngModel)]="editedData.group_id"
+              name="group_id"
+              required
+            >
+              <option [ngValue]="null">Select Group ID</option>
+              <option [ngValue]="1">A</option>
+              <option [ngValue]="2">B</option>
+            </select>
+          </div>
+
+          <!-- Error message -->
+          <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
+            Please fill in all required fields.
+          </div>
+
+          <!-- Add more fields as needed -->
+          <div class="mt-2">
+            <button
+              (click)="onUpload(); saveData(); reloadPage()"
+              type="submit"
+              class="btn btn-success me-2"
+              [disabled]="
+                editForm.invalid ||
+                (selectedFile && selectedFile.size > 5 * 1024 * 1024)
+              "
+              data-bs-dismiss="modal"
+            >
+              Save
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancelEditMode()"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- แก้ไขข้อมูล -->
+</div>
+
