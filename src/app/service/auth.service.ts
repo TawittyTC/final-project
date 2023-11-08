@@ -98,8 +98,7 @@ export class AuthService {
     localStorage.removeItem('group');
     localStorage.removeItem('userId');
     localStorage.removeItem('token_exp');
-    localStorage.removeItem('userIdData');
-    this.router.navigate(['/home-componet']); // นำทางไปยังหน้าล็อกอินหลังจากล็อกเอาท์
+    this.router.navigate(['/home-component']); // นำทางไปยังหน้าล็อกอินหลังจากล็อกเอาท์
   }
   // User profile
   getUserProfile(email: string): Observable<any> {
