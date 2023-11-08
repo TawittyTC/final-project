@@ -4,25 +4,22 @@ import { catchError, map } from 'rxjs/operators';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { User } from './user';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  getUserRole() {
-    throw new Error('Method not implemented.');
-  }
-  getCurrentUserEmail() {
-    throw new Error('Method not implemented.');
-  }
   endpoint: string = 'http://localhost:3000/api'; // URL ของ Express.js API
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
-
+  private jwtHelper = new JwtHelperService();
+  private secretKey = 'your-secret-key';
   constructor(
     private http: HttpClient,
     public router: Router
-  ) {
+  ){
+
   }
 
   // Sign-up
@@ -36,30 +33,53 @@ export class AuthService {
         catchError(this.handleError)
       );
   }
-
-  // Sign-in
   signIn(user: User): Observable<any> {
     const api = `${this.endpoint}/login`;
-    return this.http.post(api, user, { headers: this.headers })
-      .pipe(
-        map((data: any) => {
-          if (data.token) {
+    return this.http.post(api, user, { headers: this.headers }).pipe(
+      map((data: any) => {
+        if (data.token) {
+          // Decode the JWT token
+          const decodedToken = this.decodeToken(data.token);
+  
+          // Check if userId property exists in the decoded token
+          if (decodedToken && decodedToken.userId) {
+            const userIdData = decodedToken.userId;
+            // Store the decoded data in local storage
             localStorage.setItem('access_token', data.token);
-            localStorage.setItem('name', data.name);
-            localStorage.setItem('lname', data.lname);
-            localStorage.setItem('email', data.email);
-            localStorage.setItem('role', data.role);
-            localStorage.setItem('level', data.level);
-            localStorage.setItem('group', data.group);
-
+            localStorage.setItem('name', userIdData.name);
+            localStorage.setItem('lname', userIdData.lname);
+            localStorage.setItem('email', userIdData.email);
+            localStorage.setItem('role', userIdData.role);
+            localStorage.setItem('level', userIdData.level);
+            localStorage.setItem('group', userIdData.group);
+  
+            // Set token expiration time
+            const tokenExp = decodedToken.exp;
+            localStorage.setItem('token_exp', tokenExp.toString());
+  
             return data;
           } else {
             throw new Error('ชื่อหรือรหัสไม่ถูกต้อง');
           }
-        }),
-        catchError(this.handleError)
-      );
+        } else {
+          throw new Error('ชื่อหรือรหัสไม่ถูกต้อง');
+        }
+      }),
+      catchError(this.handleError)
+    );
   }
+  
+  // Decode the JWT token
+  decodeToken(token: string): any {
+    try {
+      return this.jwtHelper.decodeToken(token);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+    }
+    return null;
+  }
+  
+
 
   getToken() {
     return localStorage.getItem('access_token');
@@ -76,6 +96,9 @@ export class AuthService {
     localStorage.removeItem('role');
     localStorage.removeItem('level');
     localStorage.removeItem('group');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token_exp');
+    localStorage.removeItem('userIdData');
     this.router.navigate(['/home-componet']); // นำทางไปยังหน้าล็อกอินหลังจากล็อกเอาท์
   }
   // User profile
@@ -100,5 +123,6 @@ export class AuthService {
     }
     return throwError(msg);
   }
-  
+
+ 
 }
