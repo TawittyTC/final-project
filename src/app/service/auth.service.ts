@@ -1,3 +1,4 @@
+//auth.service.ts
 import { Injectable ,NgZone } from '@angular/core';
 import { Observable, throwError,Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -54,7 +55,7 @@ export class AuthService {
             localStorage.setItem('lname', userIdData.lname);
             localStorage.setItem('email', userIdData.email);
             localStorage.setItem('role', userIdData.role);
-            localStorage.setItem('level', userIdData.level);
+            localStorage.setItem('Access', userIdData.Access);
             localStorage.setItem('group', userIdData.group);
   
             // Set token expiration time
@@ -98,7 +99,7 @@ export class AuthService {
     localStorage.removeItem('lname');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
-    localStorage.removeItem('level');
+    localStorage.removeItem('Access');
     localStorage.removeItem('group');
     localStorage.removeItem('userId');
     localStorage.removeItem('token_exp');

@@ -3,7 +3,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient here
-
+import { AuthService } from '../service/auth.service';
 @Component({
   selector: 'app-device-card',
   templateUrl: './device-card.component.html',
@@ -31,9 +31,13 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   constructor(
     private apiService: ApiService,
     private http: HttpClient,
-    private GetImageService: GetImageService
+    private GetImageService: GetImageService,
+    private authService: AuthService
   ) {}
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
   onFileSelected(event: any) {
     const file = event.target.files[0];
 
