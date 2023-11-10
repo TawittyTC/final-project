@@ -267,4 +267,28 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       return 'OFF';
     }
   }
+
+  isDeviceAllowed(device_id: string): boolean {
+    const isLoggedIn = this.isLoggedIn();
+  
+    // If not logged in, consider it allowed
+    if (!isLoggedIn) {
+      return true;
+    }
+  
+    const allowedAccess = localStorage.getItem('access');
+  
+    // If no access is defined, consider it allowed
+    if (!allowedAccess) {
+      return true;
+    }
+  
+    const allowedAccessList = allowedAccess.split(',');
+  
+    // Check if device_id is in the allowedAccessList
+    return allowedAccessList.includes(device_id);
+  }
+  
+  
+  
 }

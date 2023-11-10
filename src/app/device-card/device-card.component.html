@@ -5,6 +5,7 @@
       class="col-sm-12 col-md-4 col-xl-3"
       *ngFor="let device_id of device_id"
     >
+    <div *ngIf="!isLoggedIn || isDeviceAllowed(device_id) || isLoggedIn ">
       <div class="bg-white mb-5 p-4 rounded-5">
         <div class="text-center mb-4 mt-1">
           <img
@@ -41,12 +42,12 @@
           </button>
           <!-- Edit Button -->
           <button
-            *ngIf="isLoggedIn()" 
+            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)" 
             (click)="enableEditMode(device_id)"
             class="btn"
             data-bs-toggle="modal"
             data-bs-target="#editModal"
-          >
+            >
             <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
           </button>
           <!-- Info Button -->
@@ -60,13 +61,12 @@
           </button>
           <!-- Delete Button -->
           <button
-            *ngIf="isLoggedIn()" 
+            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)" 
             (click)="deleteData(device_id)"
             class="btn"
-          >
+            >
             <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
           </button>
-        </div>
         <!-- Info Modal -->
         <div
           class="modal fade"
@@ -308,10 +308,9 @@
               </div>
             </div>
           </div>
-        </div>
-        <!-- แก้ไขข้อมูล -->
+        </div><!-- แก้ไขข้อมูล -->  
       </div>
-    </div>
-    <!-- *ngFor -->
+    </div> <!-- *ngIf -->
+    </div><!-- *ngFor --> 
   </div>
 </div>

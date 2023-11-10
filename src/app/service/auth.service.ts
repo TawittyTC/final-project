@@ -55,7 +55,7 @@ export class AuthService {
             localStorage.setItem('lname', userIdData.lname);
             localStorage.setItem('email', userIdData.email);
             localStorage.setItem('role', userIdData.role);
-            localStorage.setItem('Access', userIdData.Access);
+            localStorage.setItem('access', userIdData.access);
             localStorage.setItem('group', userIdData.group);
   
             // Set token expiration time
@@ -99,7 +99,7 @@ export class AuthService {
     localStorage.removeItem('lname');
     localStorage.removeItem('email');
     localStorage.removeItem('role');
-    localStorage.removeItem('Access');
+    localStorage.removeItem('access');
     localStorage.removeItem('group');
     localStorage.removeItem('userId');
     localStorage.removeItem('token_exp');
