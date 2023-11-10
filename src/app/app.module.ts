@@ -27,6 +27,8 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { TableUsersComponent } from './table-users/table-users.component';
+import { DeviceAccessGuard } from './service/device-access.guard';
+import { AuthService } from './service/auth.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -65,7 +67,7 @@ import { TableUsersComponent } from './table-users/table-users.component';
       }
     }),
   ],
-  providers: [],
+  providers: [DeviceAccessGuard, AuthService],
   bootstrap: [AppComponent],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })

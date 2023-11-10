@@ -1,3 +1,4 @@
+<!-- device-card.component.html -->
 <div class="container fw-light justify-content-center">
   <div class="row">
     <div
@@ -38,25 +39,16 @@
           >
             <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
           </button>
+          <!-- Edit Button -->
           <button
+            *ngIf="isLoggedIn()" 
             (click)="enableEditMode(device_id)"
             class="btn"
             data-bs-toggle="modal"
             data-bs-target="#editModal"
           >
-            <i
-              class="bi bi-pencil-square text-primary"
-              style="font-size: 26px"
-            ></i>
+            <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
           </button>
-          <!-- <button
-            class="btn"
-            (click)="setCurrentDeviceId(device_id)"
-            data-bs-toggle="modal"
-            data-bs-target="#mapModal"
-          >
-            <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
-          </button> -->
           <!-- Info Button -->
           <button
             (click)="enableInfoMode(device_id)"
@@ -64,13 +56,14 @@
             data-bs-toggle="modal"
             data-bs-target="#infoModal"
           >
-            <i
-              class="bi bi-info-circle text-success"
-              style="font-size: 26px"
-            ></i>
+            <i class="bi bi-info-circle text-success" style="font-size: 26px"></i>
           </button>
-
-          <button (click)="deleteData(device_id)" class="btn">
+          <!-- Delete Button -->
+          <button
+            *ngIf="isLoggedIn()" 
+            (click)="deleteData(device_id)"
+            class="btn"
+          >
             <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
           </button>
         </div>

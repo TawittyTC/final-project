@@ -29,5 +29,6 @@ export class AuthGuard implements CanActivate {
       // If the user doesn't have the required role, redirect to '/login-component'
       return this.router.parseUrl('/login-component');
     }
+    
   }
 }
