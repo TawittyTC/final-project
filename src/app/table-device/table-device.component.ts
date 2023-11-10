@@ -2,7 +2,7 @@ import { GetImageService } from './../get-img.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
-import { HttpClient } from '@angular/common/http'; // Import HttpClient here
+import { HttpClient } from '@angular/common/http'; 
 
 @Component({
   selector: 'app-table-device',
