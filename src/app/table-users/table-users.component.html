@@ -24,16 +24,14 @@
         </td>
         <td data-title="Group">{{ latestDeviceData[device_id]?.status }}</td>
         <td data-title="Actions">
-          <button class="btn me-2" [routerLink]="['/dashboard-component']" [queryParams]="{ device_id: device_id }">
-            <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
-          </button>
+
           <button (click)="enableEditMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#editModal">
             <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
           </button>
           <!-- Info Button -->
-          <button (click)="enableInfoMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#infoModal">
+          <!-- <button (click)="enableInfoMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#infoModal">
             <i class="bi bi-info-circle text-success" style="font-size: 26px"></i>
-          </button>
+          </button> -->
           <button (click)="deleteData(device_id)" class="btn">
             <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
           </button>
