@@ -1,8 +1,10 @@
-import { GetImageService } from './../get-img.service';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+// table-users.component.ts
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from 'src/app/api.service';
 import { HttpClient } from '@angular/common/http';
+import { GetImageService } from './../get-img.service';
 
 @Component({
   selector: 'app-table-users',
@@ -10,70 +12,46 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./table-users.component.scss']
 })
 export class TableUsersComponent implements OnInit, OnDestroy {
-  isMapModalOpen = false;
-  imageBlob: Blob | null = null;
-  selectedFile: File | null = null;
-  @Input() deviceData: any;
-  device_id: string[] = [];
-  latestDeviceData: any = {};
+  users: any[] = [];
+  newUser: any = {};
+  devices: any[] = [];
+  editedUser: any = {};
   editMode = false;
-  editedData: any = {};
-  newData: any = {};
-  addMode = false;
+
+  // Define a FormGroup for the new user form
+  newUserForm: FormGroup;
+  // Define a FormGroup for the edited user form
+  editedUserForm: FormGroup;
   private dataSubscription: Subscription | undefined;
-  data: any;
-  formIsValid: boolean = false;
-  formIncompleteAlert: string = '';
-  public currentDeviceId!: string;
-  infoMode: boolean | undefined;
 
   constructor(
     private apiService: ApiService,
     private http: HttpClient,
-    private GetImageService: GetImageService
-  ) {}
+    private GetImageService: GetImageService,
+    private fb: FormBuilder
+  ) {
+    // Initialize the new user form
+    this.newUserForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      access: [[]] // Access is an array of devices
+    });
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
+    this.editedUserForm = this.fb.group({
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      access: [[]]
+    });
+    
 
-    if (file) {
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (file.size > maxSize) {
-        alert('ไฟล์มีขนาดใหญ่เกินไป (มากกว่า 5MB)');
-        this.selectedFile = null;
-      } else {
-        this.selectedFile = file;
-        this.currentDeviceId = this.deviceData.device_id[0];
-      }
-    } else {
-      this.selectedFile = null;
-    }
-  }
-
-  onUpload() {
-    if (this.selectedFile && this.currentDeviceId) {
-      const formData = new FormData();
-      const fileName = `${this.currentDeviceId}.png`;
-
-      formData.append('file', new File([this.selectedFile], fileName));
-
-      this.http.post('http://localhost:3000/upload/', formData).subscribe(
-        (response) => {
-          console.log('File uploaded successfully');
-        },
-        (error) => {
-          console.error('Error uploading file:', error);
-        }
-      );
-    }
   }
 
   ngOnInit(): void {
-    this.loadImageByDeviceId('device_id');
-    this.loadData();
-
+    this.loadUsers();
+    this.loadDevices();
     this.dataSubscription = interval(2000).subscribe(() => {
-      this.loadData();
+      this.loadUsers();
+      this.loadDevices();
     });
   }
 
@@ -83,144 +61,104 @@ export class TableUsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  loadImageByDeviceId(deviceId: string) {
-    if (deviceId) {
-      this.GetImageService.getImageByDeviceId(deviceId).subscribe(
-        (data) => {
-          this.imageBlob = data;
-        },
-        (error) => {
-          console.error('Error loading image:', error);
-        }
-      );
-    }
+  loadUsers() {
+    this.apiService.getAllUsers().subscribe((response: any) => {
+      this.users = response;
+      //console.log(this.users)
+    });
   }
 
-  getImageUrl(deviceId: string): string {
-    if (this.imageBlob) {
-      const imageUrl = `http://localhost:3000/uploads/${deviceId}.png`;
-      return imageUrl;
-    } else {
-      return '';
-    }
-  }
-
-  loadData() {
+  loadDevices() {
     this.apiService.getAllData().subscribe((response: any) => {
-      this.data = response;
-      this.device_id = this.data.map((item: { device_id: any }) =>
-        item.device_id.toString()
-      );
-
-      this.latestDeviceData = {};
-      this.device_id.forEach((id) => {
-        const filteredData = this.data.filter(
-          (item: { device_id: string }) => item.device_id === id
-        );
-        const latestEntry = filteredData.reduce(
-          (prev: { id: number }, current: { id: number }) =>
-            prev.id > current.id ? prev : current
-        );
-        this.latestDeviceData[id] = {
-          ...latestEntry,
-          status: this.checkOnlineStatus(latestEntry),
-        };
-      });
+      this.devices = response.map((item: { device_id: any }) => item.device_id.toString());
     });
   }
 
-  createNewData(newData: any) {
-    this.apiService.createData(newData).subscribe(() => {
-      this.loadData();
-      this.newData = {};
-      this.addMode = false;
-    });
-  }
-
-  updateData(device_id: any, updatedData: any) {
-    this.apiService.updateData(device_id, updatedData).subscribe(() => {
-      this.loadData();
-    });
-  }
-
-  deleteData(device_id: string) {
-    const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
-    if (confirmed) {
-      this.apiService.deleteData(device_id).subscribe(() => {
-        // You can optionally handle the result of the deletion here
-        // this.loadData();
+  addUser() {
+    if (this.newUserForm.valid) {
+      // If access is an array, convert it to a comma-separated string
+      if (this.newUser.access && Array.isArray(this.newUser.access)) {
+        this.newUser.access = this.newUser.access.join(',');
+      }
+  
+      this.apiService.createUser(this.newUser).subscribe(() => {
+        this.loadUsers();
+        this.newUser = {};
       });
     }
   }
+  
 
-  enableEditMode(device_id: string) {
+  editUser(email: string) {
+    this.editedUser = { ...this.users.find(user => user.email === email) };
     this.editMode = true;
-    this.currentDeviceId = device_id;
-    this.editedData = { ...this.latestDeviceData[device_id] };
+  
+    // Set initial values for the form controls
+    this.editedUserForm.setValue({
+      name: this.editedUser.name,
+      email: this.editedUser.email,
+      access: this.editedUser.access.split(',')
+    });
   }
-
-  checkFormValidity() {
-    this.formIsValid =
-      !!this.editedData.device_name &&
-      !!this.editedData.device_detail &&
-      !!this.editedData.device_location &&
-      !!this.editedData.group_id;
-    this.formIncompleteAlert = this.formIsValid
-      ? ''
-      : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
-  }
-
-  enableInfoMode(device_id: string) {
-    this.infoMode = true;
-    this.currentDeviceId = device_id;
-  }
-
-  saveData() {
-    if (this.formIsValid) {
-      this.apiService
-        .updateData(this.editedData.device_id, this.editedData)
-        .subscribe(
-          () => {
-            this.editMode = false;
-            this.editedData = {};
-          },
-          (error) => {
-            console.error('Error saving data:', error);
-          }
-        );
+  
+  
+  saveUser() {
+    if (this.editedUserForm.valid) {
+      const formData = this.editedUserForm.value;
+  
+      // Update editedUser properties
+      this.editedUser.name = formData.name;
+      this.editedUser.email = formData.email;
+      this.editedUser.access = formData.access.join(',');
+  
+      // Call the API to save changes
+      this.apiService.updateUserByEmail(this.editedUser.email, this.editedUser).subscribe(() => {
+        this.loadUsers();
+        this.cancelEditMode();
+      });
     }
+  }
+  
+  
+  
+
+  deleteUser(email: string) {
+    // Implement user deletion logic here
   }
 
   cancelEditMode() {
     this.editMode = false;
-    this.editedData = {};
+    this.editedUser = {};
   }
 
-  enableAddMode() {
-    this.addMode = true;
-  }
-
-  cancelAddMode() {
-    this.addMode = false;
-    this.newData = {};
-  }
-
-  setCurrentDeviceId(deviceId: string) {
-    this.currentDeviceId = deviceId;
-  }
-
-  reloadPage() {
-    location.reload();
-  }
-
-  checkOnlineStatus(data: any): string {
-    const createdTimestamp = new Date(data.created_timestamp).getTime();
-    const currentTimestamp = new Date().getTime();
-
-    if (currentTimestamp - createdTimestamp <= 100000) {
-      return 'ON';
-    } else {
-      return 'OFF';
+  addDeviceToAccess() {
+    const selectedDevice = this.newUserForm.get('access')?.value;
+  
+    if (selectedDevice && !this.newUser.access.includes(selectedDevice)) {
+      // Add the selected device to the access array in the form
+      this.newUser.access.push(selectedDevice);
+  
+      // Clear the selected device in the form control
+      this.newUserForm.get('access')?.setValue([]);
     }
   }
+  
+  
+  addDeviceToEditedAccess() {
+    const selectedDevice = this.editedUserForm.get('access')?.value;
+  
+    if (selectedDevice && !this.editedUser.access.includes(selectedDevice)) {
+      // Add the selected device to the access array in the form
+      this.editedUserForm.get('access')?.setValue([...this.editedUserForm.get('access')?.value, selectedDevice]);
+  
+      // Clear the selected device in the form control
+      this.editedUserForm.get('access')?.markAsDirty();
+    }
+  }
+  
+  
+  
+  
+  
+  
 }

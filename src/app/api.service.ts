@@ -9,6 +9,9 @@ import { interval, Subscription } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
+  updateUser(selectedUserId: string, updatedUserData: { device_id: string; }) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:3000/devices'; // URL ของ API ของ Express.js
   private userurl = 'http://localhost:3000/users';
   private dataSubscription: Subscription | undefined;
@@ -80,27 +83,28 @@ export class ApiService {
     return this.http.get<any>(url);
   }
 
-  // Update a user
-  updateUser(userId: any, user: any): Observable<any> {
-    const url = `${this.userurl}/${userId}`;
+  // Update a user by email
+  updateUserByEmail(email: string, user: any): Observable<any> {
+    const url = `${this.userurl}/${encodeURIComponent(email)}`;
     return this.http.put(url, user).pipe(
       catchError((error) => {
-        console.error('Error updating user:', error);
-        return throwError('Error updating user');
+        console.error('Error updating user by email:', error);
+        return throwError('Error updating user by email');
       })
     );
   }
 
-  // Delete a user
-  deleteUser(userId: any): Observable<any> {
-    const url = `${this.userurl}/${userId}`;
+  // Delete a user by email
+  deleteUserByEmail(email: string): Observable<any> {
+    const url = `${this.userurl}/${encodeURIComponent(email)}`;
     return this.http.delete(url).pipe(
       catchError((error) => {
-        console.error('Error deleting user:', error);
-        return throwError('Error deleting user');
+        console.error('Error deleting user by email:', error);
+        return throwError('Error deleting user by email');
       })
     );
   }
+
   // Get a user by their email address
   getUserByEmail(email: string): Observable<any> {
     const url = `${this.userurl}/${encodeURIComponent(email)}`;

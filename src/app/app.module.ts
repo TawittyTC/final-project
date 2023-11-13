@@ -11,8 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms'; // เพิ่ม import นี้
-
+import { FormsModule ,ReactiveFormsModule} from '@angular/forms'; // เพิ่ม import นี้
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
@@ -58,6 +57,7 @@ import { AuthService } from './service/auth.service';
     NgbModule,
     NgApexchartsModule,
     FormsModule,
+    ReactiveFormsModule,
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
