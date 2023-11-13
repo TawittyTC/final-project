@@ -1,7 +1,5 @@
-import { GetImageService } from './../get-img.service';
-import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -9,258 +7,98 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './table-groups.component.html',
   styleUrls: ['./table-groups.component.scss']
 })
-export class TableGroupsComponent {
-  isMapModalOpen = false;
-
-  imageBlob: Blob | null = null;
-  selectedFile: File | null = null;
-  @Input() deviceData: any; // รับข้อมูลอุปกรณ์จากภายนอก
-  device_id: [] = [];
-  latestDeviceData: any = {};
-  editMode = false;
-  editedData: any = {};
+export class TableGroupsComponent implements OnInit, OnDestroy {
+  deviceData: any[] = [];
+  device_id: string[] = [];
   newData: any = {};
-  addMode = false;
-  private dataSubscription: Subscription | undefined;
-  data: any;
-  formIsValid: boolean = false;
-  formIncompleteAlert: string = '';
-  public currentDeviceId!: string;
-  infoMode: boolean | undefined;
+  addMode: boolean = false;
+  editMode: boolean = false;
+  editedData: any = {};
 
-  constructor(
-    private apiService: ApiService,
-    private http: HttpClient,
-    private GetImageService: GetImageService
-  ) {}
+  dataSubscription: Subscription | undefined;
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-
-    if (file) {
-      // Check the file size (in bytes)
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (file.size > maxSize) {
-        // File size is too large
-        alert('ไฟล์มีขนาดใหญ่เกินไป (มากกว่า 5MB)');
-        this.selectedFile = null;
-      } else {
-        this.selectedFile = file;
-
-        // Set the currentDeviceId based on your logic, e.g., from the selected device's ID
-        this.currentDeviceId = this.deviceData.device_id; // Set it to the selected device's ID
-      }
-    } else {
-      this.selectedFile = null;
-    }
-  }
-
-  onUpload() {
-    if (this.selectedFile && this.currentDeviceId) {
-      const formData = new FormData();
-
-      // Change the file name to the currentDeviceId
-      const fileName = `${this.currentDeviceId}.png`;
-
-      formData.append('file', new File([this.selectedFile], fileName));
-
-      this.http.post('http://localhost:3000/upload/', formData).subscribe(
-        (response) => {
-          console.log('File uploaded successfully');
-        },
-        (error) => {
-          console.error('Error uploading file:', error);
-        }
-      );
-    }
-  }
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.loadImageByDeviceId('device_id');
     this.loadData();
 
-    // ใช้ interval สำหรับโหลดข้อมูลอัปเดตทุก 2 วินาที
+    // Use interval to periodically fetch data from the backend
     this.dataSubscription = interval(2000).subscribe(() => {
       this.loadData();
     });
   }
 
   ngOnDestroy() {
-    // ยกเลิกการสมัครสมาชิกเมื่อคอมโพนนิ้งถูกทำลาย
+    // Unsubscribe when the component is destroyed
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
     }
   }
 
-  // คำสั่งนี้จะทำการโหลดรูปภาพเมื่อมีข้อมูลใหม่
-  loadImageByDeviceId(deviceId: string) {
-    if (deviceId) {
-      this.GetImageService.getImageByDeviceId(deviceId).subscribe(
-        (data) => {
-          this.imageBlob = data;
-        },
-        (error) => {
-          console.error('Error loading image:', error);
-        }
-      );
-    }
-  }
-
-  // ที่อยู่ URL ของรูปภาพ ควรถูกเรียกใช้ใน HTML template
-  getImageUrl(deviceId: string): string {
-    if (this.imageBlob) {
-      // มีรูปภาพใน this.imageBlob
-      const imageUrl = `localhost:3000/uploads/${deviceId}.png`;
-      return imageUrl;
-    } else {
-      // ไม่มีรูปภาพ
-      return ''; // หรือ URL โดย default ในกรณีที่ไม่มีรูปภาพ
-    }
-  }
-
   loadData() {
-    this.apiService.getAllData().subscribe((response: any) => {
-      this.data = response;
-      this.device_id = this.data.map((item: { device_id: any }) =>
+    // Call the API directly in the component
+    this.http.get<any[]>('http://localhost:3000/devices').subscribe((response: any) => {
+      this.deviceData = response;
+      this.device_id = this.deviceData.map((item: { device_id: any }) =>
         item.device_id.toString()
       );
-
-      this.latestDeviceData = {};
-      this.device_id.forEach((id) => {
-        const filteredData = this.data.filter(
-          (item: { device_id: string }) => item.device_id === id
-        );
-        const latestEntry = filteredData.reduce(
-          (prev: { id: number }, current: { id: number }) =>
-            prev.id > current.id ? prev : current
-        );
-        this.latestDeviceData[id] = latestEntry;
-
-        // ตรวจสอบสถานะของอุปกรณ์และเพิ่มข้อมูลสถานะลงใน latestDeviceData
-        this.latestDeviceData[id] = {
-          ...latestEntry,
-          status: this.checkOnlineStatus(latestEntry),
-        };
-      });
     });
   }
 
-  // สร้างข้อมูลใหม่
-  createNewData(newData: any) {
-    this.apiService.createData(newData).subscribe(() => {
+  createNewData() {
+    // Call the API directly in the component
+    this.http.post('http://localhost:3000/devices', this.newData).subscribe(() => {
       this.loadData();
-      this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
-      this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
+      this.newData = {};
+      this.addMode = false;
     });
   }
 
-  // อัปเดตข้อมูล
-  updateData(device_id: any, updatedData: any) {
-    this.apiService.updateData(device_id, updatedData).subscribe(() => {
-      this.loadData();
-    });
-  }
-
-  //ลบข้อมูล
-  deleteData(device_id: string) {
-    // Use confirm() to request confirmation for data deletion
-    const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
-    if (confirmed) {
-      this.apiService.deleteData(device_id).subscribe(() => {
-        // You can optionally handle the result of the deletion here
-        // this.loadData();
-      });
-    }
-  }
-
-  // เริ่มโหมดแก้ไขข้อมูล
-  enableEditMode(device_id: string) {
-    this.editMode = true;
-    this.currentDeviceId = device_id; // Set the currentDeviceId when entering edit mode
-    this.editedData = { ...this.latestDeviceData[device_id] };
-  }
-
-  checkFormValidity() {
-    this.formIsValid =
-      !!this.editedData.device_name &&
-      !!this.editedData.device_detail &&
-      !!this.editedData.device_location &&
-      !!this.editedData.group_id;
-    this.formIncompleteAlert = this.formIsValid
-      ? ''
-      : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
-  }
-
-  // เริ่มโหมดแสดงข้อมูล (Info Mode)
-  enableInfoMode(device_id: string) {
-  this.infoMode = true;
-  this.currentDeviceId = device_id; // Set the currentDeviceId when entering info mode
-}
-  // บันทึกข้อมูลหลังแก้ไข
-  saveData() {
+  updateData() {
     if (this.formIsValid) {
-      this.apiService
-        .updateData(this.editedData.device_id, this.editedData)
-        .subscribe(
-          () => {
-            this.editMode = false;
-            this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
-          },
-          (error) => {
-            console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
-          }
-        );
-    }
-    this.apiService
-      .updateData(this.editedData.device_id, this.editedData)
-      .subscribe(
+      // Call the API directly in the component
+      this.http.put(`http://localhost:3000/devices/${this.editedData.device_id}`, this.editedData).subscribe(
         () => {
           this.editMode = false;
-          // ไม่ต้องโหลดข้อมูลใหม่เนื่องจากคุณแก้ไขข้อมูลในส่วนเดียวกัน
-          this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
+          this.editedData = {};
         },
-        (error) => {
-          //console.error('เกิดข้อผิดพลาดในระหว่างการบันทึกข้อมูล:', error);
+        (error: any) => {
+          console.error('Error updating data:', error);
         }
       );
+    }
   }
 
-  // ยกเลิกโหมดแก้ไข
+  deleteData(device_id: string) {
+    const confirmed = confirm('Are you sure you want to delete this data?');
+    if (confirmed) {
+      // Call the API directly in the component
+      this.http.delete(`http://localhost:3000/devices/${device_id}`).subscribe(() => {
+        this.loadData();
+      });
+    }
+  }
+
+  setEditedData(deviceGroup: any) {
+    this.editedData = { ...deviceGroup };
+  }
+
+  get formIsValid(): boolean {
+    return (
+      this.editedData.device_name &&
+      this.editedData.device_detail &&
+      this.editedData.device_location &&
+      this.editedData.device_type &&
+      this.editedData.group_id
+    );
+  }
+
+  onFileSelected(event: any) {
+    // Handle file selection logic
+  }
+
   cancelEditMode() {
     this.editMode = false;
-    this.editedData = {}; // ล้างข้อมูลที่อยู่ใน editedData
-  }
-
-  // เริ่มโหมดเพิ่มข้อมูล
-  enableAddMode() {
-    this.addMode = true;
-  }
-
-  // ยกเลิกโหมดเพิ่มข้อมูล
-  cancelAddMode() {
-    this.addMode = false;
-    this.newData = {}; // ล้างข้อมูลที่กรอกหลังยกเลิก
-  }
-
-  setCurrentDeviceId(deviceId: string) {
-    this.currentDeviceId = deviceId;
-  }
-
-  reloadPage() {
-    // รีโหลดหน้าเว็บ
-    location.reload();
-  }
-
-  // สร้างฟังก์ชันเพื่อตรวจสอบสถานะ
-  checkOnlineStatus(data: any): string {
-    const createdTimestamp = new Date(data.created_timestamp).getTime(); // เวลาใน created_timestamp จาก API
-    const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
-
-    // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-    if (currentTimestamp - createdTimestamp <= 100000) {
-      return 'ON';
-    } else {
-      return 'OFF';
-    }
+    this.editedData = {};
   }
 }

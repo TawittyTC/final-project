@@ -1,4 +1,4 @@
-<div class="container fw-light justify-content-center fw-light">
+<div class="container fw-light justify-content-center">
   <div class="display-6 fw-light text-muted">Groups</div>
   <div id="no-table">
     <table class="table table-striped">
@@ -11,56 +11,33 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let device_id of device_id">
-          <td data-title="ID">
-            {{ latestDeviceData[device_id]?.device_name }}
-          </td>
-          <td data-title="Name">
-            {{ latestDeviceData[device_id]?.device_id }}
-          </td>
-          <td data-title="Type">
-            {{
-              latestDeviceData[device_id]?.device_type === 1
-                ? "ESP"
-                : latestDeviceData[device_id]?.device_type === 2
-                ? "Tuya"
-                : "Unknown"
-            }}
-          </td>
+        <tr *ngFor="let deviceGroup of deviceData">
+          <td data-title="ID">{{ deviceGroup.device_id }}</td>
+          <td data-title="Name">{{ deviceGroup.device_name }}</td>
+          <td data-title="Type">{{ deviceGroup.device_type }}</td>
 
           <td data-title="Actions">
             <button
-              (click)="enableEditMode(device_id)"
-              class="btn"
-              data-bs-toggle="modal"
-              data-bs-target="#editModal"
-            >
-              <i
-                class="bi bi-pencil-square text-primary"
-                style="font-size: 26px"
-              ></i>
-            </button>
-            <!-- Info Button -->
-            <!-- <button (click)="enableInfoMode(device_id)" class="btn" data-bs-toggle="modal" data-bs-target="#infoModal">
-            <i class="bi bi-info-circle text-success" style="font-size: 26px"></i>
-          </button> -->
-            <button (click)="deleteData(device_id)" class="btn">
+  (click)="editMode = true; setEditedData(deviceGroup)"
+  class="btn"
+  data-bs-toggle="modal"
+  data-bs-target="#editModal"
+>
+  <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+</button>
+
+            <button (click)="deleteData(deviceGroup.device_id)" class="btn">
               <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
             </button>
           </td>
         </tr>
       </tbody>
+
     </table>
 
     <!-- แก้ไขข้อมูล -->
     <!-- Edit Device Modal -->
-    <div
-      class="modal fade"
-      id="editModal"
-      tabindex="-1"
-      aria-labelledby="editModalLabel"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
@@ -75,7 +52,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form (submit)="saveData()" #editForm="ngForm">
+            <form (submit)="updateData()" #editForm="ngForm">
               <!-- Add your form fields here -->
               <div class="form-group">
                 <label for="device_id">ID:</label>
@@ -105,72 +82,11 @@
               <!-- Device Detail -->
               <div class="form-group">
                 <label for="device_detail">Device:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="device_detail"
-                  [(ngModel)]="editedData.device_detail"
-                  name="device_detail"
-                  required
-                />
+
               </div>
 
-              <!-- Device Location -->
-              <div class="form-group">
-                <label for="device_location">Device Location:</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="device_location"
-                  [(ngModel)]="editedData.device_location"
-                  name="device_location"
-                  required
-                />
-              </div>
 
-              <!-- Device Map -->
-              <div class="form-group">
-                <label for="device_map_img">Device Map:</label>
 
-                <input
-                  type="file"
-                  class="form-control"
-                  id="device_map_img"
-                  (change)="onFileSelected($event)"
-                />
-              </div>
-
-              <!-- Device Type -->
-              <div class="form-group">
-                <label for="device_type">Device Type:</label>
-                <select
-                  class="form-control"
-                  id="device_type"
-                  [(ngModel)]="editedData.device_type"
-                  name="device_type"
-                  required
-                >
-                  <option [ngValue]="null">Select Device Type</option>
-                  <option [ngValue]="1">ESP</option>
-                  <option [ngValue]="2">Tuya</option>
-                </select>
-              </div>
-
-              <!-- Group ID -->
-              <div class="form-group">
-                <label for="group_id">Group ID:</label>
-                <select
-                  class="form-control"
-                  id="group_id"
-                  [(ngModel)]="editedData.group_id"
-                  name="group_id"
-                  required
-                >
-                  <option [ngValue]="null">Select Group ID</option>
-                  <option [ngValue]="1">A</option>
-                  <option [ngValue]="2">B</option>
-                </select>
-              </div>
 
               <!-- Error message -->
               <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
@@ -180,13 +96,9 @@
               <!-- Add more fields as needed -->
               <div class="mt-2">
                 <button
-                  (click)="onUpload(); saveData(); reloadPage()"
                   type="submit"
                   class="btn btn-success me-2"
-                  [disabled]="
-                    editForm.invalid ||
-                    (selectedFile && selectedFile.size > 5 * 1024 * 1024)
-                  "
+                  [disabled]="editForm.invalid"
                   data-bs-dismiss="modal"
                 >
                   Save
@@ -202,6 +114,7 @@
                 </button>
               </div>
             </form>
+
           </div>
         </div>
       </div>
