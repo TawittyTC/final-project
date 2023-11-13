@@ -45,7 +45,7 @@
               id="email"
               placeholder="Your Email"
               name="email"
-              [(ngModel)]="user.email" 
+              [(ngModel)]="user.email"
               required
             />
           </div>
@@ -94,9 +94,9 @@
               Password does not match.
             </div>
           </div>
-          <div class="mt-2">
-            <button type="submit" class="btn btn-primary" [disabled]="!(user.name && user.lname && user.email && user.confirmEmail && user.password && user.confirmPassword && user.email === user.confirmEmail && user.password === user.confirmPassword)">Sign Up</button>
-            <a routerLink="/login-component" class="btn btn-danger">Back</a>
+          <div class="mt-2 mb-2">
+            <button type="submit" class="btn btn-primary " [disabled]="!(user.name && user.lname && user.email && user.confirmEmail && user.password && user.confirmPassword && user.email === user.confirmEmail && user.password === user.confirmPassword)">Sign Up</button>
+            <button routerLink="/login-component" class="btn btn-danger ms-2">Back</button>
           </div>
         </form>
         <!-- Display error message if any -->
