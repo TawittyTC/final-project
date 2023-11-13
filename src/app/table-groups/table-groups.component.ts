@@ -9,7 +9,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TableGroupsComponent implements OnInit, OnDestroy {
   deviceData: any[] = [];
-  device_id: string[] = [];
+  group_id: string[] = []; // Update to use group_id
   newData: any = {};
   addMode: boolean = false;
   editMode: boolean = false;
@@ -37,17 +37,17 @@ export class TableGroupsComponent implements OnInit, OnDestroy {
 
   loadData() {
     // Call the API directly in the component
-    this.http.get<any[]>('http://localhost:3000/devices').subscribe((response: any) => {
+    this.http.get<any[]>('http://localhost:3000/device-groups').subscribe((response: any) => {
       this.deviceData = response;
-      this.device_id = this.deviceData.map((item: { device_id: any }) =>
-        item.device_id.toString()
+      this.group_id = this.deviceData.map((item: { group_id: any }) =>
+        item.group_id.toString()
       );
     });
   }
 
   createNewData() {
     // Call the API directly in the component
-    this.http.post('http://localhost:3000/devices', this.newData).subscribe(() => {
+    this.http.post('http://localhost:3000/device-groups', this.newData).subscribe(() => {
       this.loadData();
       this.newData = {};
       this.addMode = false;
@@ -55,26 +55,32 @@ export class TableGroupsComponent implements OnInit, OnDestroy {
   }
 
   updateData() {
-    if (this.formIsValid) {
+    console.log('Before Update:', this.editedData);
+
+
       // Call the API directly in the component
-      this.http.put(`http://localhost:3000/devices/${this.editedData.device_id}`, this.editedData).subscribe(
+      this.http.put(`http://localhost:3000/device-groups/${this.editedData.group_id}`, this.editedData).subscribe(
         () => {
           this.editMode = false;
           this.editedData = {};
+          console.log('After Update:', this.editedData);
+          console.log('Update successful');
         },
         (error: any) => {
           console.error('Error updating data:', error);
         }
       );
-    }
   }
 
-  deleteData(device_id: string) {
+
+
+  deleteData(group_id: string) {
     const confirmed = confirm('Are you sure you want to delete this data?');
     if (confirmed) {
       // Call the API directly in the component
-      this.http.delete(`http://localhost:3000/devices/${device_id}`).subscribe(() => {
+      this.http.delete(`http://localhost:3000/device-groups/${group_id}`).subscribe(() => {
         this.loadData();
+        console.log("Delete Complete");
       });
     }
   }
@@ -85,10 +91,10 @@ export class TableGroupsComponent implements OnInit, OnDestroy {
 
   get formIsValid(): boolean {
     return (
-      this.editedData.device_name &&
-      this.editedData.device_detail &&
-      this.editedData.device_location &&
-      this.editedData.device_type &&
+      this.editedData.group_name && // Update to use group_name
+      this.editedData.group_detail && // Adjust property names accordingly
+      this.editedData.group_location &&
+      this.editedData.group_type &&
       this.editedData.group_id
     );
   }
