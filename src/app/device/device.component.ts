@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/api.service';
 import { interval, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../service/auth.service';
 
 @Component({
   selector: 'app-device',
@@ -25,7 +26,7 @@ export class DeviceComponent implements OnInit {
 
   private dataSubscription: Subscription | undefined;
 
-  constructor(private apiService: ApiService, private http: HttpClient) {}
+  constructor(private apiService: ApiService, private http: HttpClient,private authService: AuthService) {}
 
   toggleGroupDropdown() {
     this.showGroupDropdown = !this.showGroupDropdown;
@@ -48,7 +49,9 @@ export class DeviceComponent implements OnInit {
       this.loadData;
     });
   }
-
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
   ngOnDestroy() {
     // ยกเลิกการสมัครสมาชิกเมื่อคอมโพนนิ้งถูกทำลาย
     if (this.dataSubscription) {
