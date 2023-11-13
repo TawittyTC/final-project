@@ -58,38 +58,37 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   }
 
   loadDevices() {
-    return this.apiService.getAllData().pipe(
-      switchMap((response: any[]) => {
-        this.devices = response.map((item) => item.device_id);
-        return this.apiService.getAllUsers();
-      })
-    );
+    this.apiService.getAllData().subscribe((response: any) => {
+      this.devices = response.map((item: { device_id: any }) => item.device_id.toString());
+      //console.log(this.devices)
+    });
   }
   
   loadUsers() {
-    this.loadDevices().subscribe((response: any[]) => {
-      this.users = response.map(user => {
-        user.accessArray = user.access ? user.access.split(',').map((device: string) => device.trim()) : [];
-        return user;
-      });
-  
-      if (this.editMode && this.editedUser.email) {
-        this.editedUser = { ...this.users.find(user => user.email === this.editedUser.email) };
-        this.editedUserForm.setValue({
-          name: this.editedUser.name,
-          email: this.editedUser.email,
-          access: [...this.editedUser.accessArray],
-          role: this.editedUser.role
-        });
+    this.apiService.getAllUsers().subscribe(
+      (response: any) => {
+        this.users = response.map((user: any) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          access: user.access,
+          role: user.role,
+          accessArray: user.access.split(',').map((item: string) => item.trim())
+        }));
+      },
+      (error) => {
+        console.error('Error loading users:', error);
+        // Handle error as needed
       }
-    });
+    );
   }
+  
   
   
 
   editUser(email: string) {
     this.editedUser = { ...this.users.find(user => user.email === email) };
-    console.log('Edited User:', this.editedUser); // เพิ่มบรรทัดนี้
+    console.log('Edited User:', this.editedUser);
     this.editMode = true;
   
     // Initialize the editedUserForm with the selected user's data
@@ -99,7 +98,15 @@ export class TableUsersComponent implements OnInit, OnDestroy {
       access: [...this.editedUser.accessArray],
       role: this.editedUser.role
     });
+  
+    // Set the 'access' FormControl in the form separately
+    const accessArray = this.editedUserForm.get('access') as FormArray;
+    accessArray.clear();
+    this.editedUser.accessArray.forEach((device: string) => {
+      accessArray.push(this.fb.control(device));
+    });
   }
+  
   
   
   saveUser() {
@@ -149,15 +156,9 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   }
 
   
-  removeAccess(index: number) {
-    const accessArray = this.editedUserForm.get('access') as FormArray;
-    accessArray.removeAt(index);
-    this.editedUserForm.get('access')?.markAsDirty();
-  }
-  
   updateAccess(selectedDeviceId: string) {
     const accessArray = this.editedUserForm.get('access') as FormArray;
-    
+  
     // Check if the device is not already in the access array
     if (selectedDeviceId && !accessArray.value.includes(selectedDeviceId)) {
       accessArray.push(this.fb.control(selectedDeviceId));
@@ -165,8 +166,9 @@ export class TableUsersComponent implements OnInit, OnDestroy {
     }
   }
   
-  
-  
-  
-
+  removeAccess(index: number) {
+    const accessArray = this.editedUserForm.get('access') as FormArray;
+    accessArray.removeAt(index);
+    this.editedUserForm.get('access')?.markAsDirty();
+  }
 }

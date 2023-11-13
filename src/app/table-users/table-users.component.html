@@ -65,6 +65,8 @@
                   </div>
                   <button type="button" class="btn btn-outline-danger" (click)="removeAccess(i)">Remove</button>
                 </div>
+        
+                
                 
                                 
                 <div class="input-group">
@@ -72,7 +74,7 @@
                     <option *ngFor="let deviceId of devices" [value]="deviceId">{{ deviceId }}</option>
                   </select>
                   <button type="button" class="btn btn-outline-secondary" (click)="updateAccess(accessDropdown.value)">Add Device</button>
-                </div>                
+                </div>              
                 <small class="text-muted">Selected devices: {{ editedUserForm.get('access')?.value?.join(', ') || 'None' }}</small>
               </div>
           
