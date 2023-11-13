@@ -21,8 +21,12 @@
           <td>{{ user.role }}</td>
           <td>{{ user.access }}</td>
           <td>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModalusers" (click)="editUser(user.email)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteUser(user.email)">Delete</button>
+            <button (click)="editUser(user.email)"class="btn"data-bs-toggle="modal"data-bs-target="#editModalusers">
+              <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+            </button>
+            <button (click)="deleteUser(user.email)"class="btn">
+              <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
+            </button>
           </td>
         </tr>
       </tbody>
