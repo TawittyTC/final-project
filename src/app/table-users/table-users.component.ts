@@ -15,7 +15,7 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   devices: any[] = [];
   editedUser: any = {};
   editMode = false;
-  
+  roles: string[] = [];
   // Define a FormGroup for the new user form
   newUserForm: FormGroup;
   // Define a FormGroup for the edited user form
@@ -72,7 +72,7 @@ export class TableUsersComponent implements OnInit, OnDestroy {
         user.accessArray = user.access ? user.access.split(',').map((device: string) => device.trim()) : [];
         return user;
       });
-
+  
       if (this.editMode && this.editedUser.email) {
         this.editedUser = { ...this.users.find(user => user.email === this.editedUser.email) };
         this.editedUserForm.setValue({
@@ -89,17 +89,17 @@ export class TableUsersComponent implements OnInit, OnDestroy {
 
   editUser(email: string) {
     this.editedUser = { ...this.users.find(user => user.email === email) };
+    console.log('Edited User:', this.editedUser); // เพิ่มบรรทัดนี้
     this.editMode = true;
   
     // Initialize the editedUserForm with the selected user's data
     this.editedUserForm.setValue({
       name: this.editedUser.name,
       email: this.editedUser.email,
-      access: [...this.editedUser.accessArray], // Use accessArray instead of splitting access string
-      role: this.editedUser.role // Set initial role value
+      access: [...this.editedUser.accessArray],
+      role: this.editedUser.role
     });
   }
-  
   
   
   saveUser() {
@@ -109,19 +109,18 @@ export class TableUsersComponent implements OnInit, OnDestroy {
       // Update editedUser properties including the role
       this.editedUser.name = formData.name;
       this.editedUser.email = formData.email;
-      this.editedUser.access = formData.access.join(',');
+      this.editedUser.access = formData.access.join(','); // เปลี่ยนตรงนี้
       this.editedUser.role = formData.role;
   
       // Call the API to save changes
       this.apiService.updateUserByEmail(this.editedUser.email, this.editedUser).subscribe(() => {
+        // Refresh data after saving
         this.loadUsers();
         this.cancelEditMode();
       });
     }
   }
   
-  
-
 
   deleteUser(email: string) {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -137,7 +136,7 @@ export class TableUsersComponent implements OnInit, OnDestroy {
       );
     }
   }
-  
+
   cancelEditMode() {
     this.editMode = false;
     this.editedUser = {};

@@ -64,7 +64,9 @@
                     <span class="input-group-text">{{ device }}</span>
                   </div>
                   <button type="button" class="btn btn-outline-danger" (click)="removeAccess(i)">Remove</button>
-                </div>                
+                </div>
+                
+                                
                 <div class="input-group">
                   <select class="form-select" id="newUserAccessDropdown" #accessDropdown>
                     <option *ngFor="let deviceId of devices" [value]="deviceId">{{ deviceId }}</option>
