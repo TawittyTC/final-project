@@ -28,6 +28,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { TableUsersComponent } from './table-users/table-users.component';
 import { DeviceAccessGuard } from './service/device-access.guard';
 import { AuthService } from './service/auth.service';
+import { TableGroupsComponent } from './table-groups/table-groups.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -48,6 +49,7 @@ import { AuthService } from './service/auth.service';
     SignupComponent,
     AdminDashboardComponent,
     TableUsersComponent,
+    TableGroupsComponent,
 
   ],
   imports: [
