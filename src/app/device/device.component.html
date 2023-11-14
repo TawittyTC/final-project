@@ -223,8 +223,7 @@
               name="new_device_group"
               required
             >
-              <option value="1">A</option>
-              <option value="2">B</option>
+              <option *ngFor="let group of apiGroups" [value]="group.group_id">{{ group.group_name }}</option>
             </select>
           </div>
         </form>

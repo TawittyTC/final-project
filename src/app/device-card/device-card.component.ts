@@ -28,6 +28,9 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   public currentDeviceId!: string;
   infoMode: boolean | undefined;
 
+apiGroups: any[] = [];
+
+
   constructor(
     private apiService: ApiService,
     private http: HttpClient,
@@ -62,12 +65,12 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   onUpload() {
     if (this.selectedFile && this.currentDeviceId) {
       const formData = new FormData();
-  
+
       // Change the file name to the currentDeviceId
       const fileName = `${this.currentDeviceId}.png`;
-  
+
       formData.append('file', new File([this.selectedFile], fileName));
-  
+
       // Use the ApiService to handle the file upload
       this.apiService.uploadFile(formData).subscribe(
         (response) => {
@@ -90,6 +93,9 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     // ใช้ interval สำหรับโหลดข้อมูลอัปเดตทุก 2 วินาที
     this.dataSubscription = interval(2000).subscribe(() => {
       this.loadData();
+      this.apiService.getAllGroups().subscribe((groups: any) => {
+        this.apiGroups = groups;
+      });
     });
   }
 
@@ -261,25 +267,25 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
   isDeviceAllowed(device_id: string): boolean {
     const isLoggedIn = this.isLoggedIn();
-  
+
     // If not logged in, consider it allowed
     if (!isLoggedIn) {
       return true;
     }
-  
+
     const allowedAccess = localStorage.getItem('access');
-  
+
     // If no access is defined, consider it allowed
     if (!allowedAccess) {
       return true;
     }
-  
+
     const allowedAccessList = allowedAccess.split(',');
-  
+
     // Check if device_id is in the allowedAccessList
     return allowedAccessList.includes(device_id);
   }
-  
-  
-  
+
+
+
 }

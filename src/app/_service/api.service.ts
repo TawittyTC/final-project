@@ -90,6 +90,8 @@ export class ApiService {
     return this.http.get<any[]>(this.userUrl);
   }
 
+
+
   // Get a user by ID
   getUserById(userId: any): Observable<any> {
     const url = `${this.userUrl}/${userId}`;
@@ -156,6 +158,13 @@ export class ApiService {
     const apiUrl = `http://localhost:3000/latest_data?device_id=${deviceId}`;
     return this.http.get<any[]>(apiUrl);
   }
+
+  // api.service.ts
+getAllGroups(): Observable<any[]> {
+  const apiUrl = 'http://localhost:3000/device-groups';
+  return this.http.get<any[]>(apiUrl);
+}
+
 
   // Fetch energy data for a device
   getEnergyData(deviceId: string): Observable<any[]> {

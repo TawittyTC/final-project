@@ -22,6 +22,7 @@ export class DeviceComponent implements OnInit {
   groupMode = false;
   unitCost: number | null = null;
   newGroup: any = {};
+  apiGroups: any[] = [];
 
 
 
@@ -51,9 +52,13 @@ export class DeviceComponent implements OnInit {
     this.loadData();
 
     this.dataSubscription = interval(2000).subscribe(() => {
-      this.loadData;
+      this.loadData();
+      this.apiService.getAllGroups().subscribe((groups: any) => {
+        this.apiGroups = groups;
+      });
     });
   }
+
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
@@ -68,13 +73,18 @@ export class DeviceComponent implements OnInit {
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
+    });
+  }
 
+  getGroup(){
+    this.apiService.getAllGroups().subscribe((response: any) => {
+      this.data = response;
+      console.log(response);
       // สร้างอาร์เรย์ใหม่ที่มีค่า group_id เฉพาะ
       this.groups = this.data.map((item: any) => item.group_id);
-
       // ลบค่าซ้ำออกจากอาร์เรย์ groups
       this.groups = [...new Set(this.groups)]; // ใช้ Set ในการลบค่าซ้ำ
-      console.log(response);
+      console.log(this.groups);
     });
   }
 

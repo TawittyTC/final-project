@@ -22,10 +22,7 @@
           Device ID: {{ latestDeviceData[device_id]?.device_id }}
         </div>
         <div class="fw-light">
-          Type: {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
-        </div>
-        <div class="fw-light">
-          Group: {{ latestDeviceData[device_id]?.group_id === 1 ? 'A' : latestDeviceData[device_id]?.group_id === 2 ? 'B' : 'Unknown' }}
+          Group: {{ latestDeviceData[device_id]?.group_id }}
         </div>
 
         <div class="fw-light">
@@ -42,7 +39,7 @@
           </button>
           <!-- Edit Button -->
           <button
-            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)" 
+            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)"
             (click)="enableEditMode(device_id)"
             class="btn"
             data-bs-toggle="modal"
@@ -61,7 +58,7 @@
           </button>
           <!-- Delete Button -->
           <button
-            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)" 
+            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)"
             (click)="deleteData(device_id)"
             class="btn"
             >
@@ -160,8 +157,7 @@
           id="editModal"
           tabindex="-1"
           aria-labelledby="editModalLabel"
-          aria-hidden="true"
-        >
+          aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -259,17 +255,15 @@
 
                   <!-- Group ID -->
                   <div class="form-group">
-                    <label for="group_id">Group ID:</label>
+                    <label for="newGroup_id">Group:</label>
                     <select
                       class="form-control"
-                      id="group_id"
-                      [(ngModel)]="editedData.group_id"
-                      name="group_id"
+                      id="new_device_group"
+                      [(ngModel)]="newData.device_group"
+                      name="new_device_group"
                       required
                     >
-                      <option [ngValue]="null">Select Group ID</option>
-                      <option [ngValue]="1">A</option>
-                      <option [ngValue]="2">B</option>
+                      <option *ngFor="let group of apiGroups" [value]="group.group_id">{{ group.group_name }}</option>
                     </select>
                   </div>
 
@@ -306,9 +300,9 @@
               </div>
             </div>
           </div>
-        </div><!-- แก้ไขข้อมูล -->  
+        </div><!-- แก้ไขข้อมูล -->
       </div>
     </div> <!-- *ngIf -->
-    </div><!-- *ngFor --> 
+    </div><!-- *ngFor -->
   </div>
 </div>
