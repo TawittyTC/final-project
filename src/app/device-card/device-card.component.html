@@ -132,9 +132,7 @@
                     </div>
                     <div class="modal-body modal-lg text-center">
                       <img
-                        src="http://localhost:3000/uploads/{{
-                          currentDeviceId
-                        }}"
+                        [src]="getMapImageUrl()"
                         class="img-fluid"
                         alt="Maps"
                       />

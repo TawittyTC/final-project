@@ -115,4 +115,46 @@ export class ApiService {
       })
     );
   }
+
+  uploadFile(formData: FormData): Observable<any> {
+    const uploadUrl = 'http://localhost:3000/upload/';
+  
+    return this.http.post(uploadUrl, formData).pipe(
+      catchError((error) => {
+        console.error('Error uploading file:', error);
+        return throwError('Error uploading file');
+      })
+    );
+  }
+  getMapImageUrl(deviceId: string): string {
+    return `http://localhost:3000/uploads/${deviceId}`;
+  }
+  updateUnitCost(unitCost: number): Observable<any> {
+    const url = 'http://localhost:3000/putUnitCost';
+    return this.http.put(url, { unitCost }).pipe(
+      catchError((error) => {
+        console.error('Error updating Unit Cost:', error);
+        return throwError('Error updating Unit Cost');
+      })
+    );
+  }
+  // Fetch latest data for a device
+  getLatestData(deviceId: string): Observable<any[]> {
+    const apiUrl = `http://localhost:3000/latest_data?device_id=${deviceId}`;
+    return this.http.get<any[]>(apiUrl);
+  }
+
+  // Fetch energy data for a device
+  getEnergyData(deviceId: string): Observable<any[]> {
+    const apiUrl = `http://localhost:3000/energy?device_id=${deviceId}`;
+    return this.http.get<any[]>(apiUrl);
+  }
+
+  // Fetch unit cost
+  getUnitCost(): Observable<number> {
+    const apiUrl = 'http://localhost:3000/getUnitCost';
+    return this.http.get<number>(apiUrl);
+  }
+
+
 }

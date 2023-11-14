@@ -2,24 +2,24 @@
 <div class="container fw-light justify-content-center fw-light">
   <div class="display-6 fw-light text-muted">Users</div>
   <div id="no-table">
-    <table class="table">
+    <table class="table table-striped">
       <thead>
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Name</th>
-          <th scope="col">Email</th>
-          <th scope="col">Role</th>
-          <th scope="col">Access</th>
-          <th scope="col">Actions</th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Access</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let user of users">
           <th scope="row">{{ user.id }}</th>
-          <td>{{ user.name }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.role }}</td>
-          <td>{{ user.access }}</td>
+          <td data-title="Name">{{ user.name }}</td>
+          <td data-title="email">{{ user.email }}</td>
+          <td data-title="role">{{ user.role }}</td>
+          <td data-title="access">{{ user.access }}</td>
           <td>
             <button (click)="editUser(user.email)"class="btn"data-bs-toggle="modal"data-bs-target="#editModalusers">
               <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>

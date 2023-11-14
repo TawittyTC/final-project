@@ -151,16 +151,14 @@ export class DeviceComponent implements OnInit {
   }
 
   // ฟังก์ชันสำหรับการอัปเดตหน่วยค่าไฟ
-saveUnitCost(): void {
-  if (this.isNumeric(this.unitCost)) {
-    // ค่าที่คุณกรอก
-    console.log('ค่าที่คุณกรอก:', this.unitCost);
-
-    // ส่งค่า unitCost ไปยัง API สำหรับการอัปเดตค่า Unit Cost
-    this.http
-      .put('http://localhost:3000/putUnitCost', { unitCost: this.unitCost })
-      .subscribe(
-        (response: any) => {
+  saveUnitCost(): void {
+    if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
+      // ค่าที่คุณกรอก
+      console.log('ค่าที่คุณกรอก:', this.unitCost);
+  
+      // Use ApiService to update the unit cost
+      this.apiService.updateUnitCost(this.unitCost as number).subscribe(
+        () => {
           console.log('Unit Cost updated:', this.unitCost);
           alert('อัปเดต Unit Cost สำเร็จ');
         },
@@ -169,10 +167,11 @@ saveUnitCost(): void {
           alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
         }
       );
-  } else {
-    alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+    } else {
+      alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+    }
   }
-}
+  
 
 
 }

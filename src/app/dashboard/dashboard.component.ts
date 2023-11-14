@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { interval, Subscription } from 'rxjs';
-
+import { ApiService } from '../_service/api.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -17,20 +17,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
   cost: number = 0;
   unitCost: number = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient,private apiService: ApiService) {}
 
 
 
   ngOnInit(): void {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
-    this.fetchData();
-    this.fetchData1(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
+    this.fetchLatestData();
+    this.fetchEnergyData(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
 
 
     this.dataSubscription = interval(5000).subscribe(() => {
-      this.fetchData();
-      this.fetchData1(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
+      this.fetchLatestData();
+      this.fetchEnergyData(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
       this.fetchUnitCost();
     });
   }
@@ -41,52 +41,45 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-    // สร้างฟังก์ชันใหม่เพื่อดึงค่า unitCost จาก API
-    fetchUnitCost() {
-      this.http.get<any[]>('http://localhost:3000/getUnitCost').subscribe(
-        (response: any[]) => {
-          if (response.length > 0) {
-            // กำหนดค่า unitCost จากอ็อบเจ็กต์แรกในอาร์เรย์
-            this.unitCost = response[0].unitCost;
-            console.log('UnitCost:คือ:',this.unitCost);
-          }
-        },
-        (error) => {
-          console.error('เกิดข้อผิดพลาดในการดึงข้อมูล Unit Cost:', error);
+  fetchUnitCost() {
+    this.apiService.getUnitCost().subscribe(
+      (response: any) => { // Change this line
+        if (response.length > 0) {
+          this.unitCost = response[0].unitCost;
+          console.log('UnitCost: คือ:', this.unitCost);
         }
-      );
-    }
-
-
-  fetchData() {
-    const apiUrl = `http://localhost:3000/latest_data?device_id=${this.device_id}`;
-
-    this.http.get<any[]>(apiUrl).subscribe(
-      (data) => {
+      },
+      (error) => {
+        console.error('Error fetching Unit Cost:', error);
+      }
+    );
+  }
+  
+  fetchLatestData() {
+    this.apiService.getLatestData(this.device_id).subscribe(
+      (data: any[]) => { // Change this line
         this.data = data;
         console.log(data);
       },
       (error) => {
-        console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
+        console.error('Error fetching latest data:', error);
       }
     );
   }
-
-  fetchData1() {
-    this.http
-      .get<any[]>(`http://localhost:3000/energy?device_id=${this.device_id}`)
-      .subscribe((data) => {
-        this.chartData = data;
-
-        const totalEnergy = this.chartData.reduce(
-          (total, dataPoint) => total + dataPoint.energy,
-          0
-        );
-        console.log(`Total Energy: ${totalEnergy} kWh`);
-        this.totalEnergy = totalEnergy.toFixed(3); // อัพเดทค่า totalEnergy
-
-        this.cost = totalEnergy * this.unitCost;
-        this.cost = +this.cost.toFixed(3); // กำหนดค่า cost เป็นตัวเลขและปัดทศนิยม 3 ตำแหน่ง
-      });
+  
+  fetchEnergyData() {
+    this.apiService.getEnergyData(this.device_id).subscribe((data: any[]) => { // Change this line
+      this.chartData = data;
+  
+      const totalEnergy = this.chartData.reduce(
+        (total, dataPoint) => total + dataPoint.energy,
+        0
+      );
+      console.log(`Total Energy: ${totalEnergy} kWh`);
+      this.totalEnergy = totalEnergy.toFixed(3);
+  
+      this.cost = totalEnergy * this.unitCost;
+      this.cost = +this.cost.toFixed(3);
+    });
   }
 }

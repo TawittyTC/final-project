@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';  // ต้องมีการ import HttpClient
 import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../_service/api.service';
 
 @Component({
   selector: 'app-chart',
@@ -17,7 +18,7 @@ export class ChartComponent implements OnInit, OnDestroy {
   unitCost: number = 0;
   level: number = 1 ;
 
-  constructor(private route: ActivatedRoute,private http: HttpClient) {
+  constructor(private route: ActivatedRoute,private http: HttpClient,private apiService: ApiService) {
   }
 
   ngOnInit() {
