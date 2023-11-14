@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { AuthService } from './service/auth.service';
+import { AuthService } from './_service/auth.service';
 
 @Component({
   selector: 'app-root',

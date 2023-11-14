@@ -21,65 +21,65 @@
           <td>{{ user.role }}</td>
           <td>{{ user.access }}</td>
           <td>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#editModalusers" (click)="editUser(user.email)">Edit</button>
-            <button class="btn btn-danger btn-sm" (click)="deleteUser(user.email)">Delete</button>
+            <button (click)="editUser(user.email)"class="btn"data-bs-toggle="modal"data-bs-target="#editModalusers">
+              <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+            </button>
+            <button (click)="deleteUser(user.email)"class="btn">
+              <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Edit User Modal -->
-    <div class="modal fade" id="editModalusers" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <!-- Edit User Modal -->
+<div class="modal fade" id="editModalusers" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (ngSubmit)="saveUser()" #editForm="ngForm">
+          <div class="mb-3">
+            <label for="editName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="editName" name="editName" [(ngModel)]="editedUser.name" required>
           </div>
-          <div class="modal-body">
-            <form [formGroup]="editedUserForm" (ngSubmit)="saveUser()">
-              <div class="mb-3">
-                <label for="editedUserName" class="form-label">Name:</label>
-                <input type="text" class="form-control" id="editedUserName" formControlName="name" required>
-              </div>
-              <div class="mb-3">
-                <label for="editedUserEmail" class="form-label">Email:</label>
-                <input type="email" class="form-control" id="editedUserEmail" formControlName="email" required>
-              </div>
-              
-              <div class="mb-3">
-                <label for="userRole" class="form-label">Role:</label>
-                <div class="input-group">
-                  <select class="form-select" id="userRole" formControlName="role">
-                    <option value="admin">Admin</option>
-                    <option value="costcenter">Cost Center</option>
-                  </select>
-                </div>
-              </div>
-              
-              <div class="mb-3">
-                <label for="newUserAccess" class="form-label">Access:</label>
-                <div *ngFor="let device of editedUserForm.get('access')?.value; let i = index" class="input-group mb-2">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text">{{ device }}</span>
-                  </div>
-                  <button type="button" class="btn btn-outline-danger" (click)="removeAccess(i)">Remove</button>
-                </div>                
-                <div class="input-group">
-                  <select class="form-select" id="newUserAccessDropdown" #accessDropdown>
-                    <option *ngFor="let deviceId of devices" [value]="deviceId">{{ deviceId }}</option>
-                  </select>
-                  <button type="button" class="btn btn-outline-secondary" (click)="updateAccess(accessDropdown.value)">Add Device</button>
-                </div>                
-                <small class="text-muted">Selected devices: {{ editedUserForm.get('access')?.value?.join(', ') || 'None' }}</small>
-              </div>
-          
-              <button type="submit" class="btn btn-primary">Save Changes</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            </form>
+          <div class="mb-3">
+            <label for="editEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="editEmail" name="editEmail" [(ngModel)]="editedUser.email" required>
           </div>
-        </div>
+          <div class="mb-3">
+            <label for="editRole" class="form-label">Role</label>
+            <select class="form-select" id="editRole" name="editRole" [(ngModel)]="editedUser.role" required>
+              <option value="admin">Admin</option>
+              <option value="costcenter">Cost Center</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="editAccess" class="form-label">Access</label>
+            <div class="d-flex align-items-center">
+              <select class="form-select me-2" id="editAccessDropdown" name="editAccessDropdown" [(ngModel)]="selectedDevice" required>
+                <option *ngFor="let device of devices" [value]="device">{{ device }}</option>
+              </select>
+              <button type="button" class="btn btn-primary btn-sm" (click)="addDevice()">Add</button>
+            </div>
+            <ul class="list-group mt-2">
+              <li class="list-group-item" *ngFor="let device of editedUser.accessArray; let i = index">
+                {{ device }}
+                <button type="button" class="btn btn-danger btn-sm float-end" (click)="removeDevice(i)">Delete</button>
+              </li>
+            </ul>
+          </div>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelEditMode()">Close</button>
+        </form>
       </div>
     </div>
+  </div>
+</div>
+
+
   </div>
 </div>

@@ -1,9 +1,7 @@
 // table-users.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { interval, Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
-import { switchMap } from 'rxjs/operators';
+import { ApiService } from '../_service/api.service';
 
 @Component({
   selector: 'app-table-users',
@@ -15,31 +13,12 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   devices: any[] = [];
   editedUser: any = {};
   editMode = false;
-  
-  // Define a FormGroup for the new user form
-  newUserForm: FormGroup;
-  // Define a FormGroup for the edited user form
-  editedUserForm: FormGroup;
   private dataSubscription: Subscription | undefined;
+  originalUser: any = {};
+  selectedDevice: string = '';
+  originalAccessArray: string[] = [];
 
-  constructor(
-    private apiService: ApiService,
-    private fb: FormBuilder
-  ) {
-    // Initialize the new user form
-    this.newUserForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      access: this.fb.array([]) // Use FormArray for access
-    });
-    
-    // Initialize the edited user form
-    this.editedUserForm = this.fb.group({
-      name: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      access: this.fb.array([]), // Use FormArray for access
-      role: ['']
-    });
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit(): void {
@@ -48,6 +27,7 @@ export class TableUsersComponent implements OnInit, OnDestroy {
     this.dataSubscription = interval(2000).subscribe(() => {
       this.loadUsers();
       this.loadDevices();
+      //console.log(this.devices)
     });
   }
 
@@ -58,70 +38,72 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   }
 
   loadDevices() {
-    return this.apiService.getAllData().pipe(
-      switchMap((response: any[]) => {
-        this.devices = response.map((item) => item.device_id);
-        return this.apiService.getAllUsers();
-      })
+    this.apiService.getAllData().subscribe((response: any) => {
+      this.devices = response.map((item: { device_id: any }) => item.device_id.toString());
+    });
+  }
+
+  loadUsers() {
+    this.apiService.getAllUsers().subscribe(
+      (response: any) => {
+        this.users = response.map((user: any) => ({
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          access: user.access,
+          accessArray: user.access ? user.access.split(',').map((item: string) => item.trim()) : []  // Check if access is null or empty
+        }));
+      },
+      (error) => {
+        console.error('Error loading users:', error);
+        // Handle error as needed
+      }
     );
   }
-  
-  loadUsers() {
-    this.loadDevices().subscribe((response: any[]) => {
-      this.users = response.map(user => {
-        user.accessArray = user.access ? user.access.split(',').map((device: string) => device.trim()) : [];
-        return user;
-      });
-
-      if (this.editMode && this.editedUser.email) {
-        this.editedUser = { ...this.users.find(user => user.email === this.editedUser.email) };
-        this.editedUserForm.setValue({
-          name: this.editedUser.name,
-          email: this.editedUser.email,
-          access: [...this.editedUser.accessArray],
-          role: this.editedUser.role
-        });
-      }
-    });
-  }
-  
-  
 
   editUser(email: string) {
-    this.editedUser = { ...this.users.find(user => user.email === email) };
+    const userToEdit = this.users.find(user => user.email === email);
+    this.originalUser = { ...userToEdit };
+    this.editedUser = { ...this.originalUser };
+    this.originalAccessArray = [...this.editedUser.accessArray];
     this.editMode = true;
-  
-    // Initialize the editedUserForm with the selected user's data
-    this.editedUserForm.setValue({
-      name: this.editedUser.name,
-      email: this.editedUser.email,
-      access: [...this.editedUser.accessArray], // Use accessArray instead of splitting access string
-      role: this.editedUser.role // Set initial role value
-    });
   }
-  
-  
-  
+
   saveUser() {
-    if (this.editedUserForm.valid) {
-      const formData = this.editedUserForm.value;
-  
-      // Update editedUser properties including the role
-      this.editedUser.name = formData.name;
-      this.editedUser.email = formData.email;
-      this.editedUser.access = formData.access.join(',');
-      this.editedUser.role = formData.role;
-  
-      // Call the API to save changes
-      this.apiService.updateUserByEmail(this.editedUser.email, this.editedUser).subscribe(() => {
-        this.loadUsers();
-        this.cancelEditMode();
-      });
+    // Convert the accessArray to a comma-separated string
+    const accessString = this.editedUser.accessArray.join(',');
+
+    // Update the user on the server
+    this.apiService.updateUserByEmail(this.originalUser.email, {
+      ...this.editedUser,
+      access: accessString || null  // Set access to null if accessString is empty
+    }).subscribe(
+      () => {
+        console.log('User updated successfully.');
+        this.loadUsers(); // Refresh the user list
+        this.editMode = false; // Exit edit mode
+      },
+      (error) => {
+        console.error('Error updating user:', error);
+        // Revert changes in case of an error
+        this.editedUser.accessArray = [...this.originalAccessArray];
+      }
+    );
+  }
+
+  addDevice() {
+    if (this.selectedDevice && !this.editedUser.accessArray.includes(this.selectedDevice)) {
+      this.editedUser.accessArray.push(this.selectedDevice);
+      this.selectedDevice = '';
     }
   }
-  
-  
 
+  removeDevice(index: number) {
+    if (index >= 0 && index < this.editedUser.accessArray.length) {
+      this.editedUser.accessArray.splice(index, 1);
+    }
+  }
 
   deleteUser(email: string) {
     if (confirm('Are you sure you want to delete this user?')) {
@@ -132,42 +114,15 @@ export class TableUsersComponent implements OnInit, OnDestroy {
         },
         (error) => {
           console.error('Error deleting user:', error);
-          // Handle error as needed
         }
       );
     }
   }
-  
+
   cancelEditMode() {
     this.editMode = false;
-    this.editedUser = {};
+    this.editedUser = { ...this.originalUser };
+    this.editedUser.accessArray = [...this.originalAccessArray];
+    this.selectedDevice = '';
   }
-  // Remove this method
-  updateRole(selectedRole: string) {
-    this.editedUserForm.patchValue({
-      role: selectedRole
-    });
-  }
-
-  
-  removeAccess(index: number) {
-    const accessArray = this.editedUserForm.get('access') as FormArray;
-    accessArray.removeAt(index);
-    this.editedUserForm.get('access')?.markAsDirty();
-  }
-  
-  updateAccess(selectedDeviceId: string) {
-    const accessArray = this.editedUserForm.get('access') as FormArray;
-    
-    // Check if the device is not already in the access array
-    if (selectedDeviceId && !accessArray.value.includes(selectedDeviceId)) {
-      accessArray.push(this.fb.control(selectedDeviceId));
-      this.editedUserForm.get('access')?.markAsDirty();
-    }
-  }
-  
-  
-  
-  
-
 }
