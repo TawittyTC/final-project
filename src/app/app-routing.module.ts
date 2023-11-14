@@ -7,7 +7,6 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
-import { ChartComponent } from 'ng-apexcharts';
 //app-routing.module.ts
 import { CircleChartComponent } from "./circle-chart/circle-chart.component";
 import { DeviceCardComponent } from './device-card/device-card.component';
@@ -24,10 +23,9 @@ const routes: Routes = [
   { path: 'footer-component',component: FooterComponent },
   { path: 'about-component',component: AboutComponent },
   { path: 'profile-component',component: ProfileComponent , canActivate: [AuthGuard]},
-  { path: 'chart-component',component: ChartComponent },
-  { path: 'circle-component',component:CircleChartComponent},
+  // { path: 'chart-component',component: ChartComponent },
+  // { path: 'circle-component',component:CircleChartComponent},
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
-  { path: 'table-device-component', component:TableDeviceComponent},
   { path: 'login-component', component:LoginComponent},
   { path: 'signup-component', component:SignupComponent},
   { path: 'admin',component:AdminDashboardComponent ,canActivate: [AuthGuard],data: { roles: ['admin']}},
