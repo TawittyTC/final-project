@@ -215,16 +215,16 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="newGroup_id">Group:</label>
+            <label for="new_group_id">Group:</label>
             <select
               class="form-control"
-              id="new_device_group"
-              [(ngModel)]="newData.device_group"
-              name="new_device_group"
+              id="new_group_id"
+              [(ngModel)]="newData.group_id"
+              name="new_group_id"
               required
             >
               <option *ngFor="let group of apiGroups" [ngValue]="group.group_id">{{ group.group_name }}</option>
-            </select> 
+            </select>
           </div>
         </form>
       </div>
