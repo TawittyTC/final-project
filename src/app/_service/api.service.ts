@@ -13,7 +13,8 @@ export class ApiService {
     throw new Error('Method not implemented.');
   }
   private apiUrl = 'http://localhost:3000/devices'; // URL ของ API ของ Express.js
-  private userurl = 'http://localhost:3000/users';
+  private userUrl = 'http://localhost:3000/users';
+  private groupUrl = 'http://localhost:3000/device-groups';
   private dataSubscription: Subscription | undefined;
 
   constructor(private http: HttpClient) {}
@@ -35,6 +36,18 @@ export class ApiService {
     );
   }
 
+  createGroup(group: any): Observable<any>{
+    const headers = {'content-type': 'application/json'};
+    const body = JSON.stringify(group);
+    return this.http.post(this.groupUrl, group).pipe(
+        catchError((error)=>{
+            console.error('Error creating group:', error);
+            return throwError('Error creating group');
+        })
+    );
+}
+
+
   // อัปเดตข้อมูลผ่าน API
   updateData(device_id: any, data: any): Observable<any> {
     const headers = { 'content-type': 'application/json' };
@@ -49,7 +62,7 @@ export class ApiService {
     );
   }
 
-  
+
 
   // ลบข้อมูล
   deleteData(device_id: any): Observable<any> {
@@ -64,7 +77,7 @@ export class ApiService {
 
   // Create a new user
   createUser(user: any): Observable<any> {
-    return this.http.post(this.userurl, user).pipe(
+    return this.http.post(this.userUrl, user).pipe(
       catchError((error) => {
         console.error('Error creating user:', error);
         return throwError('Error creating user');
@@ -74,18 +87,18 @@ export class ApiService {
 
   // Get all users
   getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.userurl);
+    return this.http.get<any[]>(this.userUrl);
   }
 
   // Get a user by ID
   getUserById(userId: any): Observable<any> {
-    const url = `${this.userurl}/${userId}`;
+    const url = `${this.userUrl}/${userId}`;
     return this.http.get<any>(url);
   }
 
   // Update a user by email
   updateUserByEmail(email: string, user: any): Observable<any> {
-    const url = `${this.userurl}/${encodeURIComponent(email)}`;
+    const url = `${this.userUrl}/${encodeURIComponent(email)}`;
     return this.http.put(url, user).pipe(
       catchError((error) => {
         console.error('Error updating user by email:', error);
@@ -96,7 +109,7 @@ export class ApiService {
 
   // Delete a user by email
   deleteUserByEmail(email: string): Observable<any> {
-    const url = `${this.userurl}/${encodeURIComponent(email)}`;
+    const url = `${this.userUrl}/${encodeURIComponent(email)}`;
     return this.http.delete(url).pipe(
       catchError((error) => {
         console.error('Error deleting user by email:', error);
@@ -107,7 +120,7 @@ export class ApiService {
 
   // Get a user by their email address
   getUserByEmail(email: string): Observable<any> {
-    const url = `${this.userurl}/${encodeURIComponent(email)}`;
+    const url = `${this.userUrl}/${encodeURIComponent(email)}`;
     return this.http.get<any>(url).pipe(
       catchError((error) => {
         console.error('Error getting user by email:', error);
@@ -118,7 +131,7 @@ export class ApiService {
 
   uploadFile(formData: FormData): Observable<any> {
     const uploadUrl = 'http://localhost:3000/upload/';
-  
+
     return this.http.post(uploadUrl, formData).pipe(
       catchError((error) => {
         console.error('Error uploading file:', error);
@@ -155,6 +168,10 @@ export class ApiService {
     const apiUrl = 'http://localhost:3000/getUnitCost';
     return this.http.get<number>(apiUrl);
   }
+
+
+
+
 
 
 }

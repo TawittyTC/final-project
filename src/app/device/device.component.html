@@ -13,13 +13,7 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="groupDropdown" >
       <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
-      <a
-        class="dropdown-item"
-        href="#"
-        (click)="selectGroup(group)"
-        *ngFor="let group of groups"
-        >{{ group }}</a
-      >
+      <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of groups">{{ group }}</a>
     </div>
     <div class="dropdown"  *ngIf="isLoggedIn()">
       <button class="dropbtn bg-light">
@@ -43,13 +37,65 @@
           data-bs-target="#unitCostModal"
           ><i class="bi bi-cash-coin"></i> Unit Cost</a
         >
+        <a
+        href="#"
+        (click)="enableGroupMode()"
+        data-bs-toggle="modal"
+        data-bs-target="#addGroupModal"
+        ><i class="bi bi-collection"></i> Add Group</a
+      >
       </div>
     </div>
   </div>
   <!-- ส่วนอื่น ๆ ของเนื้อหาของคุณ -->
 </div>
 
+<!-- AddGroupModal -->
+<div class="modal" tabindex="-1" role="dialog" id="addGroupModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title h4 fw-light">New Group</div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="createNewGroup(newGroup)">
+          <div class="form-group">
+            <label for="new_group">Add new group :</label>
+            <input
+  type="text"
+  class="form-control"
+  id="group_name"
+  [(ngModel)]="newGroup.group_name"
+  name="group_name"
+  required
+/>
 
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-start">
+        <button
+        type="button"
+        class="btn btn-success me-2"
+        (click)="createNewGroup(newGroup); reloadPage()"
+      >
+        Save
+      </button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        Cancel
+      </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- UnitCostModal -->
 <div class="modal" tabindex="-1" role="dialog" id="unitCostModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -169,7 +215,7 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="new_group_id">Group:</label>
+            <label for="newGroup_id">Group:</label>
             <select
               class="form-control"
               id="new_device_group"

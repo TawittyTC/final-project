@@ -16,9 +16,14 @@ export class DeviceComponent implements OnInit {
   data: any[] = [];
   editMode = false;
   editedData: any = {};
+  groupData: any = {};
   newData: any = {};
   addMode = false;
+  groupMode = false;
   unitCost: number | null = null;
+  newGroup: any = {};
+
+
 
   isNumeric(value: any): boolean {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -155,7 +160,7 @@ export class DeviceComponent implements OnInit {
     if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
       // ค่าที่คุณกรอก
       console.log('ค่าที่คุณกรอก:', this.unitCost);
-  
+
       // Use ApiService to update the unit cost
       this.apiService.updateUnitCost(this.unitCost as number).subscribe(
         () => {
@@ -171,7 +176,25 @@ export class DeviceComponent implements OnInit {
       alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
     }
   }
-  
+
+  enableGroupMode() {
+    this.groupMode = true;
+  }
+
+  cancelGroupMode() {
+    this.groupMode = false;
+    this.newGroup = {}; // ล้างข้อมูลที่กรอกหลังยกเลิก
+  }
+
+  createNewGroup(newGroup: any) {
+    console.log('newGroup before API call:', newGroup);
+    this.apiService.createGroup(newGroup).subscribe(() => {
+      this.loadData();
+      this.newGroup = {}; // Clear the form after creating the group
+      this.groupMode = false; // Close the group mode
+    });
+  }
+
 
 
 }
