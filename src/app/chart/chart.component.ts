@@ -234,32 +234,38 @@ export class ChartComponent implements OnInit, OnDestroy {
     }
   }
   fetchData() {
-    // ดึงข้อมูลจาก API โดยใช้ค่า device_id จากตัวแปร
-    this.http.get<any[]>(`http://localhost:3000/energy?device_id=${this.device_id}`).subscribe(data => {
+    // Use ApiService to fetch energy data
+    this.apiService.getEnergyData(this.device_id).subscribe((data) => {
       this.chartData = data;
-      console.log(this.chartData)
-      // เรียกเมธอดสร้างกราฟ
+      console.log(this.chartData);
+  
+      // Call methods to generate charts
       this.generateChart();
-      this.generateChart2()
-
-      // คำนวณค่าไฟรวม
-    const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
-
+      this.generateChart2();
+  
+      // Calculate total energy
+      const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
     });
   }
-
-  // สร้างฟังก์ชันใหม่เพื่อดึงค่า unitCost จาก API
+  
+  // Replace fetchUnitCost with ApiService method
   fetchUnitCost() {
-    this.http.get<any[]>('http://localhost:3000/getUnitCost').subscribe(
-      (response: any[]) => {
-        if (response.length > 0) {
-          // กำหนดค่า unitCost จากอ็อบเจ็กต์แรกในอาร์เรย์
-          this.unitCost = response[0].unitCost;
-          console.log('UnitCost:คือ:',this.unitCost);
+    this.apiService.getUnitCost().subscribe(
+      (response: any) => {
+        if (typeof response === 'number') {
+          // Handle the case where the response is a number
+          this.unitCost = response;
+          console.log('UnitCost: คือ:', this.unitCost);
+        } else {
+          // Handle the case where the response is an array
+          if (response.length > 0) {
+            this.unitCost = response[0].unitCost;
+            console.log('UnitCost: คือ:', this.unitCost);
+          }
         }
       },
       (error) => {
-        console.error('เกิดข้อผิดพลาดในการดึงข้อมูล Unit Cost:', error);
+        console.error('Error fetching Unit Cost:', error);
       }
     );
   }
