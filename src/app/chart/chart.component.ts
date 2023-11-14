@@ -27,12 +27,11 @@ export class ChartComponent implements OnInit, OnDestroy {
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
 
    // กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
-  this.dataSubscription = interval(5000).subscribe(() => {
-    if (this.unitCost !== 0) {
-      this.fetchData();
-    }
-
-    });
+  // this.dataSubscription = interval(5000).subscribe(() => {
+  //   if (this.unitCost !== 0) {
+  //     this.fetchData();
+  //   }
+  //   });
   }
 
   generateChart() {
@@ -121,9 +120,6 @@ export class ChartComponent implements OnInit, OnDestroy {
       }
     };
   }
-
-
-
   generateChart2() {
     // Calculate cost of electricity and add it to the data
     const chartDataWithCost = this.chartData.map((item: { created_timestamp: string | number | Date; energy: number; }) => ({
