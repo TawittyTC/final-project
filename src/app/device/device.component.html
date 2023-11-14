@@ -1,6 +1,7 @@
 <!-- device.component.html -->
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center pb-3" >
+    <!-- group dropdown -->
     <button
       class="btn dropdown-toggle"
       type="button"
@@ -15,6 +16,8 @@
       <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
       <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of apiGroups">{{ group.group_name }}</a>
     </div>
+
+    <!-- add dropdown -->
     <div class="dropdown"  *ngIf="isLoggedIn()">
       <button class="dropbtn bg-light">
         <i
