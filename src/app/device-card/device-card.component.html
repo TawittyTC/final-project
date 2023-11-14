@@ -25,7 +25,7 @@
           Type: {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
         </div>
         <div class="fw-light">
-          Group: {{ latestDeviceData[device_id]?.group_id === 1 ? 'A' : latestDeviceData[device_id]?.group_id === 2 ? 'B' : 'Unknown' }}
+          Group: {{ latestDeviceData[device_id]?.group_id}}
         </div>
 
         <div class="fw-light">
