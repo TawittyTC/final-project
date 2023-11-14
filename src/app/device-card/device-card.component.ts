@@ -113,19 +113,6 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  // ที่อยู่ URL ของรูปภาพ ควรถูกเรียกใช้ใน HTML template
-  getImageUrl(deviceId: string): string {
-    if (this.imageBlob) {
-      // มีรูปภาพใน this.imageBlob
-      const imageUrl = `localhost:3000/uploads/${deviceId}.png`;
-      return imageUrl;
-    } else {
-      // ไม่มีรูปภาพ
-      return ''; // หรือ URL โดย default ในกรณีที่ไม่มีรูปภาพ
-    }
-  }
-
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;

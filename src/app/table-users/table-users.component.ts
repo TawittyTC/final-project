@@ -2,7 +2,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from '../_service/api.service';
-
 @Component({
   selector: 'app-table-users',
   templateUrl: './table-users.component.html',
@@ -17,7 +16,6 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   originalUser: any = {};
   selectedDevice: string = '';
   originalAccessArray: string[] = [];
-
   constructor(private apiService: ApiService) {
   }
 
@@ -49,6 +47,7 @@ export class TableUsersComponent implements OnInit, OnDestroy {
         this.users = response.map((user: any) => ({
           id: user.id,
           name: user.name,
+          lname: user.lname,
           email: user.email,
           role: user.role,
           access: user.access,
@@ -72,25 +71,25 @@ export class TableUsersComponent implements OnInit, OnDestroy {
 
   saveUser() {
     // Convert the accessArray to a comma-separated string
-    const accessString = this.editedUser.accessArray.join(',');
+    const accessString = this.editedUser.accessArray.join(', ');
 
     // Update the user on the server
     this.apiService.updateUserByEmail(this.originalUser.email, {
       ...this.editedUser,
-      access: accessString || null  // Set access to null if accessString is empty
+      access: accessString || null
     }).subscribe(
       () => {
         console.log('User updated successfully.');
-        this.loadUsers(); // Refresh the user list
-        this.editMode = false; // Exit edit mode
+        this.loadUsers();
+        this.editMode = false;
       },
       (error) => {
         console.error('Error updating user:', error);
-        // Revert changes in case of an error
         this.editedUser.accessArray = [...this.originalAccessArray];
       }
     );
   }
+
 
   addDevice() {
     if (this.selectedDevice && !this.editedUser.accessArray.includes(this.selectedDevice)) {
@@ -125,4 +124,5 @@ export class TableUsersComponent implements OnInit, OnDestroy {
     this.editedUser.accessArray = [...this.originalAccessArray];
     this.selectedDevice = '';
   }
+  
 }

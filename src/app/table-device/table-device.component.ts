@@ -58,13 +58,14 @@ export class TableDeviceComponent implements OnInit {
   onUpload() {
     if (this.selectedFile && this.currentDeviceId) {
       const formData = new FormData();
-
+  
       // Change the file name to the currentDeviceId
       const fileName = `${this.currentDeviceId}.png`;
-
+  
       formData.append('file', new File([this.selectedFile], fileName));
-
-      this.http.post('http://localhost:3000/upload/', formData).subscribe(
+  
+      // Use the ApiService to handle the file upload
+      this.apiService.uploadFile(formData).subscribe(
         (response) => {
           console.log('File uploaded successfully');
         },
@@ -74,7 +75,10 @@ export class TableDeviceComponent implements OnInit {
       );
     }
   }
-
+  getMapImageUrl(): string {
+    // Assuming currentDeviceId is a property in your component
+    return this.apiService.getMapImageUrl(this.currentDeviceId);
+  }
   ngOnInit(): void {
     this.loadImageByDeviceId('device_id');
     this.loadData();
