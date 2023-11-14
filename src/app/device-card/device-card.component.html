@@ -21,11 +21,9 @@
         <div class="fw-light">
           Device ID: {{ latestDeviceData[device_id]?.device_id }}
         </div>
+
         <div class="fw-light">
-          Type: {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
-        </div>
-        <div class="fw-light">
-          Group: {{ latestDeviceData[device_id]?.group_id}}
+          Group: {{ latestDeviceData[device_id]?.group_name}}
         </div>
 
         <div class="fw-light">
@@ -102,11 +100,9 @@
                     Location:
                     {{ latestDeviceData[currentDeviceId]?.device_location }}
                   </p>
+
                   <p class="fw-light">
-                    Type: {{ latestDeviceData[currentDeviceId]?.device_type === 1 ? 'ESP' : latestDeviceData[currentDeviceId]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
-                  </p>
-                  <p class="fw-light">
-                    Group: {{ latestDeviceData[currentDeviceId]?.group_id  }}
+                    Group: {{ latestDeviceData[currentDeviceId]?.group_name }}
                   </p>
                   <!-- Add status to display online/offline status -->
                   <p class="fw-light">
@@ -241,21 +237,7 @@
                     />
                   </div>
 
-                  <!-- Device Type -->
-                  <div class="form-group">
-                    <label for="device_type">Device Type:</label>
-                    <select
-                      class="form-control"
-                      id="device_type"
-                      [(ngModel)]="editedData.device_type"
-                      name="device_type"
-                      required
-                    >
-                      <option [ngValue]="null">Select Device Type</option>
-                      <option [ngValue]="1">ESP</option>
-                      <option [ngValue]="2">Tuya</option>
-                    </select>
-                  </div>
+
 
                   <!-- Group ID -->
                   <div class="form-group">

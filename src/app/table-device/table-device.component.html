@@ -6,7 +6,6 @@
       <tr>
         <th>Device Name</th>
         <th>Device ID</th>
-        <th>Type</th>
         <th>Group</th>
         <th>Status</th>
         <th>Actions</th>
@@ -16,11 +15,8 @@
       <tr *ngFor="let device_id of device_id">
         <td data-title="Name">{{ latestDeviceData[device_id]?.device_name }}</td>
         <td data-title="ID">{{ latestDeviceData[device_id]?.device_id }}</td>
-        <td data-title="Type">
-          {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
-        </td>
         <td data-title="Group">
-          {{ latestDeviceData[device_id]?.group_id === 1 ? 'A' : latestDeviceData[device_id]?.group_id === 2 ? 'B' : 'Unknown' }}
+          {{ latestDeviceData[device_id]?.group_name}}
         </td>
         <td data-title="Status">{{ latestDeviceData[device_id]?.status }}</td>
         <td data-title="Actions">
@@ -76,12 +72,10 @@
             Location:
             {{ latestDeviceData[currentDeviceId]?.device_location }}
           </p>
+
           <p class="fw-light">
-            Type: {{ latestDeviceData[currentDeviceId]?.device_type === 1 ? 'ESP' : latestDeviceData[currentDeviceId]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
-          </p>
-          <p class="fw-light">
-            Group: {{ latestDeviceData[currentDeviceId]?.group_id === 1 ? 'A' : latestDeviceData[currentDeviceId]?.group_id === 2 ? 'B' : 'Unknown' }}
-          </p>
+            Group: {{ latestDeviceData[currentDeviceId]?.group_name}}
+           </p>
           <!-- Add status to display online/offline status -->
           <p class="fw-light">
             Status: {{ latestDeviceData[currentDeviceId]?.status }}
@@ -215,21 +209,6 @@
             />
           </div>
 
-          <!-- Device Type -->
-          <div class="form-group">
-            <label for="device_type">Device Type:</label>
-            <select
-              class="form-control"
-              id="device_type"
-              [(ngModel)]="editedData.device_type"
-              name="device_type"
-              required
-            >
-              <option [ngValue]="null">Select Device Type</option>
-              <option [ngValue]="1">ESP</option>
-              <option [ngValue]="2">Tuya</option>
-            </select>
-          </div>
 
           <!-- Group ID -->
           <div class="form-group">
