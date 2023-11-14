@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from '../_service/api.service';
 import { interval, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../service/auth.service';
+import { AuthService } from '../_service/auth.service';
 
 @Component({
   selector: 'app-device',

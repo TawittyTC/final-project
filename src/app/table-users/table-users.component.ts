@@ -1,7 +1,7 @@
 // table-users.component.ts
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from '../_service/api.service';
 
 @Component({
   selector: 'app-table-users',

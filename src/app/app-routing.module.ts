@@ -13,8 +13,7 @@ import { CircleChartComponent } from "./circle-chart/circle-chart.component";
 import { DeviceCardComponent } from './device-card/device-card.component';
 import { TableDeviceComponent } from './table-device/table-device.component';
 import { LoginComponent } from './login/login.component';
-import { AuthGuard } from './service/auth.guard';
-import { DeviceAccessGuard } from './service/device-access.guard';
+import { AuthGuard } from './_service/auth.guard';
 import { SignupComponent } from './signup/signup.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 const routes: Routes = [

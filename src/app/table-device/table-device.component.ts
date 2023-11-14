@@ -1,7 +1,7 @@
-import { GetImageService } from './../get-img.service';
+import { GetImageService } from '../_service/get-img.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from '../_service/api.service';
 import { HttpClient } from '@angular/common/http'; 
 
 @Component({

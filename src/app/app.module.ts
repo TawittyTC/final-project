@@ -26,8 +26,7 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { TableUsersComponent } from './table-users/table-users.component';
-import { DeviceAccessGuard } from './service/device-access.guard';
-import { AuthService } from './service/auth.service';
+import { AuthService } from './_service/auth.service';
 import { TableGroupsComponent } from './table-groups/table-groups.component';
 @NgModule({
   declarations: [
@@ -69,7 +68,7 @@ import { TableGroupsComponent } from './table-groups/table-groups.component';
       }
     }),
   ],
-  providers: [DeviceAccessGuard, AuthService],
+  providers: [ AuthService],
   bootstrap: [AppComponent],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })

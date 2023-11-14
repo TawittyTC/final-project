@@ -2,7 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Import the AuthService type from the SDK
-import { AuthService } from '../service/auth.service';
+import { AuthService } from '../_service/auth.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
