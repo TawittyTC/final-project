@@ -241,9 +241,7 @@
               name="group_id"
               required
             >
-              <option [ngValue]="null">Select Group ID</option>
-              <option [ngValue]="1">A</option>
-              <option [ngValue]="2">B</option>
+              <option *ngFor="let group of apiGroups" [ngValue]="group.group_id">{{ group.group_name }}</option>
             </select>
           </div>
 

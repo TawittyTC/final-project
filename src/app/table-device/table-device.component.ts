@@ -2,7 +2,7 @@ import { GetImageService } from '../_service/get-img.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
 import { ApiService } from '../_service/api.service';
-import { HttpClient } from '@angular/common/http'; 
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-table-device',
@@ -27,6 +27,7 @@ export class TableDeviceComponent implements OnInit {
   formIncompleteAlert: string = '';
   public currentDeviceId!: string;
   infoMode: boolean | undefined;
+  apiGroups: any[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -58,12 +59,12 @@ export class TableDeviceComponent implements OnInit {
   onUpload() {
     if (this.selectedFile && this.currentDeviceId) {
       const formData = new FormData();
-  
+
       // Change the file name to the currentDeviceId
       const fileName = `${this.currentDeviceId}.png`;
-  
+
       formData.append('file', new File([this.selectedFile], fileName));
-  
+
       // Use the ApiService to handle the file upload
       this.apiService.uploadFile(formData).subscribe(
         (response) => {
@@ -86,6 +87,9 @@ export class TableDeviceComponent implements OnInit {
     // ใช้ interval สำหรับโหลดข้อมูลอัปเดตทุก 2 วินาที
     this.dataSubscription = interval(2000).subscribe(() => {
       this.loadData();
+      this.apiService.getAllGroups().subscribe((groups: any) => {
+        this.apiGroups = groups;
+      });
     });
   }
 

@@ -22,7 +22,10 @@
           Device ID: {{ latestDeviceData[device_id]?.device_id }}
         </div>
         <div class="fw-light">
-          Group: {{ latestDeviceData[device_id]?.group_id }}
+          Type: {{ latestDeviceData[device_id]?.device_type === 1 ? 'ESP' : latestDeviceData[device_id]?.device_type === 2 ? 'Tuya' : 'Unknown' }}
+        </div>
+        <div class="fw-light">
+          Group: {{ latestDeviceData[device_id]?.group_id === 1 ? 'A' : latestDeviceData[device_id]?.group_id === 2 ? 'B' : 'Unknown' }}
         </div>
 
         <div class="fw-light">
@@ -157,7 +160,8 @@
           id="editModal"
           tabindex="-1"
           aria-labelledby="editModalLabel"
-          aria-hidden="true">
+          aria-hidden="true"
+        >
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
@@ -255,17 +259,18 @@
 
                   <!-- Group ID -->
                   <div class="form-group">
-                    <label for="newGroup_id">Group:</label>
+                    <label for="group_id">Group ID:</label>
                     <select
                       class="form-control"
-                      id="new_device_group"
-                      [(ngModel)]="newData.device_group"
-                      name="new_device_group"
+                      id="group_id"
+                      [(ngModel)]="editedData.group_id"
+                      name="group_id"
                       required
                     >
-                      <option *ngFor="let group of apiGroups" [value]="group.group_id">{{ group.group_name }}</option>
+                      <option *ngFor="let group of apiGroups" [ngValue]="group.group_id">{{ group.group_name }}</option>
                     </select>
                   </div>
+
 
                   <!-- Error message -->
                   <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
