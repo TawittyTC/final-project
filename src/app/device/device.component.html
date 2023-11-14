@@ -13,7 +13,7 @@
     </button>
     <div class="dropdown-menu" aria-labelledby="groupDropdown" >
       <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
-      <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of groups">{{ group }}</a>
+      <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of apiGroups">{{ group.group_name }}</a>
     </div>
     <div class="dropdown"  *ngIf="isLoggedIn()">
       <button class="dropbtn bg-light">
@@ -201,7 +201,7 @@
               required
             />
           </div>
-         
+
           <div class="form-group">
             <label for="new_group_id">Group:</label>
             <select
