@@ -28,6 +28,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { TableUsersComponent } from './table-users/table-users.component';
 import { AuthService } from './_service/auth.service';
 import { TableGroupsComponent } from './table-groups/table-groups.component';
+import { AllDashboardComponent } from './all-dashboard/all-dashboard.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +50,7 @@ import { TableGroupsComponent } from './table-groups/table-groups.component';
     AdminDashboardComponent,
     TableUsersComponent,
     TableGroupsComponent,
+    AllDashboardComponent,
 
   ],
   imports: [

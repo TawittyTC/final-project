@@ -178,7 +178,28 @@ getAllGroups(): Observable<any[]> {
     return this.http.get<number>(apiUrl);
   }
 
+  private baseUrl = 'http://localhost:3000'; // กำหนด URL base ของ API ที่ต้องการเรียกใช้
 
+
+  getDataByGroupName(groupName: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/data_group/${groupName}`);
+  }
+
+  getAllDataGroup(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data`);
+  }
+
+  getAllDataByGroupName(groupName: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_group/${groupName}`);
+  }
+
+  getCombinedData(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/combined_data`);
+  }
+
+  getLatestAllEnergy(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/latest_all_energy`);
+  }
 
 
 
