@@ -9,10 +9,11 @@ import { interval, Subscription } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
+  private baseUrl = 'http://localhost:3000'; // กำหนด URL base ของ API ที่ต้องการเรียกใช้
 
-  private deviceUrl = 'http://localhost:3000/devices'; // URL ของ API ของ Express.js
-  private userUrl = 'http://localhost:3000/users';
-  private groupUrl = 'http://localhost:3000/device-groups';
+  private deviceUrl = `${this.baseUrl}/devices`;
+  private userUrl = `${this.baseUrl}/users`;
+  private groupUrl = `${this.baseUrl}/device-groups`;
   private dataSubscription: Subscription | undefined;
 
   constructor(private http: HttpClient) {}
@@ -43,9 +44,7 @@ export class ApiService {
             return throwError('Error creating group');
         })
     );
-}
-
-
+  }
   // อัปเดตข้อมูล Device ผ่าน API
   updateData(device_id: any, data: any): Observable<any> {
     const headers = { 'content-type': 'application/json' };
@@ -59,9 +58,6 @@ export class ApiService {
       })
     );
   }
-
-
-
   // ลบข้อมูล Device
   deleteData(device_id: any): Observable<any> {
     const url = `${this.deviceUrl}/${device_id}`;
@@ -72,7 +68,6 @@ export class ApiService {
       })
     );
   }
-
   // Create a new user
   createUser(user: any): Observable<any> {
     return this.http.post(this.userUrl, user).pipe(
@@ -82,20 +77,15 @@ export class ApiService {
       })
     );
   }
-
   // Get all users
   getAllUsers(): Observable<any[]> {
     return this.http.get<any[]>(this.userUrl);
   }
-
-
-
   // Get a user by ID
   getUserById(userId: any): Observable<any> {
     const url = `${this.userUrl}/${userId}`;
     return this.http.get<any>(url);
   }
-
   // Update a user by email
   updateUserByEmail(email: string, user: any): Observable<any> {
     const url = `${this.userUrl}/${encodeURIComponent(email)}`;
@@ -106,7 +96,6 @@ export class ApiService {
       })
     );
   }
-
   // Delete a user by email
   deleteUserByEmail(email: string): Observable<any> {
     const url = `${this.userUrl}/${encodeURIComponent(email)}`;
@@ -117,7 +106,6 @@ export class ApiService {
       })
     );
   }
-
   // Get a user by their email address
   getUserByEmail(email: string): Observable<any> {
     const url = `${this.userUrl}/${encodeURIComponent(email)}`;
@@ -128,9 +116,9 @@ export class ApiService {
       })
     );
   }
-
+  // อัปโหลดไฟล์
   uploadFile(formData: FormData): Observable<any> {
-    const uploadUrl = 'http://localhost:3000/upload/';
+    const uploadUrl = `${this.baseUrl}/upload/`;
 
     return this.http.post(uploadUrl, formData).pipe(
       catchError((error) => {
@@ -139,11 +127,13 @@ export class ApiService {
       })
     );
   }
+  // รับ URL สำหรับแสดงรูปภาพของแผนที่ตาม deviceId
   getMapImageUrl(deviceId: string): string {
-    return `http://localhost:3000/uploads/${deviceId}`;
+    return `${this.baseUrl}/uploads/${deviceId}`;
   }
+  // อัปเดตราคาต่อหน่วย
   updateUnitCost(unitCost: number): Observable<any> {
-    const url = 'http://localhost:3000/putUnitCost';
+    const url = `${this.baseUrl}/putUnitCost`;
     return this.http.put(url, { unitCost }).pipe(
       catchError((error) => {
         console.error('Error updating Unit Cost:', error);
@@ -151,34 +141,26 @@ export class ApiService {
       })
     );
   }
-  // Fetch latest data for a device
+  // ดึงข้อมูลล่าสุดสำหรับอุปกรณ์
   getLatestData(deviceId: string): Observable<any[]> {
-    const apiUrl = `http://localhost:3000/latest_data?device_id=${deviceId}`;
+    const apiUrl = `${this.baseUrl}/latest_data?device_id=${deviceId}`;
     return this.http.get<any[]>(apiUrl);
   }
-
-  // api.service.ts
-getAllGroups(): Observable<any[]> {
-  const apiUrl = 'http://localhost:3000/device-groups';
-  return this.http.get<any[]>(apiUrl);
-}
-
-
-  // Fetch energy data for a device
+  // ดึงข้อมูลกลุ่มทั้งหมด
+  getAllGroups(): Observable<any[]> {
+    const apiUrl = `${this.baseUrl}/device-groups`;
+    return this.http.get<any[]>(apiUrl);
+  }
+  // ดึงข้อมูลพลังงานสำหรับอุปกรณ์
   getEnergyData(deviceId: string): Observable<any[]> {
-    const apiUrl = `http://localhost:3000/energy?device_id=${deviceId}`;
+    const apiUrl = `${this.baseUrl}/energy?device_id=${deviceId}`;
     return this.http.get<any[]>(apiUrl);
   }
-
-  // Fetch unit cost
+  // ดึงราคาต่อหน่วย
   getUnitCost(): Observable<number> {
-    const apiUrl = 'http://localhost:3000/getUnitCost';
+    const apiUrl = `${this.baseUrl}/getUnitCost`;
     return this.http.get<number>(apiUrl);
   }
-
-  private baseUrl = 'http://localhost:3000'; // กำหนด URL base ของ API ที่ต้องการเรียกใช้
-
-
   //ข้อมูลรวมล่าสุดของ group นั้นๆ
   getDataByGroupName(groupName: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/data_group/${groupName}`);
