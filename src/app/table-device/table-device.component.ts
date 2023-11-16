@@ -127,7 +127,7 @@ export class TableDeviceComponent implements OnInit {
   }
 
   loadData() {
-    this.apiService.getAllData().subscribe((response: any) => {
+    this.apiService.getAllDeviceData().subscribe((response: any) => {
       this.data = response;
       this.device_id = this.data.map((item: { device_id: any }) =>
         item.device_id.toString()
