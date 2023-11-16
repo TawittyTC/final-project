@@ -13,11 +13,15 @@
   <span class="display-5 fw-normal">{{ selectedGroup || 'Devices' }}</span>
 </button>
 <div class="dropdown-menu" aria-labelledby="groupDropdown">
+  <!-- เพิ่มรายการ 'All Devices' ที่ต้องการให้เลือก -->
+  <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
+
   <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
   <button class="dropdown-item" *ngFor="let group of apiGroups" (click)="selectGroup(group.group_id)">
     {{ group.group_name }}
   </button>
 </div>
+
 
 
 
