@@ -86,6 +86,7 @@ apiGroups: any[] = [];
     // Assuming currentDeviceId is a property in your component
     return this.apiService.getMapImageUrl(this.currentDeviceId);
   }
+
   ngOnInit(): void {
     this.loadImageByDeviceId('device_id');
     this.loadData();
@@ -121,7 +122,8 @@ apiGroups: any[] = [];
   }
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
-      this.data = response;
+      // Filter devices based on group_id before updating the component state
+      this.data = response.filter((item: { group_id: number }) => item.group_id === 3);
       this.device_id = this.data.map((item: { device_id: any }) =>
         item.device_id.toString()
       );
@@ -145,6 +147,7 @@ apiGroups: any[] = [];
       });
     });
   }
+
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
