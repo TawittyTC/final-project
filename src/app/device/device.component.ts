@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ApiService } from '../_service/api.service';
 import { interval, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../_service/auth.service';
+import { GroupService } from '../_service/group.service';
 
 @Component({
   selector: 'app-device',
@@ -10,6 +11,7 @@ import { AuthService } from '../_service/auth.service';
   styleUrls: ['./device.component.scss'],
 })
 export class DeviceComponent implements OnInit {
+  @Output() selectedGroupChanged: EventEmitter<string> = new EventEmitter<string>();
   showGroupDropdown: boolean = false;
   selectedGroup: string = '';
   groups: string[] = [''];
@@ -32,23 +34,29 @@ export class DeviceComponent implements OnInit {
 
   private dataSubscription: Subscription | undefined;
 
-  constructor(private apiService: ApiService, private http: HttpClient,private authService: AuthService) {}
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private authService: AuthService,
+    private groupService: GroupService // Inject the GroupService
+  ) {}
 
   toggleGroupDropdown() {
     this.showGroupDropdown = !this.showGroupDropdown;
   }
   // ฟังก์ชันเลือกกลุ่ม
-  selectGroup(group: string) {
-    this.selectedGroup = group;
-    this.showGroupDropdown = false;
+  selectGroup(group_id: string) {
+    this.groupService.setSelectedGroup(group_id);
   }
+
+
 
   // สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
   getDevicesByGroup(group: string) {
     // ทำงานเรียกข้อมูลของ device ตามกลุ่มที่เลือก
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadData();
 
     this.dataSubscription = interval(2000).subscribe(() => {
@@ -57,7 +65,13 @@ export class DeviceComponent implements OnInit {
         this.apiGroups = groups;
       });
     });
+
+    // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
+    this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
+      this.selectedGroup = selectedGroup;
+    });
   }
+
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn;

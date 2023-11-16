@@ -4,6 +4,7 @@ import { interval, Subscription } from 'rxjs';
 import { ApiService } from '../_service/api.service';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient here
 import { AuthService } from '../_service/auth.service';
+import { GroupService } from '../_service/group.service';
 @Component({
   selector: 'app-device-card',
   templateUrl: './device-card.component.html',
@@ -27,6 +28,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   formIncompleteAlert: string = '';
   public currentDeviceId!: string;
   infoMode: boolean | undefined;
+  selected_group: string = '';
 
 apiGroups: any[] = [];
 
@@ -35,7 +37,8 @@ apiGroups: any[] = [];
     private apiService: ApiService,
     private http: HttpClient,
     private GetImageService: GetImageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private groupService: GroupService // Inject the GroupService
   ) {}
 
   isLoggedIn(): boolean {
@@ -88,6 +91,12 @@ apiGroups: any[] = [];
   }
 
   ngOnInit(): void {
+    this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
+      this.selected_group = selectedGroup;
+      console.log('Selected Group:', this.selected_group); // Add this line to log the selected group
+      // Call any function or perform any action with the selected group if needed
+    });
+
     this.loadImageByDeviceId('device_id');
     this.loadData();
 
@@ -99,6 +108,9 @@ apiGroups: any[] = [];
       });
     });
   }
+
+
+
 
   ngOnDestroy() {
     // ยกเลิกการสมัครสมาชิกเมื่อคอมโพนนิ้งถูกทำลาย
@@ -123,7 +135,7 @@ apiGroups: any[] = [];
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       // Filter devices based on group_id before updating the component state
-      this.data = response.filter((item: { group_id: number }) => item.group_id === 3);
+      this.data = response.filter((item: { group_id: number }) => item.group_id === parseInt(this.selected_group, 10));
       this.device_id = this.data.map((item: { device_id: any }) =>
         item.device_id.toString()
       );
