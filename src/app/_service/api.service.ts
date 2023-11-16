@@ -181,22 +181,27 @@ getAllGroups(): Observable<any[]> {
   private baseUrl = 'http://localhost:3000'; // กำหนด URL base ของ API ที่ต้องการเรียกใช้
 
 
+  //ข้อมูลรวมล่าสุดของ group นั้นๆ
   getDataByGroupName(groupName: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/data_group/${groupName}`);
   }
 
+  //ดึงทั้งหมด แล้วคำนวน //โดยไม่ได้สนgroup
   getAllDataGroup(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/all_data`);
   }
 
+  //ข้อมูลรวมทั้งหมดของกลุ่มนั้นๆ
   getAllDataByGroupName(groupName: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/all_data_group/${groupName}`);
   }
 
+  //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย
   getCombinedData(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/combined_data`);
   }
 
+ // ดึงข้อมูลล่าสุดของอุปกรณ์ทั้งหมด และ ทำการ summ
   getLatestAllEnergy(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/latest_all_energy`);
   }
