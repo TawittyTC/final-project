@@ -1,20 +1,33 @@
-<div class="container py-4">
+<div class="container py-4 fw-light">
   <!-- head details -->
   <div class="p-2">
-    <div class="display-5 fw-normal mb-5">Dashboard</div>
+    <div class="display-5 fw-light mb-5">
+      <!-- Dropdown for selecting component -->
+      <div class="dropdown">
+        <button class="btn dropdown-toggle" type="button" id="dashboardDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="display-5 mb-5">Dashboard</span>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dashboardDropdown">
+          <button class="dropdown-item" (click)="selectedComponent = 'devices'">Devices</button>
+          <button class="dropdown-item" (click)="selectedComponent = 'users'">Users</button>
+          <button class="dropdown-item" (click)="selectedComponent = 'groups'">Groups</button>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <div class="col-sm-12">
-        <div class="mb-3 bg-white rounded-4 p-5" style="height: 555px; overflow-y: auto;">
+        <div *ngIf="selectedComponent === 'devices'" class="mb-3 bg-white rounded-4 p-5">
           <app-table-device></app-table-device>
         </div>
       </div>
       <div class="col-sm-12">
-        <div class="mb-3 bg-white rounded-4 p-5" style="height: 555px; overflow-y: auto;">
+        <div *ngIf="selectedComponent === 'users'" class="mb-3 bg-white rounded-4 p-5" >
           <app-table-users></app-table-users>
         </div>
       </div>
       <div class="col-sm-12">
-        <div class="mb-3 bg-white rounded-4 p-5" style="height: 555px; overflow-y: auto;">
+        <div *ngIf="selectedComponent === 'groups'" class="mb-3 bg-white rounded-4 p-5" >
           <app-table-groups></app-table-groups>
         </div>
       </div>
