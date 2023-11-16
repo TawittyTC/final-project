@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_service/auth.guard';
 import { SignupComponent } from './signup/signup.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { AllDashboardComponent } from './all-dashboard/all-dashboard.component';
 const routes: Routes = [
   { path: '', redirectTo: '/home-component', pathMatch: 'full'},
   { path: 'dashboard-component',component: DashboardComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   // { path: 'chart-component',component: ChartComponent },
   // { path: 'circle-component',component:CircleChartComponent},
   { path: 'dashboard-component/:id', component: DeviceCardComponent },
+  { path: 'dashboard', component: AllDashboardComponent},
   { path: 'login-component', component:LoginComponent},
   { path: 'signup-component', component:SignupComponent},
   { path: 'admin',component:AdminDashboardComponent ,canActivate: [AuthGuard],data: { roles: ['admin']}},
