@@ -36,7 +36,7 @@ export class TableUsersComponent implements OnInit, OnDestroy {
   }
 
   loadDevices() {
-    this.apiService.getAllData().subscribe((response: any) => {
+    this.apiService.getAllDeviceData().subscribe((response: any) => {
       this.devices = response.map((item: { device_id: any }) => item.device_id.toString());
     });
   }

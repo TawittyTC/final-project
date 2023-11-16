@@ -133,7 +133,7 @@ apiGroups: any[] = [];
     }
   }
   loadData() {
-    this.apiService.getAllData().subscribe((response: any) => {
+    this.apiService.getAllDeviceData().subscribe((response: any) => {
       // Filter devices based on group_id if a group is selected
       this.data = this.selected_group
         ? response.filter((item: { group_id: number }) => item.group_id === parseInt(this.selected_group, 10))

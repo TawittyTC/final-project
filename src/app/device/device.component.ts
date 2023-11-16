@@ -85,7 +85,7 @@ export class DeviceComponent implements OnInit {
 
   // โหลดข้อมูลจาก API
   loadData() {
-    this.apiService.getAllData().subscribe((response: any) => {
+    this.apiService.getAllDeviceData().subscribe((response: any) => {
       this.data = response;
     });
   }
