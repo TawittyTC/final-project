@@ -10,7 +10,7 @@
   aria-haspopup="true"
   aria-expanded="false"
 >
-  <span class="display-5 fw-normal">{{ selectedGroup }}</span>
+  <span class="display-5 fw-normal">{{ selectedGroup || 'Devices' }}</span>
 </button>
 <div class="dropdown-menu" aria-labelledby="groupDropdown">
   <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
@@ -18,6 +18,7 @@
     {{ group.group_name }}
   </button>
 </div>
+
 
 
 

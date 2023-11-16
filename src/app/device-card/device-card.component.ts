@@ -134,8 +134,11 @@ apiGroups: any[] = [];
   }
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
-      // Filter devices based on group_id before updating the component state
-      this.data = response.filter((item: { group_id: number }) => item.group_id === parseInt(this.selected_group, 10));
+      // Filter devices based on group_id if a group is selected
+      this.data = this.selected_group
+        ? response.filter((item: { group_id: number }) => item.group_id === parseInt(this.selected_group, 10))
+        : response;
+
       this.device_id = this.data.map((item: { device_id: any }) =>
         item.device_id.toString()
       );
@@ -149,9 +152,6 @@ apiGroups: any[] = [];
           (prev: { id: number }, current: { id: number }) =>
             prev.id > current.id ? prev : current
         );
-        this.latestDeviceData[id] = latestEntry;
-
-        // ตรวจสอบสถานะของอุปกรณ์และเพิ่มข้อมูลสถานะลงใน latestDeviceData
         this.latestDeviceData[id] = {
           ...latestEntry,
           status: this.checkOnlineStatus(latestEntry),
@@ -159,6 +159,7 @@ apiGroups: any[] = [];
       });
     });
   }
+
 
 
   // สร้างข้อมูลใหม่
