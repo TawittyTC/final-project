@@ -15,7 +15,9 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   device_id: string = '';
   dataSubscription: Subscription | undefined;
   unitCost: number = 0;
-  level: number = 1 ;
+  level: number = 1;
+  totalEnergy: string = '';
+  cost: number = 0;
 
   constructor(private route: ActivatedRoute,private http: HttpClient,private apiService: ApiService) {
   }
@@ -25,12 +27,12 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.fetchData();
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
 
-   // กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
-  // this.dataSubscription = interval(5000).subscribe(() => {
-  //   if (this.unitCost !== 0) {
-  //     this.fetchData();
-  //   }
-  //   });
+   //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
+  this.dataSubscription = interval(5000).subscribe(() => {
+    if (this.unitCost !== 0) {
+      this.fetchData();
+    }
+    });
   }
 
   generateChart() {
@@ -230,9 +232,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    // Use ApiService to fetch energy data
     this.apiService.getAllDataByGroupName('BBBBB').subscribe((data) => {
-      // ถ้า API service ส่งคืนข้อมูลเป็นตาราง (array)
       this.chartData = data;
 
       // Log the data to the console
@@ -242,15 +242,24 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       this.generateChart();
       this.generateChart2();
 
+      // Log unitCost and chartData for troubleshooting
+      console.log('UnitCost:', this.unitCost);
+      console.log('ChartData:', this.chartData);
+
       // Calculate total energy
       const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
+      console.log(`Total Energy: ${totalEnergy} kWh`);
+      this.totalEnergy = totalEnergy.toFixed(3);
+
+      // Perform cost calculation only after the totalEnergy is calculated
+      this.cost = totalEnergy * this.unitCost;
+      this.cost = +this.cost.toFixed(3);
+
+      // Log the calculated cost for troubleshooting
+      console.log('Calculated Cost:', this.cost);
     });
   }
 
-
-
-
-  // Replace fetchUnitCost with ApiService method
   fetchUnitCost() {
     this.apiService.getUnitCost().subscribe(
       (response: any) => {
@@ -265,10 +274,30 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
             console.log('UnitCost: คือ:', this.unitCost);
           }
         }
+
+        // After getting the unitCost, fetch data
+        this.fetchData();
       },
       (error) => {
         console.error('Error fetching Unit Cost:', error);
       }
     );
+  }
+
+
+  fetchEnergyData() {
+    this.apiService.getEnergyData(this.device_id).subscribe((data: any[]) => {
+      this.chartData = data;
+
+      const totalEnergy = this.chartData.reduce(
+        (total, dataPoint) => total + dataPoint.energy,
+        0
+      );
+      console.log(`Total Energy: ${totalEnergy} kWh`);
+      this.totalEnergy = totalEnergy.toFixed(3);
+
+      this.cost = totalEnergy * this.unitCost;
+      this.cost = +this.cost.toFixed(3);
+    });
   }
 }
