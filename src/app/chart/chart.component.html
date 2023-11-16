@@ -1,8 +1,24 @@
-
-
+<div class="h4 text-muted fw-light p-4">Chart Energy</div>
 <div class="mb-2">
-  <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [xaxis]="chartOptions.xaxis" [yaxis]="chartOptions.yaxis"></apx-chart>
+  
+  <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [xaxis]="chartOptions.xaxis"
+    [yaxis]="chartOptions.yaxis"
+    [dataLabels]="chartOptions.dataLabels"
+    [markers]="chartOptions.markers"
+    [tooltip]="chartOptions.tooltip"
+  ></apx-chart>
 </div>
-<h4 class="fw-bold">Chart</h4>
-        <p class="fs-5 text-muted fw-light ">Power Usage and Cost</p>
-<apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart" [xaxis]="chartOptions2.xaxis" [yaxis]="chartOptions2.yaxis"></apx-chart>
+<div class="h4 text-muted fw-light p-4">Chart Cost</div>
+<apx-chart
+  [series]="chartOptions2.series"
+  [chart]="chartOptions2.chart"
+  [xaxis]="chartOptions2.xaxis"
+  [yaxis]="chartOptions2.yaxis"
+  [dataLabels]="chartOptions2.dataLabels"
+  [markers]="chartOptions2.markers"
+  [tooltip]="chartOptions2.tooltip"
+></apx-chart>
+

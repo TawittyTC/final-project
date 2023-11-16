@@ -1,55 +1,39 @@
+<!-- <div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="h2">User Profile</div>
+      <div *ngIf="name">
+        <div>ชื่อ: {{ name }}</div>
+        <div>อีเมล: {{ email }}</div>
+        <div>บทบาท: {{ role }}</div>
+        <div>กลุ่ม: {{ group }}</div>
+      </div>
+      <div *ngIf="!name">
+        <div>Loading user profile...</div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
 <div class="container py-4">
-  <header class="pb-3 mb-4">
-    <p class="display-5 fw-bold h1">Your Profile</p>
-  </header>
-  <div class="row p-3 mb-3 bg-light rounded-4" >
-
-
-<div class="list-group rounded-4" *ngIf="auth.user$ | async as user">
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-2 mt-2"><img src="{{user.picture}}" class="rounded mx-auto d-block" alt="user-picture"></h5>
-
+  <div class="p-2">
+    <div class="display-5 fw-normal mb-5">Profile</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="mb-3 bg-white rounded-4 p-5">
+        <div class="h4 text-muted fw-light">My Profile</div>
+        <img
+          src="/assets/img/img4.svg"
+          class="img-fluid rounded-4"
+          alt=""
+        />
+        <div class="display-5 fw-light mb-2">{{ name }}</div>
+        <div>อีเมล: {{ email }}</div>
+        <div>บทบาท: {{ role }}</div>
+        <div>กลุ่ม: {{ group }}</div>
+      </div>
     </div>
-  </a>
-
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Name</h5>
-
-    </div>
-    <p class="mb-1">{{user.name}}</p>
-
-  </a>
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Email</h5>
-
-    </div>
-    <p class="mb-1">{{user.email}}</p>
-
-  </a>
-
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Phone No.</h5>
-
-    </div>
-    <p class="mb-1">{{user.phone_number}}</p>
-
-  </a>
-
-  <a class="list-group-item ">
-    <div class="d-flex w-100 justify-content-between">
-      <h5 class="mb-1">Locale</h5>
-
-    </div>
-    <p class="mb-1">{{user.locale}}</p>
-
-  </a>
+  </div>
 </div>
-</div>
-</div>
+

@@ -1,0 +1,77 @@
+<div class="container fw-light justify-content-center">
+  <div class="display-6 fw-light text-muted">Groups</div>
+  <div id="no-table justify-content-between">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let deviceGroup of deviceData">
+          <td data-title="ID">{{ deviceGroup.group_id }}</td>
+          <td data-title="Name">{{ deviceGroup.group_name }}</td>
+          <td data-title="Actions">
+            <button
+              (click)="editMode = true; setEditedData(deviceGroup)"
+              class="btn"
+              data-bs-toggle="modal"
+              data-bs-target="#editGroupModal"
+            >
+              <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
+            </button>
+
+            <button (click)="deleteData(deviceGroup.group_id)" class="btn">
+              <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+
+    <!-- แก้ไขข้อมูล -->
+    <!-- Edit Device Modal -->
+<div class="modal fade" id="editGroupModal" tabindex="-1" aria-labelledby="editGroupModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title h5 fw-light" id="editGroupModalLabel">Edit Device</div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="updateData()" #editForm="ngForm">
+          <!-- Add your form fields here -->
+          <div class="form-group">
+            <label for="group_id">ID:</label>
+            <input type="text" class="form-control" id="group_id" [(ngModel)]="editedData.group_id" name="group_id" readonly />
+          </div>
+
+          <!-- Group Name -->
+          <div class="form-group">
+            <label for="group_name">Name:</label>
+            <input type="text" class="form-control" id="group_name" [(ngModel)]="editedData.group_name" name="group_name" required />
+          </div>
+
+          <!-- Error message -->
+          <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
+            Please fill in all required fields.
+          </div>
+
+          <!-- Add more fields as needed -->
+          <div class="mt-2">
+            <button type="submit" class="btn btn-success me-2" [disabled]="editForm.invalid" data-bs-dismiss="modal">Save</button>
+
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="cancelEditMode()">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- แก้ไขข้อมูล -->
+  </div>
+</div>

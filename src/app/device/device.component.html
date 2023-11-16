@@ -1,95 +1,240 @@
+<!-- device.component.html -->
 <div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center pb-3">
-    <div class="dropdown">
-      <button class="btn dropdown-toggle" type="button" id="groupDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="h1 fw-bold">Device</span>
+  <div class="d-flex justify-content-between align-items-center pb-3" >
+    <!-- group dropdown -->
+    <button
+      class="btn dropdown-toggle"
+      type="button"
+      id="groupDropdown"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <span class="display-5 fw-normal">Device</span>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="groupDropdown" >
+      <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
+      <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of apiGroups">{{ group.group_name }}</a>
+    </div>
+
+    <!-- add dropdown -->
+    <div class="dropdown"  *ngIf="isLoggedIn()">
+      <button class="dropbtn bg-light">
+        <i
+          class="bi bi-plus-circle-fill text-primary"
+          style="font-size: 40px"
+        ></i>
       </button>
-      <div class="dropdown-menu" aria-labelledby="groupDropdown">
-        <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
-        <a class="dropdown-item" href="#" (click)="selectGroup(group)" *ngFor="let group of groups">{{ group }}</a>
+      <div class="dropdown-content rounded-4" >
+        <a
+          href="#"
+          (click)="enableAddMode()"
+          data-bs-toggle="modal"
+          data-bs-target="#addDataModal"
+          ><i class="bi bi-router"></i> Add Device</a
+        >
+        <a
+          href="#"
+          (click)="enableUnitCostMode()"
+          data-bs-toggle="modal"
+          data-bs-target="#unitCostModal"
+          ><i class="bi bi-cash-coin"></i> Unit Cost</a
+        >
+        <a
+        href="#"
+        (click)="enableGroupMode()"
+        data-bs-toggle="modal"
+        data-bs-target="#addGroupModal"
+        ><i class="bi bi-collection"></i> Add Group</a
+      >
       </div>
     </div>
-    <!-- แสดงปุ่มเพิ่ม -->
-    <button (click)="enableAddMode()" class="btn">
-      <i class="bi bi-plus-circle-fill text-primary" style="font-size: 40px"></i>
-    </button>
   </div>
   <!-- ส่วนอื่น ๆ ของเนื้อหาของคุณ -->
 </div>
 
+<!-- AddGroupModal -->
+<div class="modal" tabindex="-1" role="dialog" id="addGroupModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title h4 fw-light">New Group</div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="createNewGroup(newGroup)">
+          <div class="form-group">
+            <label for="new_group">Add new group :</label>
+            <input
+  type="text"
+  class="form-control"
+  id="group_name"
+  [(ngModel)]="newGroup.group_name"
+  name="group_name"
+  required
+/>
 
-<!-- เพิ่มข้อมูล -->
-<div *ngIf="addMode" class="container mt-3 mb-4">
-  <h3>เพิ่มข้อมูลใหม่</h3>
-  <form (submit)="createNewData(newData)">
-    <div class="form-group">
-      <label for="new_device_id">ESP ID:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_id"
-        [(ngModel)]="newData.device_id"
-        name="new_device_id"
-        required
-      />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-start">
+        <button
+        type="button"
+        class="btn btn-success me-2"
+        (click)="createNewGroup(newGroup); reloadPage()"
+      >
+        Save
+      </button>
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+        Cancel
+      </button>
+      </div>
     </div>
-    <div class="form-group">
-      <label for="new_device_name">Device Name:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_name"
-        [(ngModel)]="newData.device_name"
-        name="new_device_name"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="new_device_detail">Device Detail:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_detail"
-        [(ngModel)]="newData.device_detail"
-        name="new_device_detail"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="new_device_location">Device Location:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="new_device_location"
-        [(ngModel)]="newData.device_location"
-        name="new_device_location"
-        required
-      />
-    </div>
-    <div class="form-group">
-      <label for="new_device_type">Device Type:</label>
-      <select class="form-control" id="new_device_type" [(ngModel)]="newData.device_type" name="new_device_type" required>
-        <option value="1">ESP</option>
-        <option value="2">Tuya</option>
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="new_group_id">Group:</label>
-      <select class="form-control" id="new_device_group" [(ngModel)]="newData.device_group" name="new_device_group" required>
-        <option value="1">A</option>
-        <option value="2">B</option>
-      </select>
-    </div>
-  <div class = "mt-2">
-    <button type="submit" class="btn btn-success me-2">Save</button>
-    <button (click)="cancelAddMode()" class="btn btn-secondary">Cancel</button>
   </div>
-  </form>
 </div>
 
-  <div class="row">
-    <app-device-card></app-device-card>
-    <!-- <app-table-device></app-table-device> -->
+<!-- UnitCostModal -->
+<div class="modal" tabindex="-1" role="dialog" id="unitCostModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title h4 fw-light">Unit Cost</div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="saveUnitCost()">
+          <div class="form-group">
+            <label for="unit_cost">Unit Cost (per kWh):</label>
+            <input
+              type="text"
+              class="form-control"
+              id="unit_cost"
+              [(ngModel)]="unitCost"
+              name="unit_cost"
+              required
+              step="any"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-start">
+        <button
+          type="button"
+          class="btn btn-success me-2"
+          (click)="saveUnitCost()"
+          [disabled]="!isNumeric(unitCost)"
+        >
+          Save
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
   </div>
+</div>
 
+
+<!-- Add Data Modal -->
+<div class="modal" tabindex="-1" role="dialog" id="addDataModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title h4 fw-light">Add Device</div>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form (submit)="createNewData(newData)">
+          <div class="form-group">
+            <label for="new_device_id">Device ID:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="new_device_id"
+              [(ngModel)]="newData.device_id"
+              name="new_device_id"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="new_device_name">Device Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="new_device_name"
+              [(ngModel)]="newData.device_name"
+              name="new_device_name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="new_device_detail">Device Detail:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="new_device_detail"
+              [(ngModel)]="newData.device_detail"
+              name="new_device_detail"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="new_device_location">Device Location:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="new_device_location"
+              [(ngModel)]="newData.device_location"
+              name="new_device_location"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="new_group_id">Group:</label>
+            <select
+              class="form-control"
+              id="new_group_id"
+              [(ngModel)]="newData.group_id"
+              name="new_group_id"
+              required
+            >
+              <option *ngFor="let group of apiGroups" [ngValue]="group.group_id">{{ group.group_name }}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer justify-content-start">
+        <button
+          type="button"
+          class="btn btn-success me-2"
+          (click)="createNewData(newData); reloadPage()"
+        >
+          Save
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <app-device-card></app-device-card>
+  <!-- <app-table-device></app-table-device> -->
+</div>

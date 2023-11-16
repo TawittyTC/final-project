@@ -1,41 +1,36 @@
-<div class="container">
+<!-- device-card.component.html -->
+<div class="container fw-light justify-content-center">
   <div class="row">
     <div
       class="col-sm-12 col-md-4 col-xl-3"
       *ngFor="let device_id of device_id"
     >
+    <div *ngIf="!isLoggedIn || isDeviceAllowed(device_id) || isLoggedIn ">
       <div class="bg-white mb-5 p-4 rounded-5">
-        <div class=" text-center mb-4 mt-1">
+        <div class="text-center mb-4 mt-1">
           <img
-            src="/assets/img/{{latestDeviceData[device_id]?.status}}.gif"
-            class="card-img-top rounded-4 img-small " style = "width: 100px; /* กำหนดความกว้างของรูปภาพ */
-            height: auto; "
+            src="/assets/img/{{ latestDeviceData[device_id]?.status }}.png"
+            class="card-img-top rounded-4 img-small"
+            style="width: 100px; /* กำหนดความกว้างของรูปภาพ */ height: auto"
             alt="..."
           />
         </div>
-
-        <div class="h3 mb-3">
+        <div class="h2 mb-2 fw-normal">
           {{ latestDeviceData[device_id]?.device_name }}
         </div>
-        <div class="text-dark mb-2" style="margin: -10px 0">
-          <p style="margin: 1px 0">
-            Device ID: {{ latestDeviceData[device_id]?.device_id }}
-          </p>
-          <p style="margin: 1px 0">
-            Details: {{ latestDeviceData[device_id]?.device_detail }}
-          </p>
-          <p style="margin: 1px 0">
-            Location: {{ latestDeviceData[device_id]?.device_location }}
-          </p>
-          <p style="margin: 1px 0">
-            Type: {{ latestDeviceData[device_id]?.device_type }}
-          </p>
-          <p style="margin: 1px 0">
-            Group: {{ latestDeviceData[device_id]?.group_id }}
-          </p>
+        <div class="fw-light">
+          Device ID: {{ latestDeviceData[device_id]?.device_id }}
         </div>
 
-        <div class="bg-light rounded-5">
+        <div class="fw-light">
+          Group: {{ latestDeviceData[device_id]?.group_name}}
+        </div>
+
+        <div class="fw-light">
+          Status: {{ latestDeviceData[device_id]?.status }}
+        </div>
+
+        <div class="bg-light rounded-5 mt-3">
           <button
             class="btn me-2"
             [routerLink]="['/dashboard-component']"
@@ -43,61 +38,119 @@
           >
             <i class="bi bi-box-arrow-in-right" style="font-size: 30px"></i>
           </button>
+          <!-- Edit Button -->
           <button
+            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)"
             (click)="enableEditMode(device_id)"
             class="btn"
             data-bs-toggle="modal"
             data-bs-target="#editModal"
-          >
-            <i
-              class="bi bi-pencil-square text-primary"
-              style="font-size: 26px"
-            ></i>
+            >
+            <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
           </button>
+          <!-- Info Button -->
           <button
+            (click)="enableInfoMode(device_id)"
             class="btn"
-            (click)="setCurrentDeviceId(device_id)"
             data-bs-toggle="modal"
-            data-bs-target="#mapModal"
+            data-bs-target="#infoModal"
           >
-            <i class="bi bi-geo-alt text-primary" style="font-size: 26px"></i>
+            <i class="bi bi-info-circle text-success" style="font-size: 26px"></i>
           </button>
-
-          <button (click)="deleteData(device_id)" class="btn">
+          <!-- Delete Button -->
+          <button
+            *ngIf="isLoggedIn() && isDeviceAllowed(device_id)"
+            (click)="deleteData(device_id)"
+            class="btn"
+            >
             <i class="bi bi-trash text-danger" style="font-size: 26px"></i>
           </button>
-        </div>
-
-        <!-- แสดง map -->
-        <!-- Map Modal -->
+        <!-- Info Modal -->
         <div
           class="modal fade"
-          id="mapModal"
+          id="infoModal"
           tabindex="-1"
-          aria-labelledby="mapModalLabel"
+          aria-labelledby="infoModalLabel"
           aria-hidden="true"
         >
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="mapModalLabel">
-                  Map : {{ currentDeviceId }}
+                <h5 class="modal-title fw-light h2" id="infoModalLabel">
+                  {{ latestDeviceData[currentDeviceId]?.device_name }}
                 </h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
               </div>
-              <div class="modal-body modal-lg text-center">
-                <img
-                  src="http://localhost:3000/uploads/{{ currentDeviceId }}"
-                  class="img-fluid"
-                  alt="Maps"
-                />
+              <div class="modal-body">
+                <div class="bg-white mb-1 rounded-5">
+                  <p class="fw-light">
+                    Device ID:
+                    {{ latestDeviceData[currentDeviceId]?.device_id }}
+                  </p>
+                  <p class="fw-light">
+                    Details:
+                    {{ latestDeviceData[currentDeviceId]?.device_detail }}
+                  </p>
+                  <p class="fw-light">
+                    Location:
+                    {{ latestDeviceData[currentDeviceId]?.device_location }}
+                  </p>
+
+                  <p class="fw-light">
+                    Group: {{ latestDeviceData[currentDeviceId]?.group_name }}
+                  </p>
+                  <!-- Add status to display online/offline status -->
+                  <p class="fw-light">
+                    Status: {{ latestDeviceData[currentDeviceId]?.status }}
+                  </p>
+                  <p class="fw-light">
+                    Modified:
+                    {{
+                      latestDeviceData[currentDeviceId]?.modified_timestamp
+                        | date : "dd MMM y HH.mm"
+                    }}
+                  </p>
+                  <!-- Rest of the content for this device card -->
+                </div>
+
+                <!-- Display Map Here -->
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="mapModalLabel">
+                        Map : {{ currentDeviceId }}
+                      </h5>
+                    </div>
+                    <div class="modal-body modal-lg text-center">
+                      <img
+                        [src]="getMapImageUrl()"
+                        class="img-fluid"
+                        alt="Maps"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                  (click)="reloadPage()"
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
         </div>
-
         <!-- แก้ไขข้อมูล -->
         <!-- Edit Device Modal -->
-
         <div
           class="modal fade"
           id="editModal"
@@ -108,7 +161,9 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Device</h5>
+                <div class="modal-title h5 fw-light" id="editModalLabel">
+                  Edit Device
+                </div>
                 <button
                   type="button"
                   class="btn-close"
@@ -182,21 +237,7 @@
                     />
                   </div>
 
-                  <!-- Device Type -->
-                  <div class="form-group">
-                    <label for="device_type">Device Type:</label>
-                    <select
-                      class="form-control"
-                      id="device_type"
-                      [(ngModel)]="editedData.device_type"
-                      name="device_type"
-                      required
-                    >
-                      <option [ngValue]="null">Select Device Type</option>
-                      <option [ngValue]="1">ESP</option>
-                      <option [ngValue]="2">Tuya</option>
-                    </select>
-                  </div>
+
 
                   <!-- Group ID -->
                   <div class="form-group">
@@ -208,11 +249,10 @@
                       name="group_id"
                       required
                     >
-                      <option [ngValue]="null">Select Group ID</option>
-                      <option [ngValue]="1">A</option>
-                      <option [ngValue]="2">B</option>
+                      <option *ngFor="let group of apiGroups" [ngValue]="group.group_id">{{ group.group_name }}</option>
                     </select>
                   </div>
+
 
                   <!-- Error message -->
                   <div *ngIf="editForm.invalid" class="alert alert-danger my-2">
@@ -247,8 +287,9 @@
               </div>
             </div>
           </div>
-        </div>
+        </div><!-- แก้ไขข้อมูล -->
       </div>
-    </div>
+    </div> <!-- *ngIf -->
+    </div><!-- *ngFor -->
   </div>
 </div>

@@ -1,9 +1,9 @@
-import { GetImageService } from './../get-img.service';
+import { GetImageService } from '../_service/get-img.service';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { interval, Subscription } from 'rxjs';
-import { ApiService } from 'src/app/api.service';
+import { ApiService } from '../_service/api.service';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient here
-
+import { AuthService } from '../_service/auth.service';
 @Component({
   selector: 'app-device-card',
   templateUrl: './device-card.component.html',
@@ -25,14 +25,22 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   data: any;
   formIsValid: boolean = false;
   formIncompleteAlert: string = '';
-  currentDeviceId: string | null = null;
+  public currentDeviceId!: string;
+  infoMode: boolean | undefined;
+
+apiGroups: any[] = [];
+
 
   constructor(
     private apiService: ApiService,
     private http: HttpClient,
-    private GetImageService: GetImageService
+    private GetImageService: GetImageService,
+    private authService: AuthService
   ) {}
 
+  isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
   onFileSelected(event: any) {
     const file = event.target.files[0];
 
@@ -63,7 +71,8 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
       formData.append('file', new File([this.selectedFile], fileName));
 
-      this.http.post('http://localhost:3000/upload/', formData).subscribe(
+      // Use the ApiService to handle the file upload
+      this.apiService.uploadFile(formData).subscribe(
         (response) => {
           console.log('File uploaded successfully');
         },
@@ -73,7 +82,10 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       );
     }
   }
-
+  getMapImageUrl(): string {
+    // Assuming currentDeviceId is a property in your component
+    return this.apiService.getMapImageUrl(this.currentDeviceId);
+  }
   ngOnInit(): void {
     this.loadImageByDeviceId('device_id');
     this.loadData();
@@ -81,6 +93,9 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     // ใช้ interval สำหรับโหลดข้อมูลอัปเดตทุก 2 วินาที
     this.dataSubscription = interval(2000).subscribe(() => {
       this.loadData();
+      this.apiService.getAllGroups().subscribe((groups: any) => {
+        this.apiGroups = groups;
+      });
     });
   }
 
@@ -104,19 +119,6 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       );
     }
   }
-
-  // ที่อยู่ URL ของรูปภาพ ควรถูกเรียกใช้ใน HTML template
-  getImageUrl(deviceId: string): string {
-    if (this.imageBlob) {
-      // มีรูปภาพใน this.imageBlob
-      const imageUrl = `localhost:3000/uploads/${deviceId}.png`;
-      return imageUrl;
-    } else {
-      // ไม่มีรูปภาพ
-      return ''; // หรือ URL โดย default ในกรณีที่ไม่มีรูปภาพ
-    }
-  }
-
   loadData() {
     this.apiService.getAllData().subscribe((response: any) => {
       this.data = response;
@@ -190,6 +192,11 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
       : 'กรุณากรอกฟอร์มให้ครบทุกช่อง';
   }
 
+  // เริ่มโหมดแสดงข้อมูล (Info Mode)
+  enableInfoMode(device_id: string) {
+  this.infoMode = true;
+  this.currentDeviceId = device_id; // Set the currentDeviceId when entering info mode
+}
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     if (this.formIsValid) {
@@ -251,10 +258,34 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
     const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
 
     // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-    if (currentTimestamp - createdTimestamp <= 10000000000) {
+    if (currentTimestamp - createdTimestamp <= 100000) {
       return 'ON';
     } else {
       return 'OFF';
     }
   }
+
+  isDeviceAllowed(device_id: string): boolean {
+    const isLoggedIn = this.isLoggedIn();
+
+    // If not logged in, consider it allowed
+    if (!isLoggedIn) {
+      return true;
+    }
+
+    const allowedAccess = localStorage.getItem('access');
+
+    // If no access is defined, consider it allowed
+    if (!allowedAccess) {
+      return true;
+    }
+
+    const allowedAccessList = allowedAccess.split(',');
+
+    // Check if device_id is in the allowedAccessList
+    return allowedAccessList.includes(device_id);
+  }
+
+
+
 }

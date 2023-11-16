@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA,NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -11,8 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
-import { FormsModule } from '@angular/forms'; // เพิ่ม import นี้
-
+import { FormsModule ,ReactiveFormsModule} from '@angular/forms'; // เพิ่ม import นี้
 // Import the module from the SDK
 import { AuthModule } from '@auth0/auth0-angular';
 import { environment } from '../environments/environment';
@@ -23,6 +22,12 @@ import { CircleChartComponent } from './circle-chart/circle-chart.component';
 import { DeviceCardComponent } from './device-card/device-card.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TableDeviceComponent } from './table-device/table-device.component';
+import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { TableUsersComponent } from './table-users/table-users.component';
+import { AuthService } from './_service/auth.service';
+import { TableGroupsComponent } from './table-groups/table-groups.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +44,11 @@ import { TableDeviceComponent } from './table-device/table-device.component';
     CircleChartComponent,
     DeviceCardComponent,
     TableDeviceComponent,
+    LoginComponent,
+    SignupComponent,
+    AdminDashboardComponent,
+    TableUsersComponent,
+    TableGroupsComponent,
 
   ],
   imports: [
@@ -48,6 +58,7 @@ import { TableDeviceComponent } from './table-device/table-device.component';
     NgbModule,
     NgApexchartsModule,
     FormsModule,
+    ReactiveFormsModule,
     // Import the module into the application, with configuration
     AuthModule.forRoot({
       domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
@@ -57,7 +68,8 @@ import { TableDeviceComponent } from './table-device/table-device.component';
       }
     }),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [ AuthService],
+  bootstrap: [AppComponent],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

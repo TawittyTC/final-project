@@ -1,0 +1,123 @@
+<div class="container fw-light mb-4">
+  <div class="row m-3">
+    <div class="col-sm-12 col-md-6">
+      <div class="mt-4 rounded-5">
+        <div class="display-5 fw-light mb-2">Sign Up</div>
+        <div class="fw-light mb-3">
+          Enter your information to register on our platform.
+        </div>
+        <form (ngSubmit)="signUp()">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="firstName"
+                  placeholder="First Name"
+                  name="firstName"
+                  [(ngModel)]="user.name"
+                  required
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="lastName"
+                  placeholder="Last Name"
+                  name="lastName"
+                  [(ngModel)]="user.lname"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              placeholder="Your Email"
+              name="email"
+              [(ngModel)]="user.email"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmEmail">Confirm Email</label>
+            <input
+              type="email"
+              class="form-control"
+              id="confirmEmail"
+              placeholder="Confirm Your Email"
+              name="confirmEmail"
+              [(ngModel)]="user.confirmEmail"
+              required
+              #confirmEmail="ngModel"
+            />
+            <div *ngIf="user.email !== user.confirmEmail && confirmEmail.touched" class="text-danger">
+              Email does not match.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              placeholder="Password"
+              name="password"
+              [(ngModel)]="user.password"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirmPassword"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              [(ngModel)]="user.confirmPassword"
+              required
+              #confirmPassword="ngModel"
+            />
+            <div *ngIf="user.password !== user.confirmPassword && confirmPassword.touched" class="text-danger">
+              Password does not match.
+            </div>
+          </div>
+          <div class="mt-2 mb-2">
+            <button type="submit" class="btn btn-primary " [disabled]="!(user.name && user.lname && user.email && user.confirmEmail && user.password && user.confirmPassword && user.email === user.confirmEmail && user.password === user.confirmPassword)">Sign Up</button>
+            <button routerLink="/login-component" class="btn btn-danger ms-2">Back</button>
+          </div>
+        </form>
+        <!-- Display error message if any -->
+        <div *ngIf="errorMessage" class="text-danger mt-2">
+          {{ errorMessage }}
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-6">
+      <div class="d-md-none d-lg-block">
+        <div class="mb-5 mx-5 p-5">
+          <img
+            src="/assets/img/SignUp.png"
+            class="img-fluid"
+            alt="Responsive image"
+          />
+        </div>
+      </div>
+      <div class="bg-image">
+        <!-- Add text or content you want to display on the background -->
+      </div>
+    </div>
+  </div>
+</div>
