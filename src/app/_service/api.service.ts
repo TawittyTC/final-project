@@ -191,12 +191,12 @@ getAllGroups(): Observable<any[]> {
     return this.http.get<any>(`${this.baseUrl}/all_data`);
   }
 
-  //ข้อมูลรวมทั้งหมดของกลุ่มนั้นๆ
+  //ข้อมูลรวมทั้งหมดของกลุ่มนั้นๆ //ทำchart
   getAllDataByGroupName(groupName: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/all_data_group/${groupName}`);
   }
 
-  //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย
+  //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย //ทำ chart
   getCombinedData(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/combined_data`);
   }
