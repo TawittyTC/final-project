@@ -9,9 +9,7 @@ import { interval, Subscription } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  updateUser(selectedUserId: string, updatedUserData: { device_id: string; }) {
-    throw new Error('Method not implemented.');
-  }
+
   private apiUrl = 'http://localhost:3000/devices'; // URL ของ API ของ Express.js
   private userUrl = 'http://localhost:3000/users';
   private groupUrl = 'http://localhost:3000/device-groups';
