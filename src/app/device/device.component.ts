@@ -190,6 +190,7 @@ export class DeviceComponent implements OnInit {
         () => {
           console.log('Unit Cost updated:', this.unitCost);
           alert('อัปเดต Unit Cost สำเร็จ');
+          this.reloadPage();
         },
         (error) => {
           console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
