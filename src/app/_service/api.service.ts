@@ -163,12 +163,12 @@ export class ApiService {
   }
   //ข้อมูลรวมล่าสุดของ group นั้นๆ
   getDataByGroupName(groupName: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/data_group/${groupName}`);
+    return this.http.get<any>(`${this.baseUrl}/data_by_group/${groupName}`);
   }
 
   //ดึงทั้งหมด แล้วคำนวน //โดยไม่ได้สนgroup
   getAllDataGroup(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/all_data`);
+    return this.http.get<any>(`${this.baseUrl}/sum_data`);
   }
 
   //ข้อมูลรวมทั้งหมดของกลุ่มนั้นๆ //ทำchart
@@ -178,7 +178,7 @@ export class ApiService {
 
   //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย //ทำ chart
   getCombinedData(): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/combined_data`);
+    return this.http.get<any>(`${this.baseUrl}/all_data`);
   }
 
  // ดึงข้อมูลล่าสุดของอุปกรณ์ทั้งหมด และ ทำการ summ
