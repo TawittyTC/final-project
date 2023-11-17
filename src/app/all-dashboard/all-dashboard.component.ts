@@ -36,6 +36,8 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.fetchAllData()
     this.getAllDataGroup();
     this.getLatestAllEnergy();
+    this.getLastestEnergyByGroupName(this.selectedGroup);
+    this.getDataByGroupName(this.selectedGroup);
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
     // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
     this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
@@ -44,6 +46,8 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       // เมื่อมีค่า selectedGroup ถูกส่งมาแล้ว ก็ทำการเรียก fetchData()
         if (selectedGroup) {
           this.fetchData();
+          this.getLastestEnergyByGroupName(selectedGroup); // เรียกดึงข้อมูลพลังงานล่าสุดของกลุ่มที่เลือก
+          this.getDataByGroupName(selectedGroup); // เรียกดึงข้อมูลของกลุ่มที่เลือก
         }
     });
    //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
@@ -368,7 +372,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   getAllDataGroup(): void {
     this.apiService.getAllDataGroup().subscribe((data) => {
       this.allDataGroup = data;
-      console.log('allDataGroup : ',this.allDataGroup)
+      //console.log('allDataGroup : ',this.allDataGroup)
       // ทำอะไรกับข้อมูลหลังจากได้รับมา เช่น การแสดงผลหรือประมวลผลต่อ
     });
   }
@@ -376,14 +380,19 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   getLatestAllEnergy(): void {
     this.apiService.getLatestAllEnergy().subscribe((data) => {
       this.latestAllEnergy = data;
-      console.log('latestAllEnergy : ',this.latestAllEnergy)
+      //console.log('latestAllEnergy : ',this.latestAllEnergy)
     });
   }
 
-  getLastestEnergyByGroupName(groupName: string): void {
-    this.apiService.getLastestEnergyByGroupName(groupName).subscribe((data) => {
+  getLastestEnergyByGroupName(selectedGroup: string): void {
+    this.apiService.getLastestEnergyByGroupName(selectedGroup).subscribe((data) => {
       this.latestEnergyByGroupName = data;
-      // ทำอะไรกับข้อมูลหลังจากได้รับมา เช่น การแสดงผลหรือประมวลผลต่อ
-    });
+      console.log('latestEnergyByGroupName : ',this.latestEnergyByGroupName)    });
   }
+  getDataByGroupName(selectedGroup: string): void {
+    this.apiService.getDataByGroupName(selectedGroup).subscribe((data) => {
+      this.groupData = data;
+      console.log('groupData : ',this.groupData)    });
+  }
+  
 }
