@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';  // ต้องมีกา�
 import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../_service/api.service';
+import { GroupService } from '../_service/group.service';
+
 @Component({
   selector: 'app-all-dashboard',
   templateUrl: './all-dashboard.component.html',
@@ -10,25 +12,37 @@ import { ApiService } from '../_service/api.service';
 })
 export class AllDashboardComponent implements OnInit, OnDestroy {
   public chartData: any[] = [];
-  public chartOptions: any;
-  public chartOptions2: any;
+  public chartOptions: any= {};
+  public chartOptions2: any= {};
   device_id: string = '';
   dataSubscription: Subscription | undefined;
   unitCost: number = 0;
   level: number = 1;
   totalEnergy: string = '';
   cost: number = 0;
-
-  constructor(private route: ActivatedRoute,private http: HttpClient,private apiService: ApiService) {
+  apiGroups: any[] = [];
+  selectedGroup: string = '';
+  data: any[] = [];
+  groups: string[] = [''];
+  showGroupDropdown: boolean = false;
+  constructor(private route: ActivatedRoute,private http: HttpClient,private apiService: ApiService,private groupService: GroupService) {
   }
 
   ngOnInit() {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
     this.fetchData();
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
-
+    // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
+    this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
+      this.selectedGroup = selectedGroup;
+      console.log(this.selectedGroup)
+    });
    //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
-
+   this.dataSubscription = interval(2000).subscribe(() => {
+    this.apiService.getAllGroups().subscribe((groups: string[]) => {
+      this.apiGroups = groups;
+    });
+  });
   // this.dataSubscription = interval(5000).subscribe(() => {
   //   if (this.unitCost !== 0) {
   //     this.fetchData();
@@ -233,7 +247,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    this.apiService.getAllDataByGroupName('BBBBB').subscribe((data) => {
+    this.apiService.getAllDataByGroupName(this.selectedGroup).subscribe((data) => {
       this.chartData = data;
 
       // Log the data to the console
@@ -244,12 +258,12 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       this.generateChart2();
 
       // Log unitCost and chartData for troubleshooting
-      console.log('UnitCost:', this.unitCost);
-      console.log('ChartData:', this.chartData);
+      //console.log('UnitCost:', this.unitCost);
+      //console.log('ChartData:', this.chartData);
 
       // Calculate total energy
       const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
-      console.log(`Total Energy: ${totalEnergy} kWh`);
+      //console.log(`Total Energy: ${totalEnergy} kWh`);
       this.totalEnergy = totalEnergy.toFixed(3);
 
       // Perform cost calculation only after the totalEnergy is calculated
@@ -257,7 +271,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       this.cost = +this.cost.toFixed(3);
 
       // Log the calculated cost for troubleshooting
-      console.log('Calculated Cost:', this.cost);
+      //console.log('Calculated Cost:', this.cost);
     });
   }
 
@@ -267,12 +281,12 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         if (typeof response === 'number') {
           // Handle the case where the response is a number
           this.unitCost = response;
-          console.log('UnitCost: คือ:', this.unitCost);
+          //console.log('UnitCost: คือ:', this.unitCost);
         } else {
           // Handle the case where the response is an array
           if (response.length > 0) {
             this.unitCost = response[0].unitCost;
-            console.log('UnitCost: คือ:', this.unitCost);
+            //console.log('UnitCost: คือ:', this.unitCost);
           }
         }
 
@@ -294,11 +308,24 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         (total, dataPoint) => total + dataPoint.energy,
         0
       );
-      console.log(`Total Energy: ${totalEnergy} kWh`);
+      //console.log(`Total Energy: ${totalEnergy} kWh`);
       this.totalEnergy = totalEnergy.toFixed(3);
 
       this.cost = totalEnergy * this.unitCost;
       this.cost = +this.cost.toFixed(3);
     });
   }
+  reloadPage() {
+    // รีโหลดหน้าเว็บ
+    location.reload();
+  }
+    // ฟังก์ชันเลือกกลุ่ม
+  selectGroup(group_id: string) {
+    this.selectedGroup = group_id;
+    this.groupService.setSelectedGroup(group_id);
+    this.fetchData(); // Fetch data for the selected group
+  }
+    toggleGroupDropdown() {
+      this.showGroupDropdown = !this.showGroupDropdown;
+    }
 }

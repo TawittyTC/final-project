@@ -172,8 +172,8 @@ export class ApiService {
   }
 
   //ข้อมูลรวมทั้งหมดของกลุ่มนั้นๆ //ทำchart
-  getAllDataByGroupName(groupName: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/all_data_group/${groupName}`);
+  getAllDataByGroupName(group_id: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_group/${group_id}`);
   }
 
   //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย //ทำ chart
