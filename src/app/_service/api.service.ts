@@ -24,7 +24,7 @@ export class ApiService {
   }
 
   // สร้างข้อมูล Device ใหม่
-  createData(data: any): Observable<any> {
+  createDeviceData(data: any): Observable<any> {
     const headers = { 'content-type': 'application/json' };
     const body = JSON.stringify(data);
     return this.http.post(this.deviceUrl, data).pipe(
@@ -46,7 +46,7 @@ export class ApiService {
     );
   }
   // อัปเดตข้อมูล Device ผ่าน API
-  updateData(device_id: any, data: any): Observable<any> {
+  updateDeviceData(device_id: any, data: any): Observable<any> {
     const headers = { 'content-type': 'application/json' };
     const body = JSON.stringify(data);
     const url = `${this.deviceUrl}/${device_id}`;
@@ -59,7 +59,7 @@ export class ApiService {
     );
   }
   // ลบข้อมูล Device
-  deleteData(device_id: any): Observable<any> {
+  deleteDeviceData(device_id: any): Observable<any> {
     const url = `${this.deviceUrl}/${device_id}`;
     return this.http.delete(url).pipe(
       catchError((error) => {
@@ -161,12 +161,12 @@ export class ApiService {
     const apiUrl = `${this.baseUrl}/getUnitCost`;
     return this.http.get<number>(apiUrl);
   }
-  //ข้อมูลรวมล่าสุดของ group นั้นๆ
+  //ข้อมูลรวมล่าสุดของ group นั้นๆ โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
   getDataByGroupName(groupName: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/data_by_group/${groupName}`);
   }
 
-  //ดึงทั้งหมด แล้วคำนวน //โดยไม่ได้สนgroup
+  //ดึงทั้งหมด แล้วคำนวน //โดยไม่ได้สนgroup  โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
   getAllDataGroup(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sum_data`);
   }
@@ -181,11 +181,14 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}/all_data`);
   }
 
- // ดึงข้อมูลล่าสุดของอุปกรณ์ทั้งหมด และ ทำการ summ
+ // ดึงข้อมูลล่าสุด energy ของอุปกรณ์ทั้งหมด และ ทำการ summ
   getLatestAllEnergy(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/latest_all_energy`);
   }
-
+// ดึงข้อมูลล่าสุด energy ของอุปกรณ์แต่ละกลุ่ม และ ทำการ summ
+  getLastestEnergyByGroupName(groupName:string){
+    return this.http.get<any>(`${this.baseUrl}/latest_energy_group/${groupName}`);
+  }
 
 
 

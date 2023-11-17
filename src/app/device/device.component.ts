@@ -104,7 +104,7 @@ export class DeviceComponent implements OnInit {
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
-    this.apiService.createData(newData).subscribe(() => {
+    this.apiService.createDeviceData(newData).subscribe(() => {
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -112,7 +112,7 @@ export class DeviceComponent implements OnInit {
   }
   // อัปเดตข้อมูล
   updateData(device_id: any, updatedData: any) {
-    this.apiService.updateData(device_id, updatedData).subscribe(() => {
+    this.apiService.updateDeviceData(device_id, updatedData).subscribe(() => {
       this.loadData();
     });
   }
@@ -124,7 +124,7 @@ export class DeviceComponent implements OnInit {
     // ใช้ confirm() เพื่อขอยืนยันการลบข้อมูล
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
-      this.apiService.deleteData(device_id).subscribe(() => {
+      this.apiService.deleteDeviceData(device_id).subscribe(() => {
         this.loadData();
       });
     }
@@ -139,7 +139,7 @@ export class DeviceComponent implements OnInit {
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     this.apiService
-      .updateData(this.editedData.device_id, this.editedData)
+      .updateDeviceData(this.editedData.device_id, this.editedData)
       .subscribe(
         () => {
           this.editMode = false;

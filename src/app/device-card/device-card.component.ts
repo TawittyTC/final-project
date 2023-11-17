@@ -164,7 +164,7 @@ apiGroups: any[] = [];
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
-    this.apiService.createData(newData).subscribe(() => {
+    this.apiService.createDeviceData(newData).subscribe(() => {
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -173,7 +173,7 @@ apiGroups: any[] = [];
 
   // อัปเดตข้อมูล
   updateData(device_id: any, updatedData: any) {
-    this.apiService.updateData(device_id, updatedData).subscribe(() => {
+    this.apiService.updateDeviceData(device_id, updatedData).subscribe(() => {
       this.loadData();
     });
   }
@@ -183,7 +183,7 @@ apiGroups: any[] = [];
     // Use confirm() to request confirmation for data deletion
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
-      this.apiService.deleteData(device_id).subscribe(() => {
+      this.apiService.deleteDeviceData(device_id).subscribe(() => {
         // You can optionally handle the result of the deletion here
         // this.loadData();
       });
@@ -217,7 +217,7 @@ apiGroups: any[] = [];
   saveData() {
     if (this.formIsValid) {
       this.apiService
-        .updateData(this.editedData.device_id, this.editedData)
+        .updateDeviceData(this.editedData.device_id, this.editedData)
         .subscribe(
           () => {
             this.editMode = false;
@@ -229,7 +229,7 @@ apiGroups: any[] = [];
         );
     }
     this.apiService
-      .updateData(this.editedData.device_id, this.editedData)
+      .updateDeviceData(this.editedData.device_id, this.editedData)
       .subscribe(
         () => {
           this.editMode = false;
