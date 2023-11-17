@@ -133,7 +133,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           return value.toFixed(3); // Show data labels with three decimal places
         },
         background: {
-          enabled: true,
+          enabled: false,
           foreColor: '#fff',
           borderRadius: 3,
           padding: 5,
@@ -237,7 +237,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           return value.toFixed(3); // Show data labels with three decimal places
         },
         background: {
-          enabled: true,
+          enabled: false,
           foreColor: '#fff',
           borderRadius: 3,
           padding: 5,

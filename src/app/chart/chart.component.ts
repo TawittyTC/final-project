@@ -94,20 +94,21 @@ export class ChartComponent implements OnInit, OnDestroy {
       dataLabels: {
         enabled: true,
         style: {
-          fontSize: '12px',
-          colors: ['#333'],
+            fontSize: '12px',
+            colors: ['#333']
         },
         formatter: function (value: number) {
-          return value.toFixed(3); // Show data labels with three decimal places
+            return value.toFixed(3);
         },
         background: {
-          enabled: true,
-          foreColor: '#fff',
-          borderRadius: 3,
-          padding: 5,
+            enabled: false,
+            foreColor: '#fff',
+            borderRadius: 3,
+            padding: 5,
+            opacity: 1
         },
         textAnchor: 'middle',
-      },
+    },
       markers: {
         size: 6,
         hover: {
@@ -202,13 +203,14 @@ export class ChartComponent implements OnInit, OnDestroy {
             colors: ['#333']
         },
         formatter: function (value: number) {
-            return value.toFixed(3); // Show data labels with three decimal places
+            return value.toFixed(3);
         },
         background: {
-            enabled: true,
+            enabled: false,
             foreColor: '#fff',
             borderRadius: 3,
-            padding: 5
+            padding: 5,
+            opacity: 3
         },
         textAnchor: 'middle',
     },
