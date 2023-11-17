@@ -46,9 +46,14 @@ export class DeviceComponent implements OnInit {
   }
   // ฟังก์ชันเลือกกลุ่ม
   selectGroup(group_id: string) {
+    this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
   }
-
+  getGroupName(groupId: string): string {
+    const group = this.apiGroups.find(group => group.group_id === groupId);
+    return group ? group.group_name : '';
+  }
+  
 
 
   // สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก

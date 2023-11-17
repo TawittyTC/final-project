@@ -2,7 +2,7 @@
   <!-- head details -->
   <div class="pb-3">
     <button class="btn dropdown-toggle" type="button" id="groupDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="display-5 fw-light">{{ selectedGroup || "Devices" }}</span>
+      <span class="display-5 fw-light">{{ getGroupName(selectedGroup) || "Devices" }}</span>
     </button>
     <div *ngIf="apiGroups.length > 0" class="dropdown-menu" aria-labelledby="groupDropdown">
       <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
