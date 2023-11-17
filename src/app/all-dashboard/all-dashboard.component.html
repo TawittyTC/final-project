@@ -39,7 +39,7 @@
         </div>
         <div class="h4 text-muted fw-light">Energy</div>
         <div class="fw-light mt-3 display-4">
-        10 <span class="h4 text-muted fw-light">Kwh</span>
+          {{ latestAllEnergy.total_energy }} <span class="h4 text-muted fw-light">Kwh</span>
           <img src="/assets/img/img003.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
         </div>
       </div>
@@ -60,7 +60,7 @@
         <div class="h4 text-muted fw-light">Total Energy</div>
 
         <div class="fw-light mt-3 display-4">
-       10 <span class="h4 text-muted fw-light">Kwh</span>
+          {{ allDataGroup.total_energy }} <span class="h4 text-muted fw-light">Kwh</span>
           <img src="/assets/img/img001.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
         </div>
       </div>
@@ -106,7 +106,7 @@
               </div>
             </div>
             <div class="h4 text-muted fw-light">Current</div>
-            <div class="display-5 fw-light"> A</div>
+            <div class="display-5 fw-light">{{ allDataGroup.avg_current | number:'1.2-2'}} A</div>
             <img src="/assets/img/img004.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
           </div>
           <div class="col-12 col-sm-4 mt-4">
@@ -123,7 +123,7 @@
               </div>
             </div>
             <div class="h4 text-muted fw-light">Voltage</div>
-            <div class="display-5 fw-light"> V</div>
+            <div class="display-5 fw-light">{{ allDataGroup.avg_voltage | number:'1.2-2'}} V</div>
             <img src="/assets/img/img006.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
           </div>
           <div class="col-12 col-sm-4 mt-4">
@@ -140,7 +140,7 @@
               </div>
 
             <div class="h4 text-muted fw-light">Power</div>
-            <div class="display-5 fw-light"> W</div>
+            <div class="display-5 fw-light">{{ allDataGroup.avg_power | number:'1.2-2'}} W</div>
             <img src="/assets/img/img005.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
           </div>
         </div>

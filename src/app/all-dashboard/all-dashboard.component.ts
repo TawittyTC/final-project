@@ -25,17 +25,26 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   data: any[] = [];
   groups: string[] = [''];
   showGroupDropdown: boolean = false;
+  groupData: any = {};
+  allDataGroup: any = {};
+  latestAllEnergy: any = {};
+  latestEnergyByGroupName: any = {};
   constructor(private apiService: ApiService,private groupService: GroupService) {
   }
 
   ngOnInit() {
-    this.fetchData();
     this.fetchAllData()
+    this.getAllDataGroup();
+    this.getLatestAllEnergy();
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
     // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
     this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
       this.selectedGroup = selectedGroup;
       console.log(this.selectedGroup)
+      // เมื่อมีค่า selectedGroup ถูกส่งมาแล้ว ก็ทำการเรียก fetchData()
+        if (selectedGroup) {
+          this.fetchData();
+        }
     });
    //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
    this.dataSubscription = interval(2000).subscribe(() => {
@@ -353,6 +362,28 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   selectGroup(group_id: string) {
     this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
-    this.fetchData(); // Fetch data for the selected group
+  }
+    
+
+  getAllDataGroup(): void {
+    this.apiService.getAllDataGroup().subscribe((data) => {
+      this.allDataGroup = data;
+      console.log('allDataGroup : ',this.allDataGroup)
+      // ทำอะไรกับข้อมูลหลังจากได้รับมา เช่น การแสดงผลหรือประมวลผลต่อ
+    });
+  }
+
+  getLatestAllEnergy(): void {
+    this.apiService.getLatestAllEnergy().subscribe((data) => {
+      this.latestAllEnergy = data;
+      console.log('latestAllEnergy : ',this.latestAllEnergy)
+    });
+  }
+
+  getLastestEnergyByGroupName(groupName: string): void {
+    this.apiService.getLastestEnergyByGroupName(groupName).subscribe((data) => {
+      this.latestEnergyByGroupName = data;
+      // ทำอะไรกับข้อมูลหลังจากได้รับมา เช่น การแสดงผลหรือประมวลผลต่อ
+    });
   }
 }
