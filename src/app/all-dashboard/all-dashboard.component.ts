@@ -240,12 +240,12 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
             y: [
                 {
                     formatter: function (value: number) {
-                        return value.toFixed(2); // Display values in the tooltip with two decimal places
+                      return value.toFixed(3); // Display values in the tooltip with two decimal places
                     }
                 },
                 {
                     formatter: function (value: number) {
-                        return value.toFixed(2); // Display values in the tooltip with two decimal places
+                      return '฿' + (+value.toFixed(3)); // Display values in the tooltip with two decimal places
                     }
                 }
             ]
@@ -295,17 +295,17 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           ...item,
           cost: item.usedEnergy * this.unitCost
         }));
-  
+
         console.log('Data from getAllData:', this.chartData);
-  
+
         // Call methods to generate charts or perform other operations as needed
         this.generateChart();
         this.generateChart2();
-  
+
         // Calculate total energy
         const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.usedEnergy, 0);
         this.totalEnergy = totalEnergy.toFixed(3);
-  
+
         // Perform cost calculation only after the totalEnergy is calculated
         this.cost = totalEnergy * this.unitCost;
         this.cost = +this.cost.toFixed(3);
@@ -367,7 +367,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
   }
-    
+
 
   getAllDataGroup(): void {
     this.apiService.getAllDataGroup().subscribe((data) => {
@@ -394,5 +394,5 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       this.groupData = data;
       console.log('groupData : ',this.groupData)    });
   }
-  
+
 }
