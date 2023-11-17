@@ -40,34 +40,50 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.getLatestAllEnergy();
     this.getLastestEnergyByGroupName(this.selectedGroup);
     this.getDataByGroupName(this.selectedGroup);
-    this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
-    // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
+    this.fetchUnitCost();
+
+
     this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
       this.selectedGroup = selectedGroup;
       console.log(this.selectedGroup);
-      // เมื่อมีค่า selectedGroup ถูกส่งมาแล้ว ก็ทำการเรียก fetchData()
-      if (selectedGroup) {
-        this.fetchData();
-        this.getLastestEnergyByGroupName(selectedGroup); // เรียกดึงข้อมูลพลังงานล่าสุดของกลุ่มที่เลือก
-        this.getDataByGroupName(selectedGroup); // เรียกดึงข้อมูลของกลุ่มที่เลือก
-      } else {
-        // หากไม่ได้รับค่า selectedGroup ให้แสดงข้อมูลจาก getAllDataGroup และ getLatestAllEnergy
-        this.getAllDataGroup();
-        this.getLatestAllEnergy();
-      }
-    });
-    //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
-    this.dataSubscription = interval(2000).subscribe(() => {
+
+      // Always fetch groups to update the dropdown
       this.apiService.getAllGroups().subscribe((groups: string[]) => {
         this.apiGroups = groups;
+        if (selectedGroup) {
+          // ... (rest of the code)
+        } else {
+          // ... (handle the case when no group is selected)
+        }
       });
+
+
+      // If there is a selectedGroup, fetch data
+      if (selectedGroup) {
+          this.fetchData();
+          this.getLastestEnergyByGroupName(selectedGroup);
+          this.getDataByGroupName(selectedGroup);
+      } else {
+          // If no selectedGroup, handle it gracefully
+          // For example, you might want to update the UI to show that no group is selected
+          // and clear any existing data in the UI.
+          this.allDataGroup = null; // or [] or handle it as appropriate
+          this.latestAllEnergy = null; // or {} or handle it as appropriate
+      }
+  });
+
+  this.dataSubscription = interval(2000).subscribe(() => {
+    this.apiService.getAllGroups().subscribe((groups: string[]) => {
+      this.apiGroups = groups;
+      // Update the selectedGroup if it's not in the available groups
+      if (!this.apiGroups.includes(this.selectedGroup)) {
+        this.selectedGroup = ''; // or set it to the first available group
+      }
     });
-    // this.dataSubscription = interval(5000).subscribe(() => {
-    //   if (this.unitCost !== 0) {
-    //     this.fetchData();
-    //   }
-    //   });
+  });
+
   }
+
 
   generateChart() {
     // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts

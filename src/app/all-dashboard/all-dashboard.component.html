@@ -1,27 +1,22 @@
 <div class="container py-4">
   <!-- head details -->
   <div class="pb-3">
-    <button
-      class="btn dropdown-toggle"
-      type="button"
-      id="groupDropdown"
-      data-bs-toggle="dropdown"
-      aria-haspopup="true"
-      aria-expanded="false"
-    >
+    <button class="btn dropdown-toggle" type="button" id="groupDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <span class="display-5 fw-light">{{ selectedGroup || "Devices" }}</span>
     </button>
-    <div class="dropdown-menu" aria-labelledby="groupDropdown">
+    <div *ngIf="apiGroups.length > 0" class="dropdown-menu" aria-labelledby="groupDropdown">
       <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
-      <button
-        class="dropdown-item"
-        *ngFor="let group of apiGroups"
-        (click)="selectGroup(group.group_id)"
-      >
+      <button *ngFor="let group of apiGroups" class="dropdown-item" (click)="selectGroup(group.group_id)">
         {{ group.group_name }}
       </button>
+
     </div>
+    <div *ngIf="apiGroups.length === 0" class="dropdown-menu" aria-labelledby="groupDropdown">
+      <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
+    </div>
+
     <div class="ps-3 pe-2 pb-2 h4 fw-light text-muted">Total Dashboard</div>
+
   </div>
 
 
