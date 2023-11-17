@@ -177,7 +177,7 @@ export class ApiService {
   }
 
   //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย //ทำ chart
-  getCombinedData(): Observable<any> {
+  getAllData(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/all_data`);
   }
 
@@ -189,7 +189,4 @@ export class ApiService {
   getLastestEnergyByGroupName(groupName:string){
     return this.http.get<any>(`${this.baseUrl}/latest_energy_group/${groupName}`);
   }
-
-
-
 }
