@@ -162,8 +162,8 @@ export class ApiService {
     return this.http.get<number>(apiUrl);
   }
   //ข้อมูลรวมล่าสุดของ group นั้นๆ โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
-  getDataByGroupName(group_id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/data_by_group/${group_id}`);
+  getDataByGroupName(groupName: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/data_by_group/${groupName}`);
   }
 
   //ดึงทั้งหมด แล้วคำนวน //โดยไม่ได้สนgroup  โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
@@ -172,8 +172,8 @@ export class ApiService {
   }
 
   //ข้อมูลรวมทั้งหมดของกลุ่มนั้นๆ //ทำchart
-  getAllDataByGroupName(group_id: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/all_data_group/${group_id}`);
+  getAllDataByGroupName(groupName: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_group/${groupName}`);
   }
 
   //ดึงข้อมูลทั้งหมดของทุกอุปกรณ์โดยไม่มีการคำนวนอะไรเลย //ทำ chart

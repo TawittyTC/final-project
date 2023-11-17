@@ -11,7 +11,7 @@ aria-expanded="false"
 </button>
 <div class="dropdown-menu" aria-labelledby="groupDropdown">
   <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
-  <button class="dropdown-item" *ngFor="let group of apiGroups" (click)="selectGroup(group.group_id)">
+  <button class="dropdown-item" *ngFor="let group of apiGroups" (click)="selectGroup(group.group_name)">
     {{ group.group_name }}
   </button>
 </div>
