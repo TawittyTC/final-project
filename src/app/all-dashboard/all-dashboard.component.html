@@ -16,7 +16,7 @@
       <button
         class="dropdown-item"
         *ngFor="let group of apiGroups"
-        (click)="selectGroup(group.group_name)"
+        (click)="selectGroup(group.group_id)"
       >
         {{ group.group_name }}
       </button>
