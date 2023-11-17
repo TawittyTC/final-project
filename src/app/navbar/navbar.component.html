@@ -15,27 +15,27 @@
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
         <li class="nav-item">
-          <a class="nav-link" a routerLink="/dashboard"><i class="bi bi-bar-chart-fill"></i> Dashboard</a>
+          <a class="nav-link" a routerLink="/dashboard" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-bar-chart-fill"></i> Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" a routerLink="/device-component"><i class="bi bi-plug-fill"></i> Device</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" a routerLink="/admin"  *ngIf="isAdmin"><i class="bi bi-clipboard2-data-fill"></i> Admin</a>
+          <a class="nav-link" a routerLink="/device-component" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-plug-fill"></i> Device</a>
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" a routerLink="/profile-component"  *ngIf="isLoggedIn"><i class="bi bi-person-fill"></i> Profile</a>
+          <a class="nav-link" a routerLink="/admin"  *ngIf="isAdmin" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-clipboard2-data-fill"></i> Admin</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" a routerLink="/profile-component"  *ngIf="isLoggedIn" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-person-fill"></i> Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" a routerLink="/about-component"><i class="bi bi-people-fill"></i> About Us</a>
+          <a class="nav-link" a routerLink="/about-component" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-people-fill"></i> About Us</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" routerLink="/login-component" *ngIf="!isLoggedIn"><i class="bi bi-arrow-left-square-fill"></i> Log in</a>
+            <a class="nav-link" routerLink="/login-component" *ngIf="!isLoggedIn" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-arrow-left-square-fill"></i> Log in</a>
         </li>
         <li class="nav-item" *ngIf="isLoggedIn">
-            <a class="nav-link" (click)="logout(); reloadPage()"><i class="bi bi-arrow-right-square-fill"></i> Logout</a>
+            <a class="nav-link" (click)="logout(); reloadPage()" data-bs-toggle="collapse" data-bs-target=".navbar-collapse.show"><i class="bi bi-arrow-right-square-fill"></i> Logout</a>
         </li>
 
         <!-- </li>
