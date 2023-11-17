@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';  // ต้องมีการ import HttpClient
+import { HttpClient } from '@angular/common/http'; // ต้องมีการ import HttpClient
 import { interval, Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../_service/api.service';
@@ -8,12 +8,12 @@ import { GroupService } from '../_service/group.service';
 @Component({
   selector: 'app-all-dashboard',
   templateUrl: './all-dashboard.component.html',
-  styleUrls: ['./all-dashboard.component.scss']
+  styleUrls: ['./all-dashboard.component.scss'],
 })
 export class AllDashboardComponent implements OnInit, OnDestroy {
   public chartData: any[] = [];
-  public chartOptions: any= {};
-  public chartOptions2: any= {};
+  public chartOptions: any = {};
+  public chartOptions2: any = {};
   device_id: string = '';
   dataSubscription: Subscription | undefined;
   unitCost: number = 0;
@@ -29,11 +29,13 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   allDataGroup: any = {};
   latestAllEnergy: any = {};
   latestEnergyByGroupName: any = {};
-  constructor(private apiService: ApiService,private groupService: GroupService) {
-  }
+  constructor(
+    private apiService: ApiService,
+    private groupService: GroupService
+  ) {}
 
   ngOnInit() {
-    this.fetchAllData()
+    this.fetchAllData();
     this.getAllDataGroup();
     this.getLatestAllEnergy();
     this.getLastestEnergyByGroupName(this.selectedGroup);
@@ -42,42 +44,43 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
     this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
       this.selectedGroup = selectedGroup;
-      console.log(this.selectedGroup)
+      console.log(this.selectedGroup);
       // เมื่อมีค่า selectedGroup ถูกส่งมาแล้ว ก็ทำการเรียก fetchData()
-        if (selectedGroup) {
-          this.fetchData();
-          this.getLastestEnergyByGroupName(selectedGroup); // เรียกดึงข้อมูลพลังงานล่าสุดของกลุ่มที่เลือก
-          this.getDataByGroupName(selectedGroup); // เรียกดึงข้อมูลของกลุ่มที่เลือก
-        }else {
-          // หากไม่ได้รับค่า selectedGroup ให้แสดงข้อมูลจาก getAllDataGroup และ getLatestAllEnergy
-          this.getAllDataGroup();
-          this.getLatestAllEnergy();
-        }
-    
+      if (selectedGroup) {
+        this.fetchData();
+        this.getLastestEnergyByGroupName(selectedGroup); // เรียกดึงข้อมูลพลังงานล่าสุดของกลุ่มที่เลือก
+        this.getDataByGroupName(selectedGroup); // เรียกดึงข้อมูลของกลุ่มที่เลือก
+      } else {
+        // หากไม่ได้รับค่า selectedGroup ให้แสดงข้อมูลจาก getAllDataGroup และ getLatestAllEnergy
+        this.getAllDataGroup();
+        this.getLatestAllEnergy();
+      }
     });
-   //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
-   this.dataSubscription = interval(2000).subscribe(() => {
-    this.apiService.getAllGroups().subscribe((groups: string[]) => {
-      this.apiGroups = groups;
+    //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
+    this.dataSubscription = interval(2000).subscribe(() => {
+      this.apiService.getAllGroups().subscribe((groups: string[]) => {
+        this.apiGroups = groups;
+      });
     });
-  });
-  // this.dataSubscription = interval(5000).subscribe(() => {
-  //   if (this.unitCost !== 0) {
-  //     this.fetchData();
-  //   }
-  //   });
+    // this.dataSubscription = interval(5000).subscribe(() => {
+    //   if (this.unitCost !== 0) {
+    //     this.fetchData();
+    //   }
+    //   });
   }
 
   generateChart() {
     // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts
     this.chartOptions = {
-      series: [{
-        name: "Energy",
-        data: this.chartData.map(item => ({
-          x: new Date(item.created_timestamp).getTime(),
-          y: item.energy
-        }))
-      }],
+      series: [
+        {
+          name: 'Energy',
+          data: this.chartData.map((item) => ({
+            x: new Date(item.created_timestamp).getTime(),
+            y: item.energy,
+          })),
+        },
+      ],
       chart: {
         id: 'line-2',
         group: 'social',
@@ -87,59 +90,61 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           enabled: true,
           easing: 'linear',
           dynamicAnimation: {
-            speed: 2000
-          }
+            speed: 2000,
+          },
         },
         zoom: {
           enabled: true, // เปิดใช้งานการซูม
         },
       },
       xaxis: {
-
         type: 'datetime',
         labels: {
           format: 'dd MMM yyyy HH:mm:ss', // เพิ่มระดับวินาทีในรูปแบบวัน เดือน ปี ชั่วโมง นาที วินาที
           datetimeFormatter: {
             year: 'yyyy',
-            month: 'MMM \'yy',
+            month: "MMM 'yy",
             day: 'dd MMM',
             hour: 'HH',
             minute: 'mm',
-            second: 'ss'
-          }
-        }
+            second: 'ss',
+          },
+        },
       },
       yaxis: [
-          {
-              title: {
-                  text: 'Energy (Khw)'
-              },
-              labels: {
-                  formatter: function (value: number) {
-                      return 'Khw' + value.toFixed(3); // Add "฿" as the currency symbol
-                  }
-              }
+        {
+          title: {
+            text: 'Energy (Khw)',
           },
+          labels: {
+            formatter: function (value: number) {
+              return 'Khw' + value.toFixed(3); // Add "฿" as the currency symbol
+            },
+          },
+        },
       ],
       dataLabels: {
-        enabled: true, // แสดงข้อมูลแต่ละจุด
+        enabled: true,
         style: {
           fontSize: '12px',
-          colors: ['#333']
+          colors: ['#333'],
+        },
+        formatter: function (value: number) {
+          return value.toFixed(3); // Show data labels with three decimal places
         },
         background: {
           enabled: true,
           foreColor: '#fff',
           borderRadius: 3,
-          padding: 5
+          padding: 5,
         },
-        textAnchor: 'middle', // แสดงข้อมูลในกลางของจุด
+        textAnchor: 'middle',
       },
       markers: {
         size: 6,
         hover: {
-          size: 10
-        }
+          size: 10,
+        },
       },
       tooltip: {
         enabled: true,
@@ -149,114 +154,122 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         y: {
           formatter: function (value: number) {
             return value.toFixed(3); // แสดงค่าใน tooltip ในรูปแบบทศนิยม
-          }
-        }
-      }
+          },
+        },
+      },
     };
   }
   generateChart2() {
     // Calculate cost of electricity and add it to the data
-    const chartDataWithCost = this.chartData.map((item: { created_timestamp: string | number | Date; energy: number; }) => ({
+    const chartDataWithCost = this.chartData.map(
+      (item: {
+        created_timestamp: string | number | Date;
+        energy: number;
+      }) => ({
         x: new Date(item.created_timestamp).getTime(),
         y: item.energy,
-        cost: item.energy * this.unitCost  // Calculate the cost of electricity
-    }));
+        cost: item.energy * this.unitCost, // Calculate the cost of electricity
+      })
+    );
 
     // Create and set options for the chart using ng-apexcharts
     this.chartOptions2 = {
-        series: [
-            {
-                name: "Cost",
-                data: chartDataWithCost.map((item: { x: any; cost: any; }) => ({
-                    x: item.x,
-                    y: item.cost
-                })),
-                color: '#00D41A' // เพิ่มสีเขียวที่นี่
-            }
-        ],
-        chart: {
-            id: 'line-1',
-            group: 'social',
-            type: 'line',
-            height: 450, // Increase the chart height
-            animations: {
-                enabled: true,
-                easing: 'linear',
-                dynamicAnimation: {
-                    speed: 2000
-                }
-            },
-            zoom: {
-                enabled: true, // Enable zooming
-            },
+      series: [
+        {
+          name: 'Cost',
+          data: chartDataWithCost.map((item: { x: any; cost: any }) => ({
+            x: item.x,
+            y: item.cost,
+          })),
+          color: '#00D41A', // เพิ่มสีเขียวที่นี่
         },
-        xaxis: {
-            type: 'datetime',
-            labels: {
-                format: 'dd MMM yyyy HH:mm:ss',
-                datetimeFormatter: {
-                    year: 'yyyy',
-                    month: 'MMM \'yy',
-                    day: 'dd MMM',
-                    hour: 'HH',
-                    minute: 'mm',
-                    second: 'ss'
-                }
-            }
-        },
-        yaxis: [
-          {
-              title: {
-                  text: 'Cost (฿)'
-              },
-              labels: {
-                  formatter: function (value: number) {
-                      return '฿' + value.toFixed(3); // Add "฿" as the currency symbol
-                  }
-              }
+      ],
+      chart: {
+        id: 'line-1',
+        group: 'social',
+        type: 'line',
+        height: 450, // Increase the chart height
+        animations: {
+          enabled: true,
+          easing: 'linear',
+          dynamicAnimation: {
+            speed: 2000,
           },
+        },
+        zoom: {
+          enabled: true, // Enable zooming
+        },
+      },
+      xaxis: {
+        type: 'datetime',
+        labels: {
+          format: 'dd MMM yyyy HH:mm:ss',
+          datetimeFormatter: {
+            year: 'yyyy',
+            month: "MMM 'yy",
+            day: 'dd MMM',
+            hour: 'HH',
+            minute: 'mm',
+            second: 'ss',
+          },
+        },
+      },
+      yaxis: [
+        {
+          title: {
+            text: 'Cost (฿)',
+          },
+          labels: {
+            formatter: function (value: number) {
+              return '฿' + value.toFixed(3); // Add "฿" as the currency symbol
+            },
+          },
+        },
       ],
 
-        dataLabels: {
-            enabled: true, // Show data labels for each point
-            style: {
-                fontSize: '12px',
-                colors: ['#333']
-            },
-            background: {
-                enabled: true,
-                foreColor: '#fff',
-                borderRadius: 3,
-                padding: 5
-            },
-            textAnchor: 'middle', // Show data labels in the middle of data points
+      dataLabels: {
+        enabled: true,
+        style: {
+          fontSize: '12px',
+          colors: ['#333'],
         },
-        markers: {
-            size: 6,
-            hover: {
-                size: 10
-            }
+        formatter: function (value: number) {
+          return value.toFixed(3); // Show data labels with three decimal places
         },
-        tooltip: {
-            enabled: true,
-            style: {
-                fontSize: '12px',
+        background: {
+          enabled: true,
+          foreColor: '#fff',
+          borderRadius: 3,
+          padding: 5,
+        },
+        textAnchor: 'middle',
+      },
+      markers: {
+        size: 6,
+        hover: {
+          size: 10,
+        },
+      },
+      tooltip: {
+        enabled: true,
+        style: {
+          fontSize: '12px',
+        },
+        y: [
+          {
+            formatter: function (value: number) {
+              return value.toFixed(3); // Display values in the tooltip with two decimal places
             },
-            y: [
-                {
-                    formatter: function (value: number) {
-                      return value.toFixed(3); // Display values in the tooltip with two decimal places
-                    }
-                },
-                {
-                    formatter: function (value: number) {
-                      return '฿' + (+value.toFixed(3)); // Display values in the tooltip with two decimal places
-                    }
-                }
-            ]
-        }
+          },
+          {
+            formatter: function (value: number) {
+              return '฿' + +value.toFixed(3); // Display values in the tooltip with two decimal places
+            },
+          },
+        ],
+      },
     };
-}
+  }
 
   ngOnDestroy(): void {
     if (this.dataSubscription) {
@@ -265,32 +278,37 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    this.apiService.getAllDataByGroupName(this.selectedGroup).subscribe((data) => {
-      this.chartData = data;
+    this.apiService
+      .getAllDataByGroupName(this.selectedGroup)
+      .subscribe((data) => {
+        this.chartData = data;
 
-      // Log the data to the console
-      console.log('Data from getAllDataByGroupName:', data);
+        // Log the data to the console
+        console.log('Data from getAllDataByGroupName:', data);
 
-      // Call methods to generate charts
-      this.generateChart();
-      this.generateChart2();
+        // Call methods to generate charts
+        this.generateChart();
+        this.generateChart2();
 
-      // Log unitCost and chartData for troubleshooting
-      //console.log('UnitCost:', this.unitCost);
-      //console.log('ChartData:', this.chartData);
+        // Log unitCost and chartData for troubleshooting
+        //console.log('UnitCost:', this.unitCost);
+        //console.log('ChartData:', this.chartData);
 
-      // Calculate total energy
-      const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.energy, 0);
-      //console.log(`Total Energy: ${totalEnergy} kWh`);
-      this.totalEnergy = totalEnergy.toFixed(3);
+        // Calculate total energy
+        const totalEnergy = this.chartData.reduce(
+          (total, dataPoint) => total + dataPoint.energy,
+          0
+        );
+        //console.log(`Total Energy: ${totalEnergy} kWh`);
+        this.totalEnergy = totalEnergy.toFixed(3);
 
-      // Perform cost calculation only after the totalEnergy is calculated
-      this.cost = totalEnergy * this.unitCost;
-      this.cost = +this.cost.toFixed(3);
+        // Perform cost calculation only after the totalEnergy is calculated
+        this.cost = totalEnergy * this.unitCost;
+        this.cost = +this.cost.toFixed(3);
 
-      // Log the calculated cost for troubleshooting
-      //console.log('Calculated Cost:', this.cost);
-    });
+        // Log the calculated cost for troubleshooting
+        //console.log('Calculated Cost:', this.cost);
+      });
   }
   fetchAllData() {
     this.apiService.getAllData().subscribe(
@@ -298,7 +316,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         // Assume 'usedEnergy' is the field representing the energy used
         this.chartData = data.map((item: any) => ({
           ...item,
-          cost: item.usedEnergy * this.unitCost
+          cost: item.usedEnergy * this.unitCost,
         }));
 
         console.log('Data from getAllData:', this.chartData);
@@ -308,7 +326,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         this.generateChart2();
 
         // Calculate total energy
-        const totalEnergy = this.chartData.reduce((total, dataPoint) => total + dataPoint.usedEnergy, 0);
+        const totalEnergy = this.chartData.reduce(
+          (total, dataPoint) => total + dataPoint.usedEnergy,
+          0
+        );
         this.totalEnergy = totalEnergy.toFixed(3);
 
         // Perform cost calculation only after the totalEnergy is calculated
@@ -347,7 +368,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     );
   }
 
-
   // fetchEnergyData() {
   //   this.apiService.getEnergyData(this.device_id).subscribe((data: any[]) => {
   //     this.chartData = data;
@@ -367,12 +387,11 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     // รีโหลดหน้าเว็บ
     location.reload();
   }
-    // ฟังก์ชันเลือกกลุ่ม
+  // ฟังก์ชันเลือกกลุ่ม
   selectGroup(group_id: string) {
     this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
   }
-
 
   getAllDataGroup(): void {
     this.apiService.getAllDataGroup().subscribe((data) => {
@@ -390,14 +409,17 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   getLastestEnergyByGroupName(selectedGroup: string): void {
-    this.apiService.getLastestEnergyByGroupName(selectedGroup).subscribe((data) => {
-      this.latestAllEnergy = data;
-      console.log('latestEnergyByGroupName : ',this.latestAllEnergy)    });
+    this.apiService
+      .getLastestEnergyByGroupName(selectedGroup)
+      .subscribe((data) => {
+        this.latestAllEnergy = data;
+        console.log('latestEnergyByGroupName : ', this.latestAllEnergy);
+      });
   }
   getDataByGroupName(selectedGroup: string): void {
     this.apiService.getDataByGroupName(selectedGroup).subscribe((data) => {
       this.allDataGroup = data;
-      console.log('groupData : ',this.allDataGroup)    });
+      console.log('groupData : ', this.allDataGroup);
+    });
   }
-
 }
