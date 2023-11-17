@@ -111,7 +111,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
               },
               labels: {
                   formatter: function (value: number) {
-                      return 'Khw' + value.toFixed(2); // Add "฿" as the currency symbol
+                      return 'Khw' + value.toFixed(3); // Add "฿" as the currency symbol
                   }
               }
           },
@@ -143,7 +143,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         },
         y: {
           formatter: function (value: number) {
-            return value.toFixed(2); // แสดงค่าใน tooltip ในรูปแบบทศนิยม
+            return value.toFixed(3); // แสดงค่าใน tooltip ในรูปแบบทศนิยม
           }
         }
       }
@@ -206,7 +206,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
               },
               labels: {
                   formatter: function (value: number) {
-                      return '฿' + value.toFixed(2); // Add "฿" as the currency symbol
+                      return '฿' + value.toFixed(3); // Add "฿" as the currency symbol
                   }
               }
           },
