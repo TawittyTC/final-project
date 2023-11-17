@@ -48,7 +48,12 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           this.fetchData();
           this.getLastestEnergyByGroupName(selectedGroup); // เรียกดึงข้อมูลพลังงานล่าสุดของกลุ่มที่เลือก
           this.getDataByGroupName(selectedGroup); // เรียกดึงข้อมูลของกลุ่มที่เลือก
+        }else {
+          // หากไม่ได้รับค่า selectedGroup ให้แสดงข้อมูลจาก getAllDataGroup และ getLatestAllEnergy
+          this.getAllDataGroup();
+          this.getLatestAllEnergy();
         }
+    
     });
    //กำหนดรอรับค่า unitCost จาก API ก่อนจึงจะเรียก fetchData()
    this.dataSubscription = interval(2000).subscribe(() => {
@@ -386,13 +391,13 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
 
   getLastestEnergyByGroupName(selectedGroup: string): void {
     this.apiService.getLastestEnergyByGroupName(selectedGroup).subscribe((data) => {
-      this.latestEnergyByGroupName = data;
-      console.log('latestEnergyByGroupName : ',this.latestEnergyByGroupName)    });
+      this.latestAllEnergy = data;
+      console.log('latestEnergyByGroupName : ',this.latestAllEnergy)    });
   }
   getDataByGroupName(selectedGroup: string): void {
     this.apiService.getDataByGroupName(selectedGroup).subscribe((data) => {
-      this.groupData = data;
-      console.log('groupData : ',this.groupData)    });
+      this.allDataGroup = data;
+      console.log('groupData : ',this.allDataGroup)    });
   }
 
 }
