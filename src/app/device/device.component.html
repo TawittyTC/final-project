@@ -3,38 +3,38 @@
   <div class="d-flex justify-content-between align-items-center pb-3">
     <!-- group dropdown -->
     <button
-  class="btn dropdown-toggle"
-  type="button"
-  id="groupDropdown"
-  data-bs-toggle="dropdown"
-  aria-haspopup="true"
-  aria-expanded="false"
->
-  <span class="display-5 fw-light">{{ selectedGroup || 'Devices' }}</span>
-</button>
-<div class="dropdown-menu" aria-labelledby="groupDropdown">
-  <!-- เพิ่มรายการ 'All Devices' ที่ต้องการให้เลือก -->
-  <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
+      class="btn dropdown-toggle"
+      type="button"
+      id="groupDropdown"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <span class="display-5 fw-light">{{ selectedGroup || "Devices" }}</span>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="groupDropdown">
+      <!-- เพิ่มรายการ 'All Devices' ที่ต้องการให้เลือก -->
+      <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
 
-  <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
-  <button class="dropdown-item" *ngFor="let group of apiGroups" (click)="selectGroup(group.group_id)">
-    {{ group.group_name }}
-  </button>
-</div>
-
-
-
-
+      <!-- เพิ่มรายการ group ที่ต้องการให้เลือก -->
+      <button
+        class="dropdown-item"
+        *ngFor="let group of apiGroups"
+        (click)="selectGroup(group.group_id)"
+      >
+        {{ group.group_name }}
+      </button>
+    </div>
 
     <!-- add dropdown -->
-    <div class="dropdown"  *ngIf="isLoggedIn()">
+    <div class="dropdown" *ngIf="isLoggedIn()">
       <button class="dropbtn bg-light">
         <i
           class="bi bi-plus-circle-fill text-primary"
           style="font-size: 40px"
         ></i>
       </button>
-      <div class="dropdown-content rounded-4" >
+      <div class="dropdown-content rounded-4">
         <a
           href="#"
           (click)="enableAddMode()"
@@ -50,12 +50,12 @@
           ><i class="bi bi-cash-coin"></i> Unit Cost</a
         >
         <a
-        href="#"
-        (click)="enableGroupMode()"
-        data-bs-toggle="modal"
-        data-bs-target="#addGroupModal"
-        ><i class="bi bi-collection"></i> Add Group</a
-      >
+          href="#"
+          (click)="enableGroupMode()"
+          data-bs-toggle="modal"
+          data-bs-target="#addGroupModal"
+          ><i class="bi bi-collection"></i> Add Group</a
+        >
       </div>
     </div>
   </div>
@@ -80,28 +80,27 @@
           <div class="form-group">
             <label for="new_group">Add new group :</label>
             <input
-  type="text"
-  class="form-control"
-  id="group_name"
-  [(ngModel)]="newGroup.group_name"
-  name="group_name"
-  required
-/>
-
+              type="text"
+              class="form-control"
+              id="group_name"
+              [(ngModel)]="newGroup.group_name"
+              name="group_name"
+              required
+            />
           </div>
         </form>
       </div>
       <div class="modal-footer justify-content-start">
         <button
-        type="button"
-        class="btn btn-success me-2"
-        (click)="createNewGroup(newGroup); reloadPage()"
-      >
-        Save
-      </button>
-      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-        Cancel
-      </button>
+          type="button"
+          class="btn btn-success me-2"
+          (click)="createNewGroup(newGroup); reloadPage()"
+        >
+          Save
+        </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancel
+        </button>
       </div>
     </div>
   </div>
@@ -152,7 +151,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Add Data Modal -->
 <div class="modal" tabindex="-1" role="dialog" id="addDataModal">
@@ -223,7 +221,12 @@
               name="new_group_id"
               required
             >
-              <option *ngFor="let group of apiGroups" [ngValue]="group.group_id">{{ group.group_name }}</option>
+              <option
+                *ngFor="let group of apiGroups"
+                [ngValue]="group.group_id"
+              >
+                {{ group.group_name }}
+              </option>
             </select>
           </div>
         </form>

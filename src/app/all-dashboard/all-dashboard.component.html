@@ -1,41 +1,60 @@
+<div class="container py-4">
+  <!-- head details -->
+  <div class="pb-3">
+    <button
+      class="btn dropdown-toggle"
+      type="button"
+      id="groupDropdown"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
+    >
+      <span class="display-5 fw-light">{{ selectedGroup || "Devices" }}</span>
+    </button>
+    <div class="dropdown-menu" aria-labelledby="groupDropdown">
+      <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
+      <button
+        class="dropdown-item"
+        *ngFor="let group of apiGroups"
+        (click)="selectGroup(group.group_name)"
+      >
+        {{ group.group_name }}
+      </button>
+    </div>
+  </div>
 
-<button
-class="btn dropdown-toggle"
-type="button"
-id="groupDropdown"
-data-bs-toggle="dropdown"
-aria-haspopup="true"
-aria-expanded="false"
->
-<span class="display-5 fw-light">{{ selectedGroup || 'Devices' }}</span>
-</button>
-<div class="dropdown-menu" aria-labelledby="groupDropdown">
-  <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
-  <button class="dropdown-item" *ngFor="let group of apiGroups" (click)="selectGroup(group.group_name)">
-    {{ group.group_name }}
-  </button>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="mb-3 bg-white rounded-4 p-5">
+        <div class="h4 text-muted fw-light">Chart Energy</div>
+        <div class="mb-2">
+          <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [xaxis]="chartOptions.xaxis"
+            [yaxis]="chartOptions.yaxis"
+            [dataLabels]="chartOptions.dataLabels"
+            [markers]="chartOptions.markers"
+            [tooltip]="chartOptions.tooltip"
+          ></apx-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="mb-3 bg-white rounded-4 p-5">
+        <div class="h4 text-muted fw-light">Chart Cost</div>
+        <apx-chart
+          [series]="chartOptions2.series"
+          [chart]="chartOptions2.chart"
+          [xaxis]="chartOptions2.xaxis"
+          [yaxis]="chartOptions2.yaxis"
+          [dataLabels]="chartOptions2.dataLabels"
+          [markers]="chartOptions2.markers"
+          [tooltip]="chartOptions2.tooltip"
+        ></apx-chart>
+      </div>
+    </div>
+  </div>
 </div>
-
-<div class="h4 text-muted fw-light p-4">Chart Energy</div>
-<div class="mb-2">
-
-  <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [yaxis]="chartOptions.yaxis"
-    [dataLabels]="chartOptions.dataLabels"
-    [markers]="chartOptions.markers"
-    [tooltip]="chartOptions.tooltip"
-  ></apx-chart>
-</div>
-<div class="h4 text-muted fw-light p-4">Chart Cost</div>
-<apx-chart
-  [series]="chartOptions2.series"
-  [chart]="chartOptions2.chart"
-  [xaxis]="chartOptions2.xaxis"
-  [yaxis]="chartOptions2.yaxis"
-  [dataLabels]="chartOptions2.dataLabels"
-  [markers]="chartOptions2.markers"
-  [tooltip]="chartOptions2.tooltip"
-></apx-chart>
