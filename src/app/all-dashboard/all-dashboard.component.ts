@@ -408,7 +408,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
   }
-  getGroupName(groupId: string): string {
+  getGroupName(groupId: string | null): string {
+    if (!groupId) {
+      return '';
+    }
     const group = this.apiGroups.find(group => group.group_id === groupId);
     return group ? group.group_name : '';
   }
