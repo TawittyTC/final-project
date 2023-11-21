@@ -13,9 +13,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomeComponent } from './home/home.component';
 import { FormsModule ,ReactiveFormsModule} from '@angular/forms'; // เพิ่ม import นี้
 // Import the module from the SDK
-import { AuthModule } from '@auth0/auth0-angular';
-import { environment } from '../environments/environment';
-import { AuthButtonComponent } from './auth-button/auth-button.component';
 import { ChartComponent } from './chart/chart.component';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { CircleChartComponent } from './circle-chart/circle-chart.component';
@@ -39,8 +36,6 @@ import { AllDashboardComponent } from './all-dashboard/all-dashboard.component';
     AboutComponent,
     ProfileComponent,
     HomeComponent,
-    AuthButtonComponent,
-    //MapComponent,
     ChartComponent,
     CircleChartComponent,
     DeviceCardComponent,
@@ -61,14 +56,6 @@ import { AllDashboardComponent } from './all-dashboard/all-dashboard.component';
     NgApexchartsModule,
     FormsModule,
     ReactiveFormsModule,
-    // Import the module into the application, with configuration
-    AuthModule.forRoot({
-      domain: 'dev-wg2x3rls3me8udhz.jp.auth0.com',
-      clientId: 'bJYCf8w408d6Fdq1wDQEvxGGcEJsmcxd',
-      authorizationParams: {
-        redirect_uri: window.location.origin
-      }
-    }),
   ],
   providers: [ AuthService],
   bootstrap: [AppComponent],
