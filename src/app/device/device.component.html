@@ -10,8 +10,10 @@
       aria-haspopup="true"
       aria-expanded="false"
     >
-    <span class="display-5 fw-light">{{ getGroupName(selectedGroup) || "Devices" }}</span>
-  </button>
+      <span class="display-5 fw-light">{{
+        getGroupName(selectedGroup) || "Devices"
+      }}</span>
+    </button>
     <div class="dropdown-menu" aria-labelledby="groupDropdown">
       <!-- เพิ่มรายการ 'All Devices' ที่ต้องการให้เลือก -->
       <button class="dropdown-item" (click)="reloadPage()">All Devices</button>

@@ -29,6 +29,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   allDataGroup: any = {};
   latestAllEnergy: any = {};
   latestEnergyByGroupName: any = {};
+  selectedGroupName: string = '';
   constructor(
     private apiService: ApiService,
     private groupService: GroupService
@@ -51,9 +52,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       this.apiService.getAllGroups().subscribe((groups: string[]) => {
         this.apiGroups = groups;
         if (selectedGroup) {
-          // ... (rest of the code)
+          this.getGroupName(selectedGroup);
         } else {
-          // ... (handle the case when no group is selected)
+          // When no group is selected or returning to the page, show "Devices"
+          this.selectedGroupName = 'Devices';
         }
       });
 
@@ -64,11 +66,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           this.getLastestEnergyByGroupName(selectedGroup);
           this.getDataByGroupName(selectedGroup);
       } else {
-          // If no selectedGroup, handle it gracefully
-          // For example, you might want to update the UI to show that no group is selected
-          // and clear any existing data in the UI.
           this.allDataGroup = null; // or [] or handle it as appropriate
           this.latestAllEnergy = null; // or {} or handle it as appropriate
+          this.selectedGroupName = 'Devices';
+
       }
   });
 
@@ -294,37 +295,32 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    this.apiService
-      .getAllDataByGroupName(this.selectedGroup)
-      .subscribe((data) => {
-        this.chartData = data;
-
-        // Log the data to the console
-        console.log('Data from getAllDataByGroupName:', data);
-
-        // Call methods to generate charts
-        this.generateChart();
-        this.generateChart2();
-
-        // Log unitCost and chartData for troubleshooting
-        //console.log('UnitCost:', this.unitCost);
-        //console.log('ChartData:', this.chartData);
-
-        // Calculate total energy
-        const totalEnergy = this.chartData.reduce(
-          (total, dataPoint) => total + dataPoint.energy,
-          0
-        );
-        //console.log(`Total Energy: ${totalEnergy} kWh`);
-        this.totalEnergy = totalEnergy.toFixed(3);
-
-        // Perform cost calculation only after the totalEnergy is calculated
-        this.cost = totalEnergy * this.unitCost;
-        this.cost = +this.cost.toFixed(3);
-
-        // Log the calculated cost for troubleshooting
-        //console.log('Calculated Cost:', this.cost);
-      });
+    if (!this.selectedGroup) {
+      // Handle when no group is selected
+      this.chartData = []; // or set it to an appropriate default value
+      this.generateChart();
+      this.generateChart2();
+      this.totalEnergy = '';
+      this.cost = 0;
+      return;
+    }
+  
+    this.apiService.getAllDataByGroupName(this.selectedGroup).subscribe((data) => {
+      this.chartData = data;
+      console.log('Data from getAllDataByGroupName:', data);
+  
+      this.generateChart();
+      this.generateChart2();
+  
+      const totalEnergy = this.chartData.reduce(
+        (total, dataPoint) => total + dataPoint.energy,
+        0
+      );
+      this.totalEnergy = totalEnergy.toFixed(3);
+  
+      this.cost = totalEnergy * this.unitCost;
+      this.cost = +this.cost.toFixed(3);
+    });
   }
   fetchAllData() {
     this.apiService.getAllData().subscribe(
@@ -407,14 +403,22 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   selectGroup(group_id: string) {
     this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
+  
+    // Retrieve and display the group name when a group is selected
+    this.getGroupName(this.selectedGroup);
   }
-  getGroupName(groupId: string | null): string {
+  
+  getGroupName(groupId: string | null): void {
     if (!groupId) {
-      return '';
+      // Set the default name to "Devices" if no group ID is provided
+      this.selectedGroupName = 'Devices';
+      return;
     }
+  
     const group = this.apiGroups.find(group => group.group_id === groupId);
-    return group ? group.group_name : '';
+    this.selectedGroupName = group ? group.group_name : 'Devices';
   }
+  
   
   getAllDataGroup(): void {
     this.apiService.getAllDataGroup().subscribe((data) => {
@@ -432,17 +436,31 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   getLastestEnergyByGroupName(selectedGroup: string): void {
-    this.apiService
-      .getLastestEnergyByGroupName(selectedGroup)
-      .subscribe((data) => {
+    if(selectedGroup) {
+      // Call the API to get the latest energy by group name
+      this.apiService.getLastestEnergyByGroupName(selectedGroup).subscribe((data) => {
         this.latestAllEnergy = data;
         console.log('latestEnergyByGroupName : ', this.latestAllEnergy);
       });
+    } else {
+      // Handle the case when no group ID is provided
+      console.log('No group ID provided');
+      // You might want to update the UI or perform other actions here
+    }
   }
+  
   getDataByGroupName(selectedGroup: string): void {
-    this.apiService.getDataByGroupName(selectedGroup).subscribe((data) => {
-      this.allDataGroup = data;
-      console.log('groupData : ', this.allDataGroup);
-    });
+    if(selectedGroup) {
+      // Call the API to get data by group name
+      this.apiService.getDataByGroupName(selectedGroup).subscribe((data) => {
+        this.allDataGroup = data;
+        console.log('groupData : ', this.allDataGroup);
+      });
+    } else {
+      // Handle the case when no group ID is provided
+      console.log('No group ID provided');
+      // You might want to update the UI or perform other actions here
+    }
   }
+  
 }

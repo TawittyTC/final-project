@@ -1,24 +1,40 @@
 <div class="container py-4">
   <!-- head details -->
   <div class="pb-3">
-    <button class="btn dropdown-toggle" type="button" id="groupDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <span class="display-5 fw-light">{{ getGroupName(selectedGroup) || "Devices" }}</span>
+    <button
+    class="btn dropdown-toggle"
+    type="button"
+    id="groupDropdown"
+    data-bs-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+    >
+      <span class="display-5 fw-light">{{ selectedGroupName || 'Devices' }}</span>
     </button>
-    <div *ngIf="apiGroups.length > 0" class="dropdown-menu" aria-labelledby="groupDropdown">
+    <div
+      *ngIf="apiGroups.length > 0"
+      class="dropdown-menu"
+      aria-labelledby="groupDropdown"
+    >
       <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
-      <button *ngFor="let group of apiGroups" class="dropdown-item" (click)="selectGroup(group.group_id)">
+      <button
+        *ngFor="let group of apiGroups"
+        class="dropdown-item"
+        (click)="selectGroup(group.group_id)"
+      >
         {{ group.group_name }}
       </button>
-
     </div>
-    <div *ngIf="apiGroups.length === 0" class="dropdown-menu" aria-labelledby="groupDropdown">
+    <div
+      *ngIf="apiGroups.length === 0"
+      class="dropdown-menu"
+      aria-labelledby="groupDropdown"
+    >
       <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
     </div>
 
     <div class="ps-3 pe-2 pb-2 h4 fw-light text-muted">Total Dashboard</div>
-
   </div>
-
 
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-4">
@@ -27,7 +43,7 @@
           <div
             class="progress-bar bg-primary"
             role="progressbar"
-            style="width:100%;"
+            style="width: 100%"
             aria-valuenow="25"
             aria-valuemin="0"
             aria-valuemax="100"
@@ -35,8 +51,13 @@
         </div>
         <div class="h4 text-muted fw-light">Energy</div>
         <div class="fw-light mt-3 display-4">
-          {{ latestAllEnergy.latest_energy }} <span class="h4 text-muted fw-light">Kwh</span>
-          <img src="/assets/img/img003.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
+          {{ latestAllEnergy.latest_energy }}
+          <span class="h4 text-muted fw-light">Kwh</span>
+          <img
+            src="/assets/img/img003.png"
+            alt="..."
+            class="img-fluid w-25 h-auto m-2 p-2"
+          />
         </div>
       </div>
     </div>
@@ -47,7 +68,7 @@
           <div
             class="progress-bar bg-success"
             role="progressbar"
-            style="width:100%;"
+            style="width: 100%"
             aria-valuenow="25"
             aria-valuemin="0"
             aria-valuemax="100"
@@ -56,8 +77,13 @@
         <div class="h4 text-muted fw-light">Total Energy</div>
 
         <div class="fw-light mt-3 display-4">
-          {{ allDataGroup.total_energy }} <span class="h4 text-muted fw-light">Kwh</span>
-          <img src="/assets/img/img001.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
+          {{ allDataGroup.total_energy }}
+          <span class="h4 text-muted fw-light">Kwh</span>
+          <img
+            src="/assets/img/img001.png"
+            alt="..."
+            class="img-fluid w-25 h-auto m-2 p-2"
+          />
         </div>
       </div>
     </div>
@@ -67,7 +93,7 @@
           <div
             class="progress-bar bg-warning"
             role="progressbar"
-            style="width:100%;"
+            style="width: 100%"
             aria-valuenow="25"
             aria-valuemin="0"
             aria-valuemax="100"
@@ -76,8 +102,13 @@
         <div class="h4 text-muted fw-light">Total Cost</div>
 
         <div class="fw-light mt-3 display-4">
-          {{ (allDataGroup.total_energy * unitCost) | number:'1.2-2' }} <span class="h4 text-muted fw-light">฿</span>
-          <img src="/assets/img/img002.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2" />
+          {{ allDataGroup.total_energy * unitCost | number : "1.2-2" }}
+          <span class="h4 text-muted fw-light">฿</span>
+          <img
+            src="/assets/img/img002.png"
+            alt="..."
+            class="img-fluid w-25 h-auto m-2 p-2"
+          />
         </div>
       </div>
     </div>
@@ -102,8 +133,14 @@
               </div>
             </div>
             <div class="h4 text-muted fw-light">Current</div>
-            <div class="display-5 fw-light">{{ allDataGroup.avg_current | number:'1.2-2'}} A</div>
-            <img src="/assets/img/img004.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
+            <div class="display-5 fw-light">
+              {{ allDataGroup.avg_current | number : "1.2-2" }} A
+            </div>
+            <img
+              src="/assets/img/img004.png"
+              alt="..."
+              class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block"
+            />
           </div>
           <div class="col-12 col-sm-4 mt-4">
             <div class="pe-3">
@@ -119,8 +156,14 @@
               </div>
             </div>
             <div class="h4 text-muted fw-light">Voltage</div>
-            <div class="display-5 fw-light">{{ allDataGroup.avg_voltage | number:'1.2-2'}} V</div>
-            <img src="/assets/img/img006.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
+            <div class="display-5 fw-light">
+              {{ allDataGroup.avg_voltage | number : "1.2-2" }} V
+            </div>
+            <img
+              src="/assets/img/img006.png"
+              alt="..."
+              class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block"
+            />
           </div>
           <div class="col-12 col-sm-4 mt-4">
             <div class="pe-3">
@@ -135,16 +178,21 @@
                 ></div>
               </div>
 
-            <div class="h4 text-muted fw-light">Power</div>
-            <div class="display-5 fw-light">{{ allDataGroup.avg_power | number:'1.2-2'}} W</div>
-            <img src="/assets/img/img005.png" alt="..." class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block" />
+              <div class="h4 text-muted fw-light">Power</div>
+              <div class="display-5 fw-light">
+                {{ allDataGroup.avg_power | number : "1.2-2" }} W
+              </div>
+              <img
+                src="/assets/img/img005.png"
+                alt="..."
+                class="img-fluid w-25 h-auto m-2 p-2 d-none d-md-block"
+              />
+            </div>
           </div>
-        </div>
         </div>
       </div>
     </div>
   </div>
-
 
   <div class="row">
     <div class="col-sm-12">
