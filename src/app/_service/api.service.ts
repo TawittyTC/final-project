@@ -9,7 +9,7 @@ import { interval, Subscription } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000'; // กำหนด URL base ของ API ที่ต้องการเรียกใช้
+  public baseUrl = 'http://localhost:3000'; // กำหนด URL base ของ API ที่ต้องการเรียกใช้
 
   private deviceUrl = `${this.baseUrl}/devices`;
   private userUrl = `${this.baseUrl}/users`;
