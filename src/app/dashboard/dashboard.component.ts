@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+
   fetchLatestData() {
     this.apiService.getLatestData(this.device_id).subscribe(
       (data: any[]) => { // Change this line
@@ -66,20 +66,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
+
   fetchEnergyData() {
     this.apiService.getEnergyData(this.device_id).subscribe((data: any[]) => { // Change this line
       this.chartData = data;
-  
+
       const totalEnergy = this.chartData.reduce(
         (total, dataPoint) => total + dataPoint.energy,
         0
       );
       console.log(`Total Energy: ${totalEnergy} kWh`);
-      this.totalEnergy = totalEnergy.toFixed(3);
-  
+      this.totalEnergy = totalEnergy.toFixed(2);
+
       this.cost = totalEnergy * this.unitCost;
-      this.cost = +this.cost.toFixed(3);
+      this.cost = +this.cost.toFixed(2);
     });
   }
 }
