@@ -7,14 +7,29 @@
   <div class="row">
     <div class="col-lg-4">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4 text-muted fw-light">My Profile</div>
-        <button (click)="editMode = true" class="btn" data-bs-toggle="modal" data-bs-target="#editModalusers">
-          <i class="bi bi-pencil-square text-primary" style="font-size: 26px"></i>
-        </button>
+        <div class="d-flex justify-content-between mb-4">
+          <span class="h2 text-muted fw-light">My Profile</span>
+          <button
+            (click)="editMode = true"
+            class="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#editModalusers"
+          >
+            <i
+              class="bi bi-pencil-square text-muted"
+              style="font-size: 20px"
+            ></i>
+          </button>
+        </div>
 
         <img src="/assets/img/img4.svg" class="img-fluid" alt="" />
-        <div class="display-5 fw-light">{{ name }}</div>
-        <div class="h1 fw-light mb-2">{{ lname }}</div>
+        <div class="display-5 fw-light text-truncate fs-lg-2 fs-md-3 fs-sm-4">
+          {{ name }}
+        </div>
+        <div class="h1 fw-light mb-2 text-truncate fs-lg-3 fs-md-4 fs-sm-5">
+          {{ lname }}
+        </div>
+
         <div>อีเมล: {{ email }}</div>
         <div>บทบาท: {{ role }}</div>
       </div>
@@ -36,7 +51,12 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="editModalLabel">Edit User</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="modal-body">
           <!-- Edit Form -->
