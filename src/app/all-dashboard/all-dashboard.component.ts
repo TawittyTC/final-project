@@ -30,17 +30,19 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   latestAllEnergy: any = {};
   latestEnergyByGroupName: any = {};
   selectedGroupName: string = '';
+  shouldRefreshGraph: boolean = true;
+
   constructor(
     private apiService: ApiService,
     private groupService: GroupService
   ) {}
 
   ngOnInit() {
-    this.fetchAllData();
+    // this.fetchAllData();
     this.getAllDataGroup();
     this.getLatestAllEnergy();
-    this.getLastestEnergyByGroupName(this.selectedGroup);
-    this.getDataByGroupName(this.selectedGroup);
+    // this.getLastestEnergyByGroupName(this.selectedGroup);
+    // this.getDataByGroupName(this.selectedGroup);
     this.fetchUnitCost();
 
 
@@ -69,7 +71,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
           this.allDataGroup = null; // or [] or handle it as appropriate
           this.latestAllEnergy = null; // or {} or handle it as appropriate
           this.selectedGroupName = 'Devices';
-
+          
       }
   });
 
@@ -77,12 +79,15 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.apiService.getAllGroups().subscribe((groups: string[]) => {
       this.apiGroups = groups;
       // Update the selectedGroup if it's not in the available groups
-      if (!this.apiGroups.includes(this.selectedGroup)) {
-        this.selectedGroup = ''; // or set it to the first available group
+      // if (!this.apiGroups.includes(this.selectedGroup)) {
+      //   this.selectedGroup = ''; // or set it to the first available group
+      // }
+      if (!this.selectedGroup && this.shouldRefreshGraph) {
+        this.fetchAllData();
+        this.shouldRefreshGraph = false; // Prevent further refresh until needed
       }
     });
   });
-
   }
 
 
