@@ -189,4 +189,47 @@ export class ApiService {
   getLastestEnergyByGroupName(groupid:string){
     return this.http.get<any>(`${this.baseUrl}/latest_energy_group/${groupid}`);
   }
+//**ข้อมูลรายเดือน**
+//ข้อมูลพลังงานอุปกรณ์ รายเดือน ปัจจุบัน ใช้แสดงกราฟ
+  getEnergyForDevice(deviceId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/energy_month?device_id=${deviceId}`);
+  }
+//ดึงข้อมูลค่าเฉี่ย ค่ารวม โดยอ้างอิงตาม group_name ใช้แสดงเป็นตัวเลข รายเดือน
+  getDataByGroupForMonth(groupId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/data_by_group_month/${groupId}`);
+  }
+//ดึงข้อมูลทั้งหมด ตาม group_name ใช้แสดงในกราฟ แสดงข้อมูล 1 เดือน ทุก 1วัน แสดงกราฟ
+  getAllDataForGroupMonth(groupId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_group_month/${groupId}`);
+  }
+//ข้อมูลพลังงานอุปกรณ์ทั้งหมด รายเดือน ปัจจุบัน ใช้แสดงกราฟ
+  getAllDataForMonth(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_month`);
+  }
+//ดึงข้อมูล ค่าเฉลี่ย ค่ารวม ของทั้งหมด ใช้แสดงเป็นตัวเลข ในเดือนปัจจุบัน
+  getSumDataForMonth(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/sum_data_month`);
+  }
+
+//**ข้อมูลรายเดือน**
+//ข้อมูลพลังงานอุปกรณ์ รายปี ปัจจุบัน แสดงเป็นกราฟ
+  getEnergyForYears(deviceId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/energy_years?device_id=${deviceId}`);
+  }
+  //ดึงข้อมูลค่าเฉี่ย ค่ารวม โดยอ้างอิงตาม group_name ใช้แสดงเป็นตัวเลข รายปี
+  getDataByGroupForYears(groupId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/data_by_group_years/${groupId}`);
+  }
+  //ดึงข้อมูลทั้งหมด ตาม group_name ใช้แสดงในกราฟ แสดงข้อมูล 1 ปี ทุก 1เดือน แสดงกราฟ
+  getAllDataForGroupYears(groupId: string): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_group_years/${groupId}`);
+  }
+  //ข้อมูลพลังงานอุปกรณ์ทั้งหมด รายปี ปัจจุบัน ใช้แสดงกราฟ
+  getAllDataForYears(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/all_data_years`);
+  }
+  //ดึงข้อมูล ค่าเฉลี่ย ค่ารวม ของทั้งหมด ใช้แสดงเป็นตัวเลข ในปีปัจจุบัน
+  getSumDataForYears(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}/sum_data_years`);
+  }
 }
