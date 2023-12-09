@@ -1,15 +1,17 @@
 <div class="container py-4">
   <!-- head details -->
-  <div class="pb-3">
+  <div class="d-flex justify-content-between align-items-center pb-3">
     <button
-    class="btn dropdown-toggle"
-    type="button"
-    id="groupDropdown"
-    data-bs-toggle="dropdown"
-    aria-haspopup="true"
-    aria-expanded="false"
+      class="btn dropdown-toggle"
+      type="button"
+      id="groupDropdown"
+      data-bs-toggle="dropdown"
+      aria-haspopup="true"
+      aria-expanded="false"
     >
-      <span class="display-5 fw-light">{{ selectedGroupName || 'Devices' }}</span>
+      <span class="display-5 fw-light">{{
+        selectedGroupName || "Devices"
+      }}</span>
     </button>
     <div
       *ngIf="apiGroups.length > 0"
@@ -32,9 +34,19 @@
     >
       <button class="dropdown-item" (click)="reloadPage()">All Devices</button>
     </div>
-
-    <div class="ps-3 pe-2 pb-2 h4 fw-light text-muted">Total Dashboard</div>
+    <!-- Day/Month/Year Dropdown -->
+    <div class="btn-group">
+      <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span class="h1 fw-light"><i class="bi bi-clock-history"></i></span>
+      </button>
+      <div class="dropdown-menu">
+        <button class="dropdown-item">Day</button>
+        <button class="dropdown-item">Month</button>
+        <button class="dropdown-item" >Year</button>
+      </div>
+    </div>
   </div>
+  <div class="ps-3 pe-2 pb-2 h4 fw-light text-muted">Total Dashboard</div>
 
   <div class="row">
     <div class="col-sm-12 col-md-12 col-lg-4">
@@ -53,12 +65,13 @@
         <div class="fw-light mt-3 display-4">
           {{ latestAllEnergy.latest_energy }}
           <span class="h4 text-muted fw-light">Kwh</span>
-          <div><img
-            src="/assets/img/img003.png"
-            alt="..."
-            class="img-fluid w-25 h-auto m-2 p-2"
-          />
-        </div>
+          <div>
+            <img
+              src="/assets/img/img003.png"
+              alt="..."
+              class="img-fluid w-25 h-auto m-2 p-2"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -80,7 +93,7 @@
         <div class="fw-light mt-3 display-4">
           {{ allDataGroup.total_energy }}
           <span class="h4 text-muted fw-light">Kwh</span>
-         <img
+          <img
             src="/assets/img/img001.png"
             alt="..."
             class="img-fluid w-25 h-auto m-2 p-2"
@@ -105,7 +118,7 @@
         <div class="fw-light mt-3 display-4">
           {{ allDataGroup.total_energy * unitCost | number : "1.2-2" }}
           <span class="h4 text-muted fw-light">฿</span>
-         <img
+          <img
             src="/assets/img/img002.png"
             alt="..."
             class="img-fluid w-25 h-auto m-2 p-2"
