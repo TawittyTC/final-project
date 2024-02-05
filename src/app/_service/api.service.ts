@@ -161,6 +161,7 @@ export class ApiService {
     const apiUrl = `${this.baseUrl}/getUnitCost`;
     return this.http.get<number>(apiUrl);
   }
+//**ข้อมูลรายวัน**
   //ข้อมูลรวมล่าสุดของ group นั้นๆ โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
   getDataByGroupName(groupid: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/data_by_group/${groupid}`);
@@ -211,7 +212,7 @@ export class ApiService {
     return this.http.get<any>(`${this.baseUrl}/sum_data_month`);
   }
 
-//**ข้อมูลรายเดือน**
+//**ข้อมูลรายปี**
 //ข้อมูลพลังงานอุปกรณ์ รายปี ปัจจุบัน แสดงเป็นกราฟ
   getEnergyForYears(deviceId: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/energy_years?device_id=${deviceId}`);
