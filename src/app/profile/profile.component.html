@@ -1,39 +1,104 @@
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-md-6">
-      <div class="h2">User Profile</div>
-      <div *ngIf="name">
-        <div>ชื่อ: {{ name }}</div>
-        <div>อีเมล: {{ email }}</div>
-        <div>บทบาท: {{ role }}</div>
-        <div>กลุ่ม: {{ group }}</div>
-      </div>
-      <div *ngIf="!name">
-        <div>Loading user profile...</div>
-      </div>
-    </div>
-  </div>
-</div> -->
+<!-- profile.component.html -->
 
 <div class="container py-4">
   <div class="p-2">
-    <div class="display-5 fw-normal mb-5">Profile</div>
+    <div class="display-5 fw-light mb-5">Profile</div>
   </div>
   <div class="row">
     <div class="col-lg-4">
       <div class="mb-3 bg-white rounded-4 p-5">
-        <div class="h4 text-muted fw-light">My Profile</div>
-        <img
-          src="/assets/img/img4.svg"
-          class="img-fluid rounded-4"
-          alt=""
-        />
-        <div class="display-5 fw-light mb-2">{{ name }}</div>
+        <div class="d-flex justify-content-between mb-4">
+          <span class="h2 text-muted fw-light">My Profile</span>
+          <button
+            (click)="editMode = true"
+            class="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#editModalusers"
+          >
+            <i
+              class="bi bi-pencil-square text-muted"
+              style="font-size: 20px"
+            ></i>
+          </button>
+        </div>
+
+        <img src="/assets/img/img4.svg" class="img-fluid" alt="" />
+        <div class="display-5 fw-light text-truncate fs-lg-2 fs-md-3 fs-sm-4">
+          {{ name }}
+        </div>
+        <div class="h1 fw-light mb-2 text-truncate fs-lg-3 fs-md-4 fs-sm-5">
+          {{ lname }}
+        </div>
+
         <div>อีเมล: {{ email }}</div>
         <div>บทบาท: {{ role }}</div>
-        <div>กลุ่ม: {{ group }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading">Loading...</div>
+
+  <!-- Edit Modal -->
+  <div
+    class="modal fade"
+    id="editModalusers"
+    tabindex="-1"
+    aria-labelledby="editModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!-- Edit Form -->
+          <form *ngIf="editMode" (ngSubmit)="saveUser()" #editForm="ngForm">
+            <!-- Form Inputs -->
+            <div class="mb-3">
+              <label for="editName" class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editName"
+                name="editName"
+                [(ngModel)]="editedUser.name"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="editLastName" class="form-label">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="editLastName"
+                name="editLastName"
+                [(ngModel)]="editedUser.lname"
+                required
+              />
+            </div>
+            <!-- Form Buttons -->
+            <button type="submit" class="btn btn-primary me-2">Save</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              (click)="cancelEditMode()"
+            >
+              Close
+            </button>
+          </form>
+          <!-- Loading Indicator for Edit Mode -->
+          <div *ngIf="loading && editMode">Saving...</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-

@@ -4,6 +4,7 @@ import { interval, Subscription } from 'rxjs';
 import { ApiService } from '../_service/api.service';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient here
 import { AuthService } from '../_service/auth.service';
+import { GroupService } from '../_service/group.service';
 @Component({
   selector: 'app-device-card',
   templateUrl: './device-card.component.html',
@@ -27,6 +28,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   formIncompleteAlert: string = '';
   public currentDeviceId!: string;
   infoMode: boolean | undefined;
+  selected_group: string = '';
 
 apiGroups: any[] = [];
 
@@ -35,7 +37,8 @@ apiGroups: any[] = [];
     private apiService: ApiService,
     private http: HttpClient,
     private GetImageService: GetImageService,
-    private authService: AuthService
+    private authService: AuthService,
+    private groupService: GroupService // Inject the GroupService
   ) {}
 
   isLoggedIn(): boolean {
@@ -86,7 +89,14 @@ apiGroups: any[] = [];
     // Assuming currentDeviceId is a property in your component
     return this.apiService.getMapImageUrl(this.currentDeviceId);
   }
+
   ngOnInit(): void {
+    this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
+      this.selected_group = selectedGroup;
+      console.log('Selected Group:', this.selected_group); // Add this line to log the selected group
+      // Call any function or perform any action with the selected group if needed
+    });
+
     this.loadImageByDeviceId('device_id');
     this.loadData();
 
@@ -98,6 +108,9 @@ apiGroups: any[] = [];
       });
     });
   }
+
+
+
 
   ngOnDestroy() {
     // ยกเลิกการสมัครสมาชิกเมื่อคอมโพนนิ้งถูกทำลาย
@@ -120,8 +133,12 @@ apiGroups: any[] = [];
     }
   }
   loadData() {
-    this.apiService.getAllData().subscribe((response: any) => {
-      this.data = response;
+    this.apiService.getAllDeviceData().subscribe((response: any) => {
+      // Filter devices based on group_id if a group is selected
+      this.data = this.selected_group
+        ? response.filter((item: { group_id: number }) => item.group_id === parseInt(this.selected_group, 10))
+        : response;
+
       this.device_id = this.data.map((item: { device_id: any }) =>
         item.device_id.toString()
       );
@@ -135,9 +152,6 @@ apiGroups: any[] = [];
           (prev: { id: number }, current: { id: number }) =>
             prev.id > current.id ? prev : current
         );
-        this.latestDeviceData[id] = latestEntry;
-
-        // ตรวจสอบสถานะของอุปกรณ์และเพิ่มข้อมูลสถานะลงใน latestDeviceData
         this.latestDeviceData[id] = {
           ...latestEntry,
           status: this.checkOnlineStatus(latestEntry),
@@ -146,9 +160,11 @@ apiGroups: any[] = [];
     });
   }
 
+
+
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
-    this.apiService.createData(newData).subscribe(() => {
+    this.apiService.createDeviceData(newData).subscribe(() => {
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -157,7 +173,7 @@ apiGroups: any[] = [];
 
   // อัปเดตข้อมูล
   updateData(device_id: any, updatedData: any) {
-    this.apiService.updateData(device_id, updatedData).subscribe(() => {
+    this.apiService.updateDeviceData(device_id, updatedData).subscribe(() => {
       this.loadData();
     });
   }
@@ -167,7 +183,7 @@ apiGroups: any[] = [];
     // Use confirm() to request confirmation for data deletion
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
-      this.apiService.deleteData(device_id).subscribe(() => {
+      this.apiService.deleteDeviceData(device_id).subscribe(() => {
         // You can optionally handle the result of the deletion here
         // this.loadData();
       });
@@ -201,7 +217,7 @@ apiGroups: any[] = [];
   saveData() {
     if (this.formIsValid) {
       this.apiService
-        .updateData(this.editedData.device_id, this.editedData)
+        .updateDeviceData(this.editedData.device_id, this.editedData)
         .subscribe(
           () => {
             this.editMode = false;
@@ -213,7 +229,7 @@ apiGroups: any[] = [];
         );
     }
     this.apiService
-      .updateData(this.editedData.device_id, this.editedData)
+      .updateDeviceData(this.editedData.device_id, this.editedData)
       .subscribe(
         () => {
           this.editMode = false;

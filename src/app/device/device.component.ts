@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { ApiService } from '../_service/api.service';
 import { interval, Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../_service/auth.service';
+import { GroupService } from '../_service/group.service';
 
 @Component({
   selector: 'app-device',
@@ -10,6 +11,7 @@ import { AuthService } from '../_service/auth.service';
   styleUrls: ['./device.component.scss'],
 })
 export class DeviceComponent implements OnInit {
+  @Output() selectedGroupChanged: EventEmitter<string> = new EventEmitter<string>();
   showGroupDropdown: boolean = false;
   selectedGroup: string = '';
   groups: string[] = [''];
@@ -32,23 +34,39 @@ export class DeviceComponent implements OnInit {
 
   private dataSubscription: Subscription | undefined;
 
-  constructor(private apiService: ApiService, private http: HttpClient,private authService: AuthService) {}
+  constructor(
+    private apiService: ApiService,
+    private http: HttpClient,
+    private authService: AuthService,
+    private groupService: GroupService // Inject the GroupService
+  ) {}
 
   toggleGroupDropdown() {
     this.showGroupDropdown = !this.showGroupDropdown;
   }
   // ฟังก์ชันเลือกกลุ่ม
-  selectGroup(group: string) {
-    this.selectedGroup = group;
-    this.showGroupDropdown = false;
+  selectGroup(group_id: string) {
+    this.selectedGroup = group_id;
+    this.groupService.setSelectedGroup(group_id);
   }
+  getGroupName(groupId: string | null): string {
+    if (!groupId) {
+      return '';
+    }
+    const group = this.apiGroups.find(group => group.group_id === groupId);
+    return group ? group.group_name : '';
+  }
+  
+  
+  
+
 
   // สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
   getDevicesByGroup(group: string) {
     // ทำงานเรียกข้อมูลของ device ตามกลุ่มที่เลือก
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.loadData();
 
     this.dataSubscription = interval(2000).subscribe(() => {
@@ -57,7 +75,13 @@ export class DeviceComponent implements OnInit {
         this.apiGroups = groups;
       });
     });
+
+    // Use 'selectedGroup$' instead of 'selectedGroupChanged$'
+    this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
+      this.selectedGroup = selectedGroup;
+    });
   }
+
 
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
@@ -71,7 +95,7 @@ export class DeviceComponent implements OnInit {
 
   // โหลดข้อมูลจาก API
   loadData() {
-    this.apiService.getAllData().subscribe((response: any) => {
+    this.apiService.getAllDeviceData().subscribe((response: any) => {
       this.data = response;
     });
   }
@@ -90,7 +114,7 @@ export class DeviceComponent implements OnInit {
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
-    this.apiService.createData(newData).subscribe(() => {
+    this.apiService.createDeviceData(newData).subscribe(() => {
       this.loadData();
       this.newData = {}; // ล้างข้อมูลใหม่หลังจากสร้างข้อมูลเสร็จสิ้น
       this.addMode = false; // ปิดโหมดเพิ่มข้อมูลหลังจากสร้างข้อมูล
@@ -98,7 +122,7 @@ export class DeviceComponent implements OnInit {
   }
   // อัปเดตข้อมูล
   updateData(device_id: any, updatedData: any) {
-    this.apiService.updateData(device_id, updatedData).subscribe(() => {
+    this.apiService.updateDeviceData(device_id, updatedData).subscribe(() => {
       this.loadData();
     });
   }
@@ -110,7 +134,7 @@ export class DeviceComponent implements OnInit {
     // ใช้ confirm() เพื่อขอยืนยันการลบข้อมูล
     const confirmed = confirm('คุณต้องการลบข้อมูลนี้หรือไม่?');
     if (confirmed) {
-      this.apiService.deleteData(device_id).subscribe(() => {
+      this.apiService.deleteDeviceData(device_id).subscribe(() => {
         this.loadData();
       });
     }
@@ -125,7 +149,7 @@ export class DeviceComponent implements OnInit {
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     this.apiService
-      .updateData(this.editedData.device_id, this.editedData)
+      .updateDeviceData(this.editedData.device_id, this.editedData)
       .subscribe(
         () => {
           this.editMode = false;
@@ -176,6 +200,7 @@ export class DeviceComponent implements OnInit {
         () => {
           console.log('Unit Cost updated:', this.unitCost);
           alert('อัปเดต Unit Cost สำเร็จ');
+          this.reloadPage();
         },
         (error) => {
           console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
