@@ -31,8 +31,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   latestEnergyByGroupName: any = {};
   selectedGroupName: string = '';
   shouldRefreshGraph: boolean = true;
-  selectedDataType: string = 'Day'; // เริ่มต้นเลือกเป็น Month
-
+  selectedValue: string = 'Day';
   constructor(
     private apiService: ApiService,
     private groupService: GroupService
@@ -61,35 +60,48 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         }
       });
 
-
       // If there is a selectedGroup, fetch data
       if (selectedGroup) {
-          this.fetchData();
-          this.getLastestEnergyByGroupName(selectedGroup);
-          this.getDataByGroupName(selectedGroup);
-        } else {
-          this.allDataGroup = null; // or [] or handle it as appropriate
-          this.latestAllEnergy = null; // or {} or handle it as appropriate
-          this.selectedGroupName = 'Devices';
-          
-      }
-  });
-  
-
-  this.dataSubscription = interval(2000).subscribe(() => {
-    this.apiService.getAllGroups().subscribe((groups: string[]) => {
-      this.apiGroups = groups;
-      // Update the selectedGroup if it's not in the available groups
-      // if (!this.apiGroups.includes(this.selectedGroup)) {
-      //   this.selectedGroup = ''; // or set it to the first available group
-      // }
-      if (!this.selectedGroup && this.shouldRefreshGraph) {
-        this.fetchAllData();
-        this.shouldRefreshGraph = false; // Prevent further refresh until needed
+        this.fetchData();
+        this.getLastestEnergyByGroupName(selectedGroup);
+        this.getDataByGroupName(selectedGroup);
+      } else {
+        this.allDataGroup = null; // or [] or handle it as appropriate
+        this.latestAllEnergy = null; // or {} or handle it as appropriate
+        this.selectedGroupName = 'Devices';
       }
     });
-  });
-  
+
+    this.dataSubscription = interval(2000).subscribe(() => {
+      this.apiService.getAllGroups().subscribe((groups: string[]) => {
+        this.apiGroups = groups;
+        // Update the selectedGroup if it's not in the available groups
+        // if (!this.apiGroups.includes(this.selectedGroup)) {
+        //   this.selectedGroup = ''; // or set it to the first available group
+        // }
+        if (!this.selectedGroup && this.shouldRefreshGraph) {
+          // if (this.selectedValue === 'Day') {
+          //   this.fetchAllData();
+          // } else if (this.selectedValue === 'Month') {
+          //   this.fetchAllDataForMonth();
+          // }
+          // this.shouldRefreshGraph = false; // Prevent further refresh until needed
+        }
+      });
+    });
+  }// this.fetchAllDataForMonth()
+  onSelect(value: string) {
+    this.selectedValue = value;
+    console.log("Selected Value:", this.selectedValue);
+    if (this.selectedValue === 'Day') {
+      this.fetchAllData();
+    } else if (this.selectedValue === 'Month') {
+      this.fetchAllDataForMonth();
+    }
+    else if (this.selectedValue === 'Year') {
+      this.fetchAllDataForYears();
+    }
+    this.shouldRefreshGraph = false; // Prevent further refresh until needed
   }
   generateChart() {
     // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts
@@ -309,23 +321,25 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       this.cost = 0;
       return;
     }
-  
-    this.apiService.getAllDataByGroupName(this.selectedGroup).subscribe((data) => {
-      this.chartData = data;
-      console.log('Data from getAllDataByGroupName:', data);
-  
-      this.generateChart();
-      this.generateChart2();
-  
-      const totalEnergy = this.chartData.reduce(
-        (total, dataPoint) => total + dataPoint.energy,
-        0
-      );
-      this.totalEnergy = totalEnergy.toFixed(3);
-  
-      this.cost = totalEnergy * this.unitCost;
-      this.cost = +this.cost.toFixed(3);
-    });
+
+    this.apiService
+      .getAllDataByGroupName(this.selectedGroup)
+      .subscribe((data) => {
+        this.chartData = data;
+        console.log('Data from getAllDataByGroupName:', data);
+
+        this.generateChart();
+        this.generateChart2();
+
+        const totalEnergy = this.chartData.reduce(
+          (total, dataPoint) => total + dataPoint.energy,
+          0
+        );
+        this.totalEnergy = totalEnergy.toFixed(3);
+
+        this.cost = totalEnergy * this.unitCost;
+        this.cost = +this.cost.toFixed(3);
+      });
   }
   fetchAllData() {
     this.apiService.getAllData().subscribe(
@@ -408,45 +422,46 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   selectGroup(group_id: string) {
     this.selectedGroup = group_id;
     this.groupService.setSelectedGroup(group_id);
-  
+
     // Retrieve and display the group name when a group is selected
     this.getGroupName(this.selectedGroup);
   }
-  
+
   getGroupName(groupId: string | null): void {
     if (!groupId) {
       // Set the default name to "Devices" if no group ID is provided
       this.selectedGroupName = 'Devices';
       return;
     }
-  
-    const group = this.apiGroups.find(group => group.group_id === groupId);
+
+    const group = this.apiGroups.find((group) => group.group_id === groupId);
     this.selectedGroupName = group ? group.group_name : 'Devices';
   }
-  
-  
+
+  //ดึงทั้งหมด แล้วคำนวน //โดยไม่ได้สนgroup  โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
   getAllDataGroup(): void {
     this.apiService.getAllDataGroup().subscribe((data) => {
       this.allDataGroup = data;
       //console.log('allDataGroup : ',this.allDataGroup)
-      // ทำอะไรกับข้อมูลหลังจากได้รับมา เช่น การแสดงผลหรือประมวลผลต่อ
     });
   }
-
+  // ดึงข้อมูลล่าสุด energy ของอุปกรณ์ทั้งหมด และ ทำการ summ
   getLatestAllEnergy(): void {
     this.apiService.getLatestAllEnergy().subscribe((data) => {
       this.latestAllEnergy = data;
       //console.log('latestAllEnergy : ',this.latestAllEnergy)
     });
   }
-
+  // ดึงข้อมูลล่าสุด energy ของอุปกรณ์แต่ละกลุ่ม และ ทำการ summ
   getLastestEnergyByGroupName(selectedGroup: string): void {
-    if(selectedGroup) {
+    if (selectedGroup) {
       // Call the API to get the latest energy by group name
-      this.apiService.getLastestEnergyByGroupName(selectedGroup).subscribe((data) => {
-        this.latestAllEnergy = data;
-        console.log('latestEnergyByGroupName : ', this.latestAllEnergy);
-      });
+      this.apiService
+        .getLastestEnergyByGroupName(selectedGroup)
+        .subscribe((data) => {
+          this.latestAllEnergy = data;
+          console.log('latestEnergyByGroupName : ', this.latestAllEnergy);
+        });
     } else {
       // Handle the case when no group ID is provided
       console.log('No group ID provided');
@@ -455,7 +470,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
   //ข้อมูลรวมล่าสุดของ group นั้นๆ โดยมีค่าเฉลี่ยของ แรงดัน กระแส กำลังไฟ และ ผลรวมของ energy
   getDataByGroupName(selectedGroup: string): void {
-    if(selectedGroup) {
+    if (selectedGroup) {
       // Call the API to get data by group name
       this.apiService.getDataByGroupName(selectedGroup).subscribe((data) => {
         this.allDataGroup = data;
@@ -467,55 +482,106 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       // You might want to update the UI or perform other actions here
     }
   }
-  // สร้างฟังก์ชันเพื่อเรียกใช้งาน getDataByGroupForMonth
-  getDataByGroupForMonth(groupId: string): void {
-    this.apiService.getDataByGroupForMonth(groupId).subscribe(
-      (data) => {
-        // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้รับ
-        console.log('Data By Group For Month:', data);
-      },
-      (error) => {
-        console.error('Error fetching data by group for month:', error);
-      }
-    );
-  }
 
-  // สร้างฟังก์ชันเพื่อเรียกใช้งาน getAllDataForGroupMonth
+  //ดึงข้อมูลทั้งหมด ตาม group_name ใช้แสดงในกราฟ แสดงข้อมูล 1 เดือน ทุก 1วัน แสดงกราฟ
   getAllDataForGroupMonth(groupId: string): void {
     this.apiService.getAllDataForGroupMonth(groupId).subscribe(
       (data) => {
         // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้รับ
         console.log('All Data For Group Month:', data);
+        // เรียกใช้งานฟังก์ชันสร้างกราฟ
+        this.generateChart();
+        this.generateChart2();
       },
       (error) => {
         console.error('Error fetching all data for group month:', error);
       }
     );
   }
-  // สร้างฟังก์ชันเพื่อเรียกใช้งาน getDataByGroupForYears
-  getDataByGroupForYears(groupId: string): void {
-    this.apiService.getDataByGroupForYears(groupId).subscribe(
-      (data) => {
-        // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้รับ
-        console.log('Data By Group For Years:', data);
-      },
-      (error) => {
-        console.error('Error fetching data by group for years:', error);
-      }
-    );
-  }
 
-  // สร้างฟังก์ชันเพื่อเรียกใช้งาน getAllDataForGroupYears
+  //ดึงข้อมูลทั้งหมด ตาม group_name ใช้แสดงในกราฟ แสดงข้อมูล 1 ปี ทุก 1เดือน แสดงกราฟ
   getAllDataForGroupYears(groupId: string): void {
     this.apiService.getAllDataForGroupYears(groupId).subscribe(
       (data) => {
         // ทำสิ่งที่คุณต้องการกับข้อมูลที่ได้รับ
         console.log('All Data For Group Years:', data);
+        // เรียกใช้งานฟังก์ชันสร้างกราฟ
+        this.generateChart();
+        this.generateChart2();
       },
       (error) => {
         console.error('Error fetching all data for group years:', error);
       }
     );
   }
-}
+  // ใน component.ts
+  onDataTypeSelected(dataType: string) {
+    if (dataType === 'Day') {
+      // เรียกใช้งาน generateChart() และ generateChart2() สำหรับข้อมูลประเภท Day
+      // ทำสิ่งที่ต้องการต่อไปเมื่อเลือกประเภท Day
+    } else if (dataType === 'Month') {
+      // เรียกใช้งาน generateChart() และ generateChart2() สำหรับข้อมูลประเภท Month
+      // ทำสิ่งที่ต้องการต่อไปเมื่อเลือกประเภท Month
+    } else if (dataType === 'Year') {
+      // เรียกใช้งาน generateChart() และ generateChart2() สำหรับข้อมูลประเภท Year
+      // ทำสิ่งที่ต้องการต่อไปเมื่อเลือกประเภท Year
+    }
+  }
 
+
+  fetchAllDataForMonth() {
+      this.apiService.getAllDataForMonth().subscribe(
+        (data: any[]) => {
+          this.chartData = data.map((item: any) => ({
+            ...item,
+            cost: item.usedEnergy * this.unitCost,
+          }));
+    
+          console.log('Data from getAllDataForGroupMonth:', this.chartData);
+    
+          this.generateChart();
+          this.generateChart2();
+    
+          const totalEnergy = this.chartData.reduce(
+            (total, dataPoint) => total + dataPoint.usedEnergy,
+            0
+          );
+          this.totalEnergy = totalEnergy.toFixed(3);
+    
+          this.cost = totalEnergy * this.unitCost;
+          this.cost = +this.cost.toFixed(3);
+        },
+        (error) => {
+          console.error('Error fetching data for group month:', error);
+        }
+      );
+    }
+    fetchAllDataForYears() {
+      this.apiService.getAllDataForYears().subscribe(
+        (data: any[]) => {
+          this.chartData = data.map((item: any) => ({
+            ...item,
+            cost: item.usedEnergy * this.unitCost,
+          }));
+    
+          console.log('Data from getAllDataForYears:', this.chartData);
+    
+          this.generateChart();
+          this.generateChart2();
+    
+          const totalEnergy = this.chartData.reduce(
+            (total, dataPoint) => total + dataPoint.usedEnergy,
+            0
+          );
+          this.totalEnergy = totalEnergy.toFixed(3);
+    
+          this.cost = totalEnergy * this.unitCost;
+          this.cost = +this.cost.toFixed(3);
+        },
+        (error) => {
+          console.error('Error fetching data for years:', error);
+        }
+      );
+    }
+  
+}
