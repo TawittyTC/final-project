@@ -31,7 +31,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   latestEnergyByGroupName: any = {};
   selectedGroupName: string = '';
   shouldRefreshGraph: boolean = true;
-  selectedValue: string = 'Day';
+  selectedValue: string = '';
   constructor(
     private apiService: ApiService,
     private groupService: GroupService
@@ -100,6 +100,8 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     }
     else if (this.selectedValue === 'Year') {
       this.fetchAllDataForYears();
+    }else {
+      this.fetchAllData();
     }
     this.shouldRefreshGraph = false; // Prevent further refresh until needed
   }
