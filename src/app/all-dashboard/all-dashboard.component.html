@@ -40,12 +40,14 @@
         <span class="h1 fw-light"><i class="bi bi-clock-history"></i></span>
       </button>
       <div class="dropdown-menu">
-        <button class="dropdown-item">Day</button>
-        <button class="dropdown-item">Month</button>
-        <button class="dropdown-item" >Year</button>
+        <button class="dropdown-item" [(ngModel)]="selectedValue" (click)="onSelect('Day')">Day</button>
+        <button class="dropdown-item" [(ngModel)]="selectedValue" (click)="onSelect('Month')">Month</button>
+        <button class="dropdown-item" [(ngModel)]="selectedValue" (click)="onSelect('Year')">Year</button>
       </div>
+      
     </div>
   </div>
+
   <div class="ps-3 pe-2 pb-2 h4 fw-light text-muted">Total Dashboard</div>
 
   <div class="row">

@@ -264,7 +264,7 @@
                     <button
                       (click)="onUpload(); saveData(); reloadPage()"
                       type="submit"
-                      class="btn btn-success me-2"
+                      class="btn btn-primary me-2"
                       [disabled]="
                         editForm.invalid ||
                         (selectedFile && selectedFile.size > 5 * 1024 * 1024)
