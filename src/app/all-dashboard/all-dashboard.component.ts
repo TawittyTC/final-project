@@ -39,8 +39,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.fetchAllData();
+    interval(5000).subscribe(() => {
     this.getAllDataGroup();
     this.getLatestAllEnergy();
+  });
     // this.getLastestEnergyByGroupName(this.selectedGroup);
     // this.getDataByGroupName(this.selectedGroup);
     this.fetchUnitCost();
@@ -62,15 +64,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
 
       // If there is a selectedGroup, fetch data
       if (selectedGroup) {
-        // if (this.selectedValue === 'Day') {
-        //   this.fetchData();
-        // } else if (this.selectedValue === 'Month') {
-        //   this.getAllDataForGroupMonth(selectedGroup);
-        // } else if (this.selectedValue === 'Year') {
-        //   this.getAllDataForGroupYears(selectedGroup);
-        // } else {
-          
-        // }
         this.fetchData();
         this.getLastestEnergyByGroupName(selectedGroup);
         this.getDataByGroupName(selectedGroup);

@@ -30,8 +30,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
   infoMode: boolean | undefined;
   selected_group: string = '';
 
-apiGroups: any[] = [];
-
+  apiGroups: any[] = [];
 
   constructor(
     private apiService: ApiService,
@@ -109,9 +108,6 @@ apiGroups: any[] = [];
     });
   }
 
-
-
-
   ngOnDestroy() {
     // ยกเลิกการสมัครสมาชิกเมื่อคอมโพนนิ้งถูกทำลาย
     if (this.dataSubscription) {
@@ -136,7 +132,10 @@ apiGroups: any[] = [];
     this.apiService.getAllDeviceData().subscribe((response: any) => {
       // Filter devices based on group_id if a group is selected
       this.data = this.selected_group
-        ? response.filter((item: { group_id: number }) => item.group_id === parseInt(this.selected_group, 10))
+        ? response.filter(
+            (item: { group_id: number }) =>
+              item.group_id === parseInt(this.selected_group, 10)
+          )
         : response;
 
       this.device_id = this.data.map((item: { device_id: any }) =>
@@ -155,12 +154,11 @@ apiGroups: any[] = [];
         this.latestDeviceData[id] = {
           ...latestEntry,
           status: this.checkOnlineStatus(latestEntry),
+          latest_created_timestamp: latestEntry.latest_created_timestamp, // เพิ่มค่า latest_created_timestamp เข้าไปในอ็อบเจ็กต์ latestDeviceData
         };
       });
     });
   }
-
-
 
   // สร้างข้อมูลใหม่
   createNewData(newData: any) {
@@ -210,9 +208,9 @@ apiGroups: any[] = [];
 
   // เริ่มโหมดแสดงข้อมูล (Info Mode)
   enableInfoMode(device_id: string) {
-  this.infoMode = true;
-  this.currentDeviceId = device_id; // Set the currentDeviceId when entering info mode
-}
+    this.infoMode = true;
+    this.currentDeviceId = device_id; // Set the currentDeviceId when entering info mode
+  }
   // บันทึกข้อมูลหลังแก้ไข
   saveData() {
     if (this.formIsValid) {
@@ -271,10 +269,15 @@ apiGroups: any[] = [];
   // สร้างฟังก์ชันเพื่อตรวจสอบสถานะ
   checkOnlineStatus(data: any): string {
     const createdTimestamp = new Date(data.created_timestamp).getTime(); // เวลาใน created_timestamp จาก API
+    const latestCreatedTimestamp = new Date(
+      data.latest_created_timestamp
+    ).getTime(); // เวลาใน latest_created_timestamp จาก API
     const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
-
+    // console.log('currentTimestamp:', currentTimestamp);
+    // console.log('createdTimestamp:', createdTimestamp);
+    // console.log('latestCreatedTimestamp:', latestCreatedTimestamp);
     // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-    if (currentTimestamp - createdTimestamp <= 100000) {
+    if (currentTimestamp - latestCreatedTimestamp <= 86400000) {
       return 'ON';
     } else {
       return 'OFF';
@@ -301,7 +304,4 @@ apiGroups: any[] = [];
     // Check if device_id is in the allowedAccessList
     return allowedAccessList.includes(device_id);
   }
-
-
-
 }
