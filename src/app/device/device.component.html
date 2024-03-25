@@ -29,7 +29,7 @@
     </div>
 
     <!-- add dropdown -->
-    <div class="dropdown" *ngIf="isLoggedIn()">
+    <div class="dropdown" *ngIf="isLoggedIn() && isAdmin() ">
       <button class="dropbtn bg-light">
         <i
           class="bi bi-plus-circle-fill text-primary"

@@ -11,7 +11,8 @@ import { GroupService } from '../_service/group.service';
   styleUrls: ['./device.component.scss'],
 })
 export class DeviceComponent implements OnInit {
-  @Output() selectedGroupChanged: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedGroupChanged: EventEmitter<string> =
+    new EventEmitter<string>();
   showGroupDropdown: boolean = false;
   selectedGroup: string = '';
   groups: string[] = [''];
@@ -25,8 +26,6 @@ export class DeviceComponent implements OnInit {
   unitCost: number | null = null;
   newGroup: any = {};
   apiGroups: any[] = [];
-
-
 
   isNumeric(value: any): boolean {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -53,13 +52,9 @@ export class DeviceComponent implements OnInit {
     if (!groupId) {
       return '';
     }
-    const group = this.apiGroups.find(group => group.group_id === groupId);
+    const group = this.apiGroups.find((group) => group.group_id === groupId);
     return group ? group.group_name : '';
   }
-  
-  
-  
-
 
   // สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
   getDevicesByGroup(group: string) {
@@ -82,7 +77,9 @@ export class DeviceComponent implements OnInit {
     });
   }
 
-
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'admin';
+  }
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
@@ -100,7 +97,7 @@ export class DeviceComponent implements OnInit {
     });
   }
 
-  getGroup(){
+  getGroup() {
     this.apiService.getAllGroups().subscribe((response: any) => {
       this.data = response;
       console.log(response);
@@ -229,7 +226,4 @@ export class DeviceComponent implements OnInit {
       this.groupMode = false; // Close the group mode
     });
   }
-
-
-
 }
