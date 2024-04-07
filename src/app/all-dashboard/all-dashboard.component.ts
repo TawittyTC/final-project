@@ -62,15 +62,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
 
       // If there is a selectedGroup, fetch data
       if (selectedGroup) {
-        // if (this.selectedValue === 'Day') {
-        //   this.fetchData();
-        // } else if (this.selectedValue === 'Month') {
-        //   this.getAllDataForGroupMonth(selectedGroup);
-        // } else if (this.selectedValue === 'Year') {
-        //   this.getAllDataForGroupYears(selectedGroup);
-        // } else {
-          
-        // }
+
         this.fetchData();
         this.getLastestEnergyByGroupName(selectedGroup);
         this.getDataByGroupName(selectedGroup);
@@ -84,13 +76,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.dataSubscription = interval(2000).subscribe(() => {
       this.apiService.getAllGroups().subscribe((groups: string[]) => {
         this.apiGroups = groups;
-        // Update the selectedGroup if it's not in the available groups
-        // if (!this.apiGroups.includes(this.selectedGroup)) {
-        //   this.selectedGroup = ''; // or set it to the first available group
-        // }
-        // if (!this.selectedGroup && this.shouldRefreshGraph) {
-        //   this.shouldRefreshGraph = false; // Prevent further refresh until needed
-        // }
+
       });
     });
   }
@@ -214,18 +200,24 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     };
   }
   generateChart2() {
-    // Calculate cost of electricity and add it to the data
     const chartDataWithCost = this.chartData.map(
       (item: {
         created_timestamp: string | number | Date;
         energy: number;
+        cost: number | null; // กำหนด cost เป็น number หรือ null
       }) => ({
         x: new Date(item.created_timestamp).getTime(),
         y: item.energy,
-        cost: item.energy * this.unitCost, // Calculate the cost of electricity
-      })
+        cost: item.energy <= 15 ? item.energy * 2.3488 :
+        item.energy <= 25 ? (15 * 2.3488) + ((item.energy - 15) * 2.9882) :
+        item.energy <= 35 ? (15 * 2.3488) + (10 * 2.9882) + ((item.energy - 25) * 3.2405) :
+        item.energy <= 100 ? (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + ((item.energy - 35) * 3.6237) :
+        item.energy <= 150 ? (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + (65 * 3.6237) + ((item.energy - 100) * 3.7171) :
+        item.energy <= 400 ? (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + (65 * 3.6237) + (50 * 3.7171) + ((item.energy - 150) * 4.2218) :
+        (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + (65 * 3.6237) + (50 * 3.7171) + (250 * 4.2218) + ((item.energy - 400) * 4.4217),
+})
     );
-
+    
     // Create and set options for the chart using ng-apexcharts
     this.chartOptions2 = {
       series: [
@@ -332,15 +324,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-    // if (!this.selectedGroup) {
-    //   // Handle when no group is selected
-    //   this.chartData = []; // or set it to an appropriate default value
-    //   this.generateChart();
-    //   this.generateChart2();
-    //   this.totalEnergy = '';
-    //   this.cost = 0;
-    //   return;
-    // }
 
     this.apiService
       .getAllDataByGroupName(this.selectedGroup)
@@ -393,22 +376,12 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
-
   fetchUnitCost() {
     this.apiService.getUnitCost().subscribe(
-      (response: any) => {
-        if (typeof response === 'number') {
-          // Handle the case where the response is a number
-          this.unitCost = response;
-          //console.log('UnitCost: คือ:', this.unitCost);
-        } else {
-          // Handle the case where the response is an array
-          if (response.length > 0) {
-            this.unitCost = response[0].unitCost;
-            //console.log('UnitCost: คือ:', this.unitCost);
-          }
-        }
-
+      (response: number) => {  // แก้ไขตรงนี้เป็น number
+        this.unitCost = response;
+        console.log('UnitCost: คือ:', this.unitCost);
+  
         // After getting the unitCost, fetch data
         this.fetchData();
         this.fetchAllData();
@@ -418,6 +391,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
+  
+
+
+
   reloadPage() {
     // รีโหลดหน้าเว็บ
     location.reload();
