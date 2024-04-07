@@ -205,19 +205,22 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         created_timestamp: string | number | Date;
         energy: number;
         cost: number | null; // กำหนด cost เป็น number หรือ null
-      }) => ({
-        x: new Date(item.created_timestamp).getTime(),
-        y: item.energy,
-        cost: item.energy <= 15 ? item.energy * 2.3488 :
-        item.energy <= 25 ? (15 * 2.3488) + ((item.energy - 15) * 2.9882) :
-        item.energy <= 35 ? (15 * 2.3488) + (10 * 2.9882) + ((item.energy - 25) * 3.2405) :
-        item.energy <= 100 ? (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + ((item.energy - 35) * 3.6237) :
-        item.energy <= 150 ? (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + (65 * 3.6237) + ((item.energy - 100) * 3.7171) :
-        item.energy <= 400 ? (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + (65 * 3.6237) + (50 * 3.7171) + ((item.energy - 150) * 4.2218) :
-        (15 * 2.3488) + (10 * 2.9882) + (10 * 3.2405) + (65 * 3.6237) + (50 * 3.7171) + (250 * 4.2218) + ((item.energy - 400) * 4.4217),
-})
+      }) => {
+        const unitCostItem = (this.unitCost as unknown as Array<any>).find((costItem) => costItem.id === 1);
+        const unitCost = unitCostItem ? unitCostItem.unitCost : 0;
+        return {
+          x: new Date(item.created_timestamp).getTime(),
+          y: item.energy,
+          cost: item.energy <= 15 ? item.energy * unitCost :
+            item.energy <= 25 ? (15 * unitCost) + ((item.energy - 15) * this.getUnitCostById(2)) :
+              item.energy <= 35 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + ((item.energy - 25) * this.getUnitCostById(3)) :
+                item.energy <= 100 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + ((item.energy - 35) * this.getUnitCostById(4)) :
+                  item.energy <= 150 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + (65 * this.getUnitCostById(4)) + ((item.energy - 100) * this.getUnitCostById(5)) :
+                    item.energy <= 400 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + (65 * this.getUnitCostById(4)) + (50 * this.getUnitCostById(5)) + ((item.energy - 150) * this.getUnitCostById(6)) :
+                      (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + (65 * this.getUnitCostById(4)) + (50 * this.getUnitCostById(5)) + (250 * this.getUnitCostById(6)) + ((item.energy - 400) * this.getUnitCostById(7)),
+        };
+      }
     );
-    
     // Create and set options for the chart using ng-apexcharts
     this.chartOptions2 = {
       series: [
@@ -316,7 +319,10 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       },
     };
   }
-
+  getUnitCostById(id: number): number {
+    const unitCostItem = (this.unitCost as unknown as Array<any>).find((item) => item.id === id);
+    return unitCostItem ? unitCostItem.unitCost : 0;
+  }
   ngOnDestroy(): void {
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
