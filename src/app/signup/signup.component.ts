@@ -8,8 +8,9 @@ import { User } from '../_service/user';
 })
 export class SignupComponent {
   user: User = new User(); // Initialize an empty user object
-  errorMessage: string = ''; // To display error messages
-  successMessage: string = ''; // To display success message
+  AlertMessage: string = ''; // To display error messages
+  SuccessMessage: string= '';
+
 
   constructor(private authService: AuthService) {}
 
@@ -19,14 +20,14 @@ export class SignupComponent {
     this.authService.signUp(this.user).subscribe(
       (result) => {
         console.log('Registration API response:', result); // Debugging statement
+        this. SuccessMessage = 'ลงทะเบียนสำเร็จ.';
         if (result) {
           console.log('Registration successful');
-          this.successMessage = 'ลงทะเบียนสำเร็จ สามารถเข้าสู่ระบบได้แล้ว.';
         };
       },
       (error) => {
         console.error('Error during registration:', error); // Debugging statement
-        this.errorMessage = 'ลงทะเบียนไม่สำเร็จ โปรดลองอีกครั้ง.';
+        this.AlertMessage = 'ลงทะเบียนไม่สำเร็จ.';
       }
     );
   }

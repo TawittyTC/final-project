@@ -61,7 +61,10 @@
               required
               #confirmEmail="ngModel"
             />
-            <div *ngIf="user.email !== user.confirmEmail && confirmEmail.touched" class="text-danger">
+            <div
+              *ngIf="user.email !== user.confirmEmail && confirmEmail.touched"
+              class="text-danger"
+            >
               Email does not match.
             </div>
           </div>
@@ -90,21 +93,46 @@
               required
               #confirmPassword="ngModel"
             />
-            <div *ngIf="user.password !== user.confirmPassword && confirmPassword.touched" class="text-danger">
+            <div
+              *ngIf="
+                user.password !== user.confirmPassword &&
+                confirmPassword.touched
+              "
+              class="text-danger"
+            >
               Password does not match.
             </div>
           </div>
           <div class="mt-2 mb-2">
-            <button type="submit" class="btn btn-primary " [disabled]="!(user.name && user.lname && user.email && user.confirmEmail && user.password && user.confirmPassword && user.email === user.confirmEmail && user.password === user.confirmPassword)">Sign Up</button>
-            <button routerLink="/login-component" class="btn btn-danger ms-2">Back</button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="
+                !(
+                  user.name &&
+                  user.lname &&
+                  user.email &&
+                  user.confirmEmail &&
+                  user.password &&
+                  user.confirmPassword &&
+                  user.email === user.confirmEmail &&
+                  user.password === user.confirmPassword
+                )
+              "
+            >
+              Sign Up
+            </button>
+            <button routerLink="/login-component" class="btn btn-danger ms-2">
+              Back
+            </button>
           </div>
         </form>
         <!-- Display error message if any -->
-        <div *ngIf="errorMessage" class="text-danger mt-2">
-          {{ errorMessage }}
+        <div *ngIf="AlertMessage" class="text-danger mt-2">
+          {{ AlertMessage }}
         </div>
-        <div *ngIf="successMessage" class="text-success mt-2">
-          {{ successMessage }}
+        <div *ngIf="SuccessMessage" class="text-success mt-2">
+          {{ SuccessMessage }}
         </div>
 
       </div>
