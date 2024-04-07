@@ -9,6 +9,7 @@ import { User } from '../_service/user';
 export class SignupComponent {
   user: User = new User(); // Initialize an empty user object
   errorMessage: string = ''; // To display error messages
+  successMessage: string = ''; // To display success message
 
   constructor(private authService: AuthService) {}
 
@@ -20,13 +21,12 @@ export class SignupComponent {
         console.log('Registration API response:', result); // Debugging statement
         if (result) {
           console.log('Registration successful');
-          // You can optionally redirect the user to a different page upon successful registration
-          // Example: this.router.navigate(['/success-page']);
+          this.successMessage = 'ลงทะเบียนสำเร็จ สามารถเข้าสู่ระบบได้แล้ว.';
         };
       },
       (error) => {
         console.error('Error during registration:', error); // Debugging statement
-        this.errorMessage = 'An error occurred while registering. Please try again later.';
+        this.errorMessage = 'ลงทะเบียนไม่สำเร็จ โปรดลองอีกครั้ง.';
       }
     );
   }
