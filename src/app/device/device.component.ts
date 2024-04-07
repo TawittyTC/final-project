@@ -188,25 +188,25 @@ export class DeviceComponent implements OnInit {
 
   // ฟังก์ชันสำหรับการอัปเดตหน่วยค่าไฟ
   saveUnitCost(): void {
-    if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
-      // ค่าที่คุณกรอก
-      console.log('ค่าที่คุณกรอก:', this.unitCost);
+    // if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
+    //   // ค่าที่คุณกรอก
+    //   console.log('ค่าที่คุณกรอก:', this.unitCost);
 
-      // Use ApiService to update the unit cost
-      this.apiService.updateUnitCost(this.unitCost as number).subscribe(
-        () => {
-          console.log('Unit Cost updated:', this.unitCost);
-          alert('อัปเดต Unit Cost สำเร็จ');
-          this.reloadPage();
-        },
-        (error) => {
-          console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
-          alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
-        }
-      );
-    } else {
-      alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
-    }
+    //   // Use ApiService to update the unit cost
+    //   this.apiService.updateUnitCost(this.unitCost as number).subscribe(
+    //     () => {
+    //       console.log('Unit Cost updated:', this.unitCost);
+    //       alert('อัปเดต Unit Cost สำเร็จ');
+    //       this.reloadPage();
+    //     },
+    //     (error) => {
+    //       console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
+    //       alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
+    //     }
+    //   );
+    // } else {
+    //   alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+    // }
   }
 
   enableGroupMode() {

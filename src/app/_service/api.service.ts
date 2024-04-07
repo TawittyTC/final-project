@@ -132,8 +132,8 @@ export class ApiService {
     return `${this.baseUrl}/uploads/${deviceId}`;
   }
   // อัปเดตราคาต่อหน่วย
-  updateUnitCost(unitCost: number): Observable<any> {
-    const url = `${this.baseUrl}/putUnitCost`;
+  updateUnitCost(id: number, unitCost: number): Observable<any> {
+    const url = `${this.baseUrl}/putUnitCost/${id}`;
     return this.http.put(url, { unitCost }).pipe(
       catchError((error) => {
         console.error('Error updating Unit Cost:', error);
@@ -141,6 +141,7 @@ export class ApiService {
       })
     );
   }
+  
   // ดึงข้อมูลล่าสุดสำหรับอุปกรณ์
   getLatestData(deviceId: string): Observable<any[]> {
     const apiUrl = `${this.baseUrl}/latest_data?device_id=${deviceId}`;

@@ -62,7 +62,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
 
       // If there is a selectedGroup, fetch data
       if (selectedGroup) {
-
         this.fetchData();
         this.getLastestEnergyByGroupName(selectedGroup);
         this.getDataByGroupName(selectedGroup);
@@ -76,7 +75,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.dataSubscription = interval(2000).subscribe(() => {
       this.apiService.getAllGroups().subscribe((groups: string[]) => {
         this.apiGroups = groups;
-
       });
     });
   }
@@ -84,7 +82,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     this.selectedValue = value;
     console.log('Selected Value:', this.selectedValue);
     console.log('Selected Group:', this.selectedGroup);
-  
+
     if (this.selectedGroup && this.selectedValue) {
       if (this.selectedValue === 'Day') {
         this.fetchData();
@@ -95,7 +93,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       } else {
         this.fetchData();
       }
-    } else if (!this.selectedGroup){
+    } else if (!this.selectedGroup) {
       if (this.selectedValue === 'Day') {
         this.fetchAllData();
       } else if (this.selectedValue === 'Month') {
@@ -108,7 +106,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     }
     this.shouldRefreshGraph = false; // Prevent further refresh until needed
   }
-  
+
   generateChart() {
     // ทำการสร้างและกำหนดตัวเลือกสำหรับกราฟโดยใช้ ng-apexcharts
     this.chartOptions = {
@@ -206,18 +204,47 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
         energy: number;
         cost: number | null; // กำหนด cost เป็น number หรือ null
       }) => {
-        const unitCostItem = (this.unitCost as unknown as Array<any>).find((costItem) => costItem.id === 1);
+        const unitCostItem = (this.unitCost as unknown as Array<any>).find(
+          (costItem) => costItem.id === 1
+        );
         const unitCost = unitCostItem ? unitCostItem.unitCost : 0;
         return {
           x: new Date(item.created_timestamp).getTime(),
           y: item.energy,
-          cost: item.energy <= 15 ? item.energy * unitCost :
-            item.energy <= 25 ? (15 * unitCost) + ((item.energy - 15) * this.getUnitCostById(2)) :
-              item.energy <= 35 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + ((item.energy - 25) * this.getUnitCostById(3)) :
-                item.energy <= 100 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + ((item.energy - 35) * this.getUnitCostById(4)) :
-                  item.energy <= 150 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + (65 * this.getUnitCostById(4)) + ((item.energy - 100) * this.getUnitCostById(5)) :
-                    item.energy <= 400 ? (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + (65 * this.getUnitCostById(4)) + (50 * this.getUnitCostById(5)) + ((item.energy - 150) * this.getUnitCostById(6)) :
-                      (15 * unitCost) + (10 * this.getUnitCostById(2)) + (10 * this.getUnitCostById(3)) + (65 * this.getUnitCostById(4)) + (50 * this.getUnitCostById(5)) + (250 * this.getUnitCostById(6)) + ((item.energy - 400) * this.getUnitCostById(7)),
+          cost:
+            item.energy <= 15
+              ? item.energy * unitCost
+              : item.energy <= 25
+              ? 15 * unitCost + (item.energy - 15) * this.getUnitCostById(2)
+              : item.energy <= 35
+              ? 15 * unitCost +
+                10 * this.getUnitCostById(2) +
+                (item.energy - 25) * this.getUnitCostById(3)
+              : item.energy <= 100
+              ? 15 * unitCost +
+                10 * this.getUnitCostById(2) +
+                10 * this.getUnitCostById(3) +
+                (item.energy - 35) * this.getUnitCostById(4)
+              : item.energy <= 150
+              ? 15 * unitCost +
+                10 * this.getUnitCostById(2) +
+                10 * this.getUnitCostById(3) +
+                65 * this.getUnitCostById(4) +
+                (item.energy - 100) * this.getUnitCostById(5)
+              : item.energy <= 400
+              ? 15 * unitCost +
+                10 * this.getUnitCostById(2) +
+                10 * this.getUnitCostById(3) +
+                65 * this.getUnitCostById(4) +
+                50 * this.getUnitCostById(5) +
+                (item.energy - 150) * this.getUnitCostById(6)
+              : 15 * unitCost +
+                10 * this.getUnitCostById(2) +
+                10 * this.getUnitCostById(3) +
+                65 * this.getUnitCostById(4) +
+                50 * this.getUnitCostById(5) +
+                250 * this.getUnitCostById(6) +
+                (item.energy - 400) * this.getUnitCostById(7),
         };
       }
     );
@@ -320,9 +347,31 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     };
   }
   getUnitCostById(id: number): number {
-    const unitCostItem = (this.unitCost as unknown as Array<any>).find((item) => item.id === id);
+    const unitCostItem = (this.unitCost as unknown as Array<any>).find(
+      (item) => item.id === id
+    );
     return unitCostItem ? unitCostItem.unitCost : 0;
   }
+  calculateTotalCost(totalEnergy: number): number {
+    let totalCost = 0;
+    if (totalEnergy <= 15) {
+      totalCost = totalEnergy * 2.3488;
+    } else if (totalEnergy <= 25) {
+      totalCost = 15 * 2.3488 + (totalEnergy - 15) * 2.9882;
+    } else if (totalEnergy <= 35) {
+      totalCost = 15 * 2.3488 + 10 * 2.9882 + (totalEnergy - 25) * 3.2405;
+    } else if (totalEnergy <= 100) {
+      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + (totalEnergy - 35) * 3.6237;
+    } else if (totalEnergy <= 150) {
+      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + 65 * 3.6237 + (totalEnergy - 100) * 3.7171;
+    } else if (totalEnergy <= 400) {
+      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + 65 * 3.6237 + 50 * 3.7171 + (totalEnergy - 150) * 4.2218;
+    } else {
+      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + 65 * 3.6237 + 50 * 3.7171 + 250 * 4.2218 + (totalEnergy - 400) * 4.4217;
+    }
+    return totalCost;
+  }
+  
   ngOnDestroy(): void {
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
@@ -330,7 +379,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchData() {
-
     this.apiService
       .getAllDataByGroupName(this.selectedGroup)
       .subscribe((data) => {
@@ -384,10 +432,11 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   }
   fetchUnitCost() {
     this.apiService.getUnitCost().subscribe(
-      (response: number) => {  // แก้ไขตรงนี้เป็น number
+      (response: number) => {
+        // แก้ไขตรงนี้เป็น number
         this.unitCost = response;
         console.log('UnitCost: คือ:', this.unitCost);
-  
+
         // After getting the unitCost, fetch data
         this.fetchData();
         this.fetchAllData();
@@ -397,9 +446,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
-  
-
-
 
   reloadPage() {
     // รีโหลดหน้าเว็บ
@@ -429,7 +475,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   getAllDataGroup(): void {
     this.apiService.getAllDataGroup().subscribe((data) => {
       this.allDataGroup = data;
-      //console.log('allDataGroup : ',this.allDataGroup)
+      console.log('allDataGroup : ', this.allDataGroup);
     });
   }
   // ดึงข้อมูลล่าสุด energy ของอุปกรณ์ทั้งหมด และ ทำการ summ
