@@ -8,15 +8,16 @@
     <div *ngIf="!isLoggedIn || isDeviceAllowed(device_id) || isLoggedIn ">
       <div class="bg-white mb-5 p-4 rounded-5">
         <div class="text-center mb-4 mt-1">
-          <img
-            src="/assets/img/{{ latestDeviceData[device_id]?.status }}.png"
-            class="card-img-top rounded-4 img-small"
-            style="width: 100px; /* กำหนดความกว้างของรูปภาพ */ height: auto"
-            alt="..."
-          />
+
         </div>
         <div class="h2 mb-2 fw-normal">
           {{ latestDeviceData[device_id]?.device_name }}
+          <img
+            src="/assets/img/{{ latestDeviceData[device_id]?.status }}.png"
+            class="card-img-top rounded-4 img-small"
+            style="width: 30px; /* กำหนดความกว้างของรูปภาพ */ height: auto"
+            alt="..."
+          />
         </div>
         <div class="fw-light">
           Device ID: {{ latestDeviceData[device_id]?.device_id }}
