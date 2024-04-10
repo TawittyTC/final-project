@@ -28,6 +28,16 @@ export class AdminDashboardComponent {
   unitCost: number | null = null;
   newGroup: any = {};
   apiGroups: any[] = [];
+  unitCosts: any;
+  formData = {
+    unitCost1: null,
+    unitCost2: null,
+    unitCost3: null,
+    unitCost4: null,
+    unitCost5: null,
+    unitCost6: null,
+    unitCost7: null,
+  };
 
   isNumeric(value: any): boolean {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -65,7 +75,7 @@ export class AdminDashboardComponent {
 
   ngOnInit(): void {
     this.loadData();
-
+    this.loadUnitCosts();
     this.dataSubscription = interval(2000).subscribe(() => {
       this.loadData();
       this.apiService.getAllGroups().subscribe((groups: any) => {
@@ -77,6 +87,7 @@ export class AdminDashboardComponent {
     this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
       this.selectedGroup = selectedGroup;
     });
+
   }
 
   isAdmin(): boolean {
@@ -189,28 +200,153 @@ export class AdminDashboardComponent {
   }
 
   // ฟังก์ชันสำหรับการอัปเดตหน่วยค่าไฟ
-  saveUnitCost(): void {
-    if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
-      // ค่าที่คุณกรอก
-      console.log('ค่าที่คุณกรอก:', this.unitCost);
+  // saveUnitCost(): void {
+  //   if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
+  //     // ค่าที่คุณกรอก
+  //     console.log('ค่าที่คุณกรอก:', this.unitCost);
 
-      // Use ApiService to update the unit cost
-      this.apiService.updateUnitCost(this.unitCost as number).subscribe(
-        () => {
-          console.log('Unit Cost updated:', this.unitCost);
-          alert('อัปเดต Unit Cost สำเร็จ');
-          this.reloadPage();
-        },
-        (error) => {
-          console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
-          alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
-        }
-      );
-    } else {
-      alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+  //     // Use ApiService to update the unit cost
+  //     this.apiService.updateUnitCost(this.unitCost as number).subscribe(
+  //       () => {
+  //         console.log('Unit Cost updated:', this.unitCost);
+  //         alert('อัปเดต Unit Cost สำเร็จ');
+  //         this.reloadPage();
+  //       },
+  //       (error) => {
+  //         console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
+  //         alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
+  //       }
+  //     );
+  //   } else {
+  //     alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+  //   }
+  // }
+  saveUnitCost() {
+    // Submit unit cost for ID 1
+    if (this.formData.unitCost1 !== null) {
+      this.apiService.updateUnitCost(1, this.formData.unitCost1)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 1 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost1 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 1:', error);
+          }
+        );
+    }
+
+    // Submit unit cost for ID 2
+    if (this.formData.unitCost2 !== null) {
+      this.apiService.updateUnitCost(2, this.formData.unitCost2)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 2 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost2 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 2:', error);
+          }
+        );
+    }
+
+    // Submit unit cost for ID 3
+    if (this.formData.unitCost3 !== null) {
+      this.apiService.updateUnitCost(3, this.formData.unitCost3)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 3 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost3 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 3:', error);
+          }
+        );
+    }
+    if (this.formData.unitCost4 !== null) {
+      this.apiService.updateUnitCost(4, this.formData.unitCost4)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 4 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost4 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 4:', error);
+          }
+        );
+    }
+    if (this.formData.unitCost5 !== null) {
+      this.apiService.updateUnitCost(5, this.formData.unitCost5)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 5 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost5 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 5:', error);
+          }
+        );
+    }
+    if (this.formData.unitCost6 !== null) {
+      this.apiService.updateUnitCost(6, this.formData.unitCost6)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 6 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost6 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 6:', error);
+          }
+        );
+    }
+    if (this.formData.unitCost7 !== null) {
+      this.apiService.updateUnitCost(7, this.formData.unitCost7)
+        .subscribe(
+          () => {
+            console.log('Unit Cost 7 updated successfully!');
+            // Clear the form after successful submission
+            this.formData.unitCost7 = null;
+          },
+          error => {
+            console.error('Error updating Unit Cost 7:', error);
+          }
+        );
     }
   }
-
+  loadUnitCosts() {
+    this.apiService.getUnitCost().subscribe(
+      data => {
+        this.unitCosts = data;
+        // Assign unit costs to form data if IDs match
+        this.unitCosts.forEach((cost: { id: number; unitCost: null; }) => {
+          if (cost.id === 1) {
+            this.formData.unitCost1 = cost.unitCost;
+          } else if (cost.id === 2) {
+            this.formData.unitCost2 = cost.unitCost;
+          } else if (cost.id === 3) {
+            this.formData.unitCost3 = cost.unitCost;
+          } else if (cost.id === 4) {
+            this.formData.unitCost4 = cost.unitCost;
+          } else if (cost.id === 5) {
+            this.formData.unitCost5 = cost.unitCost;
+          } else if (cost.id === 6) {
+            this.formData.unitCost6 = cost.unitCost;
+          } else if (cost.id === 7) {
+            this.formData.unitCost7 = cost.unitCost;
+          }
+        });
+      },
+      error => {
+        console.error('Error loading unit costs:', error);
+      }
+    );
+  }
   enableGroupMode() {
     this.groupMode = true;
   }

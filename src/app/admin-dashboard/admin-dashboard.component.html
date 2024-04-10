@@ -145,46 +145,57 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <div class="modal-title h4 fw-light">Unit Cost</div>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <h5 class="modal-title">Unit Cost</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form (submit)="saveUnitCost()">
-          <div class="form-group">
-            <label for="unit_cost">Unit Cost (per kWh):</label>
-            <input
-              type="text"
-              class="form-control"
-              id="unit_cost"
-              [(ngModel)]="unitCost"
-              name="unit_cost"
-              required
-              step="any"
-            />
+        <form #updateForm="ngForm" (ngSubmit)="saveUnitCost(); reloadPage()">
+          <div class="mb-3">
+            <label for="unitCost1" class="form-label">15 หน่วย (กิโลวัตต์ชั่วโมง) แรก (หน่วยที่ 1 – 15) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost1" name="unitCost1" required [(ngModel)]="formData.unitCost1">
+            <input type="hidden" name="id1" value="1">
           </div>
+          <div class="mb-3">
+            <label for="unitCost2" class="form-label">10 หน่วยต่อไป (หน่วยที่ 16 – 25) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost2" name="unitCost2" required [(ngModel)]="formData.unitCost2">
+            <input type="hidden" name="id2" value="2">
+          </div>
+          <div class="mb-3">
+            <label for="unitCost3" class="form-label">10 หน่วยต่อไป (หน่วยที่ 26 – 35) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost3" name="unitCost3" required [(ngModel)]="formData.unitCost3">
+            <input type="hidden" name="id3" value="3">
+          </div>
+          <div class="mb-3">
+            <label for="unitCost4" class="form-label">65 หน่วยต่อไป (หน่วยที่ 36 – 100) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost4" name="unitCost4" required [(ngModel)]="formData.unitCost4">
+            <input type="hidden" name="id4" value="4">
+          </div>
+          <div class="mb-3">
+            <label for="unitCost5" class="form-label">50 หน่วยต่อไป (หน่วยที่ 101 – 150) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost5" name="unitCost5" required [(ngModel)]="formData.unitCost5">
+            <input type="hidden" name="id5" value="5">
+          </div>
+          <div class="mb-3">
+            <label for="unitCost6" class="form-label">250 หน่วยต่อไป (หน่วยที่ 151 – 400) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost6" name="unitCost6" required [(ngModel)]="formData.unitCost6">
+            <input type="hidden" name="id6" value="6">
+          </div>
+          <div class="mb-3">
+            <label for="unitCost7" class="form-label">เกินกว่า 400 หน่วย (หน่วยที่ 401 เป็นต้นไป) :</label>
+            <input type="number" step="any" class="form-control" id="unitCost7" name="unitCost7" required [(ngModel)]="formData.unitCost7">
+            <input type="hidden" name="id7" value="7">
+          </div>
+          <div class="modal-footer justify-content-start">
+            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>          
         </form>
-      </div>
-      <div class="modal-footer justify-content-start">
-        <button
-          type="button"
-          class="btn btn-primary me-2"
-          (click)="saveUnitCost()"
-          [disabled]="!isNumeric(unitCost)"
-        >
-          Save
-        </button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
-        </button>
       </div>
     </div>
   </div>
 </div>
+
+
 
 <!-- Add Data Modal -->
 <div class="modal" tabindex="-1" role="dialog" id="addDataModal">
