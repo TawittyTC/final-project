@@ -15,6 +15,7 @@ export class DeviceCardComponent implements OnInit, OnDestroy {
 
   imageBlob: Blob | null = null;
   selectedFile: File | null = null;
+  selectedFileIcon: File | null = null;
   @Input() deviceData: any; // รับข้อมูลอุปกรณ์จากภายนอก
   device_id: [] = [];
   latestDeviceData: any = {};
@@ -65,6 +66,43 @@ apiGroups: any[] = [];
     }
   }
 
+  // ส่วนของอีเวนท์เมื่อมีการเลือกไฟล์ Icon
+onFileSelectedIcon(event: any) {
+  const file = event.target.files[0];
+
+  if (file) {
+    this.selectedFileIcon = file;
+
+    // Set the currentDeviceId based on your logic, e.g., from the selected device's ID
+    this.currentDeviceId = this.deviceData.device_id; // Set it to the selected device's ID
+  } else {
+    this.selectedFileIcon = null;
+  }
+}
+
+// ส่วนของการอัปโหลดไฟล์ Icon
+onUploadIcon() {
+  if (this.selectedFileIcon && this.currentDeviceId) {
+    const formData = new FormData();
+
+    // Change the file name to the currentDeviceId
+    const fileName = `${this.currentDeviceId}.png`;
+
+    formData.append('file', new File([this.selectedFileIcon], fileName));
+
+    // Use the ApiService to handle the file upload
+    this.apiService.uploadFileIcon(formData).subscribe(
+      (response) => {
+        console.log('File Icon uploaded successfully');
+      },
+      (error) => {
+        console.error('Error uploading file:', error);
+      }
+    );
+  }
+}
+
+
   onUpload() {
     if (this.selectedFile && this.currentDeviceId) {
       const formData = new FormData();
@@ -85,6 +123,8 @@ apiGroups: any[] = [];
       );
     }
   }
+
+
   getMapImageUrl(): string {
     // Assuming currentDeviceId is a property in your component
     return this.apiService.getMapImageUrl(this.currentDeviceId);

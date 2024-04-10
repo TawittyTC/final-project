@@ -8,7 +8,7 @@
     <div *ngIf="!isLoggedIn || isDeviceAllowed(device_id) || isLoggedIn ">
       <div class="bg-white mb-5 p-4 rounded-5">
         <div class="text-center mb-4 mt-1">
-         <img src="http://localhost:3000/uploads-icon/{{ latestDeviceData[device_id]?.device_id }}"style="width: 70%;  height: auto" alt="">
+         <img src="http://localhost:3000/uploads-icon/{{ latestDeviceData[device_id]?.device_id }}"style="width: 100px;  height: auto" alt="">
         </div>
         <div class="h2 mb-2 fw-normal">
           {{ latestDeviceData[device_id]?.device_name }}
@@ -238,6 +238,18 @@
                     />
                   </div>
 
+                    <!-- Device Icon -->
+                    <div class="form-group">
+                      <label for="device_icon_img">Device Icon:</label>
+
+                      <input
+                        type="file"
+                        class="form-control"
+                        id="device_icon_img"
+                        (change)="onFileSelectedIcon($event)"
+                      />
+                    </div>
+
 
 
                   <!-- Group ID -->
@@ -263,7 +275,7 @@
                   <!-- Add more fields as needed -->
                   <div class="mt-2">
                     <button
-                      (click)="onUpload(); saveData(); reloadPage()"
+                      (click)="onUpload(); onUploadIcon(); saveData(); reloadPage()"
                       type="submit"
                       class="btn btn-primary me-2"
                       [disabled]="

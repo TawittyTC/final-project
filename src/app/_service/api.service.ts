@@ -127,6 +127,19 @@ export class ApiService {
       })
     );
   }
+
+    // อัปโหลดไฟล์
+    uploadFileIcon(formData: FormData): Observable<any> {
+      const uploadUrl = `${this.baseUrl}/upload-icon/`;
+
+      return this.http.post(uploadUrl, formData).pipe(
+        catchError((error) => {
+          console.error('Error uploading file:', error);
+          return throwError('Error uploading file');
+        })
+      );
+    }
+
   // รับ URL สำหรับแสดงรูปภาพของแผนที่ตาม deviceId
   getMapImageUrl(deviceId: string): string {
     return `${this.baseUrl}/uploads/${deviceId}`;
@@ -141,7 +154,7 @@ export class ApiService {
       })
     );
   }
-  
+
   // ดึงข้อมูลล่าสุดสำหรับอุปกรณ์
   getLatestData(deviceId: string): Observable<any[]> {
     const apiUrl = `${this.baseUrl}/latest_data?device_id=${deviceId}`;
