@@ -32,7 +32,9 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   selectedGroupName: string = '';
   shouldRefreshGraph: boolean = true;
   selectedValue: string = '';
-  unitCosts: any[] = []; 
+  unitCosts: any[] = [];
+  start: any;
+  end: any;
   constructor(
     private apiService: ApiService,
     private groupService: GroupService
@@ -45,7 +47,6 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     // this.getLastestEnergyByGroupName(this.selectedGroup);
     // this.getDataByGroupName(this.selectedGroup);
     this.fetchUnitCost();
-
     this.groupService.selectedGroup$.subscribe((selectedGroup: string) => {
       this.selectedGroup = selectedGroup;
       // console.log('No. ' , this.selectedGroup);
@@ -358,21 +359,47 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
     if (totalEnergy <= 15) {
       totalCost = totalEnergy * this.getUnitCostById(1);
     } else if (totalEnergy <= 25) {
-      totalCost = 15 * this.getUnitCostById(1) + (totalEnergy - 15) * this.getUnitCostById(2);
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        (totalEnergy - 15) * this.getUnitCostById(2);
     } else if (totalEnergy <= 35) {
-      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + (totalEnergy - 25) * this.getUnitCostById(3);
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        (totalEnergy - 25) * this.getUnitCostById(3);
     } else if (totalEnergy <= 100) {
-      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + (totalEnergy - 35) * this.getUnitCostById(4);
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        (totalEnergy - 35) * this.getUnitCostById(4);
     } else if (totalEnergy <= 150) {
-      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + 65 * this.getUnitCostById(4) + (totalEnergy - 100) * this.getUnitCostById(5);
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        65 * this.getUnitCostById(4) +
+        (totalEnergy - 100) * this.getUnitCostById(5);
     } else if (totalEnergy <= 400) {
-      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + 65 * this.getUnitCostById(4) + 50 * this.getUnitCostById(5) + (totalEnergy - 150) * this.getUnitCostById(6);
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        65 * this.getUnitCostById(4) +
+        50 * this.getUnitCostById(5) +
+        (totalEnergy - 150) * this.getUnitCostById(6);
     } else {
-      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + 65 * this.getUnitCostById(4) + 50 * this.getUnitCostById(5) + 250 * this.getUnitCostById(6) + (totalEnergy - 400) * this.getUnitCostById(7);
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        65 * this.getUnitCostById(4) +
+        50 * this.getUnitCostById(5) +
+        250 * this.getUnitCostById(6) +
+        (totalEnergy - 400) * this.getUnitCostById(7);
     }
     return totalCost;
-}
-
+  }
 
   ngOnDestroy(): void {
     if (this.dataSubscription) {
@@ -635,4 +662,25 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
       }
     );
   }
+  selectData(start: string, end: string) {
+    this.apiService.selectData(start, end).subscribe(
+      (res) => {
+        this.data = res;
+        console.log('selectData : ',this.data);
+        this.updateChartData();
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+  }
+  updateChartData() {
+    this.chartData = this.data.map((item) => ({
+      created_timestamp: item.created_timestamp,
+      energy: item.energy,
+    }));
+    this.generateChart(); // เรียกใช้งานเมธอดเพื่อแสดงผลบน Chart
+    this.generateChart2();
+  }
+  
 }

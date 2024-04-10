@@ -209,7 +209,21 @@
       </div>
     </div>
   </div>
-
+  <div class="row">
+    <div class="col">
+      <label for="start">Start Date:</label>
+      <input type="date" id="start" name="start" [(ngModel)]="start">
+    </div>
+    <div class="col">
+      <label for="end">End Date:</label>
+      <input type="date" id="end" name="end" [(ngModel)]="end">
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-primary" (click)="selectData(start, end)">Fetch Data</button>
+    </div>
+  </div>
+  
+  
   <div class="row">
     <div class="col-sm-12">
       <div class="mb-3 bg-white rounded-4 p-5">

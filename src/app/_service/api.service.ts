@@ -234,4 +234,7 @@ export class ApiService {
   getSumDataForYears(): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/sum_data_years`);
   }
+  selectData(start: string, end: string) {
+    return this.http.get<any>(`${this.baseUrl}/select_data?start=${start}&end=${end}`);
+  }
 }
