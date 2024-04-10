@@ -17,16 +17,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   cost: number = 0;
   unitCost: number = 0;
 
-  constructor(private route: ActivatedRoute, private http: HttpClient,private apiService: ApiService) {}
-
-
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {
     this.device_id = this.route.snapshot.queryParamMap.get('device_id') || '';
     this.fetchLatestData();
     this.fetchEnergyData(); // เรียก fetchData1 ด้วยวงเล็บเปิดและปิด
     this.fetchUnitCost(); // เรียกใช้งานฟังก์ชันเพื่อดึงค่า Unit Cost
-
 
     this.dataSubscription = interval(5000).subscribe(() => {
       this.fetchLatestData();
@@ -43,11 +44,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   fetchUnitCost() {
     this.apiService.getUnitCost().subscribe(
-      (response: any) => { // Change this line
-        if (response.length > 0) {
-          this.unitCost = response[0].unitCost;
-          console.log('UnitCost: คือ:', this.unitCost);
-        }
+      (response: number) => {
+        // แก้ไขตรงนี้เป็น number
+        this.unitCost = response;
+        console.log('UnitCost: คือ:', this.unitCost);
       },
       (error) => {
         console.error('Error fetching Unit Cost:', error);
@@ -57,7 +57,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   fetchLatestData() {
     this.apiService.getLatestData(this.device_id).subscribe(
-      (data: any[]) => { // Change this line
+      (data: any[]) => {
+        // Change this line
         this.data = data;
         console.log(data);
       },
@@ -68,7 +69,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   fetchEnergyData() {
-    this.apiService.getEnergyData(this.device_id).subscribe((data: any[]) => { // Change this line
+    this.apiService.getEnergyData(this.device_id).subscribe((data: any[]) => {
+      // Change this line
       this.chartData = data;
 
       const totalEnergy = this.chartData.reduce(
@@ -78,8 +80,61 @@ export class DashboardComponent implements OnInit, OnDestroy {
       console.log(`Total Energy: ${totalEnergy} kWh`);
       this.totalEnergy = totalEnergy.toFixed(2);
 
-      this.cost = totalEnergy * this.unitCost;
+      this.cost = this.calculateTotalCost(totalEnergy); // Calculate total cost using calculateTotalCost function
       this.cost = +this.cost.toFixed(2);
     });
+  }
+
+  calculateTotalCost(totalEnergy: number): number {
+    let totalCost = 0;
+    if (totalEnergy <= 15) {
+      totalCost = totalEnergy * this.getUnitCostById(1);
+    } else if (totalEnergy <= 25) {
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        (totalEnergy - 15) * this.getUnitCostById(2);
+    } else if (totalEnergy <= 35) {
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        (totalEnergy - 25) * this.getUnitCostById(3);
+    } else if (totalEnergy <= 100) {
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        (totalEnergy - 35) * this.getUnitCostById(4);
+    } else if (totalEnergy <= 150) {
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        65 * this.getUnitCostById(4) +
+        (totalEnergy - 100) * this.getUnitCostById(5);
+    } else if (totalEnergy <= 400) {
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        65 * this.getUnitCostById(4) +
+        50 * this.getUnitCostById(5) +
+        (totalEnergy - 150) * this.getUnitCostById(6);
+    } else {
+      totalCost =
+        15 * this.getUnitCostById(1) +
+        10 * this.getUnitCostById(2) +
+        10 * this.getUnitCostById(3) +
+        65 * this.getUnitCostById(4) +
+        50 * this.getUnitCostById(5) +
+        250 * this.getUnitCostById(6) +
+        (totalEnergy - 400) * this.getUnitCostById(7);
+    }
+    return totalCost;
+  }
+  getUnitCostById(id: number): number {
+    const unitCostItem = (this.unitCost as unknown as Array<any>).find(
+      (item) => item.id === id
+    );
+    return unitCostItem ? unitCostItem.unitCost : 0;
   }
 }
