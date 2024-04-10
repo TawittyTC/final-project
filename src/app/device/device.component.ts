@@ -11,7 +11,8 @@ import { GroupService } from '../_service/group.service';
   styleUrls: ['./device.component.scss'],
 })
 export class DeviceComponent implements OnInit {
-  @Output() selectedGroupChanged: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedGroupChanged: EventEmitter<string> =
+    new EventEmitter<string>();
   showGroupDropdown: boolean = false;
   selectedGroup: string = '';
   groups: string[] = [''];
@@ -25,8 +26,6 @@ export class DeviceComponent implements OnInit {
   unitCost: number | null = null;
   newGroup: any = {};
   apiGroups: any[] = [];
-
-
 
   isNumeric(value: any): boolean {
     return !isNaN(parseFloat(value)) && isFinite(value);
@@ -53,13 +52,9 @@ export class DeviceComponent implements OnInit {
     if (!groupId) {
       return '';
     }
-    const group = this.apiGroups.find(group => group.group_id === groupId);
+    const group = this.apiGroups.find((group) => group.group_id === groupId);
     return group ? group.group_name : '';
   }
-  
-  
-  
-
 
   // สร้างฟังก์ชันเรียกข้อมูลของ device ตามกลุ่มที่เลือก
   getDevicesByGroup(group: string) {
@@ -82,7 +77,9 @@ export class DeviceComponent implements OnInit {
     });
   }
 
-
+  isAdmin(): boolean {
+    return localStorage.getItem('role') === 'admin';
+  }
   isLoggedIn(): boolean {
     return this.authService.isLoggedIn;
   }
@@ -100,7 +97,7 @@ export class DeviceComponent implements OnInit {
     });
   }
 
-  getGroup(){
+  getGroup() {
     this.apiService.getAllGroups().subscribe((response: any) => {
       this.data = response;
       console.log(response);
@@ -191,25 +188,25 @@ export class DeviceComponent implements OnInit {
 
   // ฟังก์ชันสำหรับการอัปเดตหน่วยค่าไฟ
   saveUnitCost(): void {
-    if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
-      // ค่าที่คุณกรอก
-      console.log('ค่าที่คุณกรอก:', this.unitCost);
+    // if (this.unitCost !== null && this.isNumeric(this.unitCost)) {
+    //   // ค่าที่คุณกรอก
+    //   console.log('ค่าที่คุณกรอก:', this.unitCost);
 
-      // Use ApiService to update the unit cost
-      this.apiService.updateUnitCost(this.unitCost as number).subscribe(
-        () => {
-          console.log('Unit Cost updated:', this.unitCost);
-          alert('อัปเดต Unit Cost สำเร็จ');
-          this.reloadPage();
-        },
-        (error) => {
-          console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
-          alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
-        }
-      );
-    } else {
-      alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
-    }
+    //   // Use ApiService to update the unit cost
+    //   this.apiService.updateUnitCost(this.unitCost as number).subscribe(
+    //     () => {
+    //       console.log('Unit Cost updated:', this.unitCost);
+    //       alert('อัปเดต Unit Cost สำเร็จ');
+    //       this.reloadPage();
+    //     },
+    //     (error) => {
+    //       console.error('เกิดข้อผิดพลาดในการอัปเดต Unit Cost:', error);
+    //       alert('เกิดข้อผิดพลาดในการอัปเดต Unit Cost');
+    //     }
+    //   );
+    // } else {
+    //   alert('กรุณาใส่ค่าเป็นตัวเลขเท่านั้น');
+    // }
   }
 
   enableGroupMode() {
@@ -229,7 +226,4 @@ export class DeviceComponent implements OnInit {
       this.groupMode = false; // Close the group mode
     });
   }
-
-
-
 }

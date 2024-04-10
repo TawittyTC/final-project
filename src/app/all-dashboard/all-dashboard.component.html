@@ -118,7 +118,7 @@
         <div class="h4 text-muted fw-light">Total Cost</div>
 
         <div class="fw-light mt-3 display-4">
-          {{ allDataGroup.total_energy * unitCost | number : "1.2-2" }}
+          {{ calculateTotalCost(allDataGroup.total_energy) | number : '1.2-2' : 'en-US' }}
           <span class="h4 text-muted fw-light">฿</span>
           <img
             src="/assets/img/img002.png"

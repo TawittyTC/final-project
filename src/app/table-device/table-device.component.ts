@@ -262,10 +262,15 @@ export class TableDeviceComponent implements OnInit {
   // สร้างฟังก์ชันเพื่อตรวจสอบสถานะ
   checkOnlineStatus(data: any): string {
     const createdTimestamp = new Date(data.created_timestamp).getTime(); // เวลาใน created_timestamp จาก API
+    const latestCreatedTimestamp = new Date(
+      data.latest_created_timestamp
+    ).getTime(); // เวลาใน latest_created_timestamp จาก API
     const currentTimestamp = new Date().getTime(); // เวลาปัจจุบัน
-
+    // console.log('currentTimestamp:', currentTimestamp);
+    // console.log('createdTimestamp:', createdTimestamp);
+    // console.log('latestCreatedTimestamp:', latestCreatedTimestamp);
     // ตรวจสอบความต่างเวลาระหว่างปัจจุบันและ created_timestamp
-    if (currentTimestamp - createdTimestamp <= 100000) {
+    if (currentTimestamp - latestCreatedTimestamp <= 3600000) {
       return 'ON';
     } else {
       return 'OFF';
