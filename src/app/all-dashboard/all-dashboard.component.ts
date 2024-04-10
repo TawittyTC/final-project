@@ -32,6 +32,7 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   selectedGroupName: string = '';
   shouldRefreshGraph: boolean = true;
   selectedValue: string = '';
+  unitCosts: any[] = []; 
   constructor(
     private apiService: ApiService,
     private groupService: GroupService
@@ -355,23 +356,24 @@ export class AllDashboardComponent implements OnInit, OnDestroy {
   calculateTotalCost(totalEnergy: number): number {
     let totalCost = 0;
     if (totalEnergy <= 15) {
-      totalCost = totalEnergy * 2.3488;
+      totalCost = totalEnergy * this.getUnitCostById(1);
     } else if (totalEnergy <= 25) {
-      totalCost = 15 * 2.3488 + (totalEnergy - 15) * 2.9882;
+      totalCost = 15 * this.getUnitCostById(1) + (totalEnergy - 15) * this.getUnitCostById(2);
     } else if (totalEnergy <= 35) {
-      totalCost = 15 * 2.3488 + 10 * 2.9882 + (totalEnergy - 25) * 3.2405;
+      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + (totalEnergy - 25) * this.getUnitCostById(3);
     } else if (totalEnergy <= 100) {
-      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + (totalEnergy - 35) * 3.6237;
+      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + (totalEnergy - 35) * this.getUnitCostById(4);
     } else if (totalEnergy <= 150) {
-      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + 65 * 3.6237 + (totalEnergy - 100) * 3.7171;
+      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + 65 * this.getUnitCostById(4) + (totalEnergy - 100) * this.getUnitCostById(5);
     } else if (totalEnergy <= 400) {
-      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + 65 * 3.6237 + 50 * 3.7171 + (totalEnergy - 150) * 4.2218;
+      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + 65 * this.getUnitCostById(4) + 50 * this.getUnitCostById(5) + (totalEnergy - 150) * this.getUnitCostById(6);
     } else {
-      totalCost = 15 * 2.3488 + 10 * 2.9882 + 10 * 3.2405 + 65 * 3.6237 + 50 * 3.7171 + 250 * 4.2218 + (totalEnergy - 400) * 4.4217;
+      totalCost = 15 * this.getUnitCostById(1) + 10 * this.getUnitCostById(2) + 10 * this.getUnitCostById(3) + 65 * this.getUnitCostById(4) + 50 * this.getUnitCostById(5) + 250 * this.getUnitCostById(6) + (totalEnergy - 400) * this.getUnitCostById(7);
     }
     return totalCost;
-  }
-  
+}
+
+
   ngOnDestroy(): void {
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
